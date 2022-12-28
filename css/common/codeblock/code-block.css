@@ -36,7 +36,7 @@
 .highlight-container[data-rel]::before {
   position: absolute;
   line-height: 42px;
-  border-radius: 18px;
+  border-radius: 0px;
   box-shadow: none;
   height: 12px;
   left: 4px;

@@ -930,8 +930,8 @@ pre code {
   text-shadow: none;
 }
 .highlight {
-  border-radius: 0 0 18px 18px;
-  padding-bottom: 5px;
+  border-radius: 5px 5px 5px 5px;
+  padding-bottom: 0px;
 }
 .highlight pre {
   border: none;
@@ -1109,7 +1109,7 @@ pre .deletion {
 .highlight-container[data-rel]::before {
   position: absolute;
   line-height: 42px;
-  border-radius: 18px;
+  border-radius: 0px;
   box-shadow: none;
   height: 12px;
   left: 4px;
