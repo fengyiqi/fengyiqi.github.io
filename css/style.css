@@ -436,6 +436,7 @@ button {
   margin: 20px 0;
   color: var(--default-text-color);
   background: var(--second-background-color);
+  font-size: 0.8rem;
 }
 .markdown-body blockquote p,
 .markdown-body blockquote ul,
@@ -583,7 +584,7 @@ button {
 }
 .markdown-body img {
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: 5px;
   max-width: 100%;
   cursor: zoom-in;
   display: block;
