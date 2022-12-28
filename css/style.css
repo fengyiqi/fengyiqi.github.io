@@ -903,20 +903,20 @@ pre,
   overflow: auto;
   margin: 20px 0;
   padding: 0;
-  font-size: 0.96rem;
+  font-size: 0.9rem;
   line-height: 1.5rem;
   color: var(--highlight-foreground);
   background: var(--highlight-background);
 }
 pre,
 code {
-  font-family: 'Courier', Courier, monospace;
+  font-family: Consolas, Monaco, Menlo, Consolas, monospace;
 }
 code {
   padding: 4px;
   word-wrap: break-word;
   border-radius: 4px;
-  font-size: 0.96em;
+  font-size: 0.8em;
   color: var(--code-foreground);
   background: var(--code-background);
 }
@@ -1102,13 +1102,12 @@ pre .deletion {
 }
 .highlight-container[data-rel] {
   background: var(--highlight-background);
-  border-radius: 18px;
-  padding-top: 20px;
+  border-radius: 10px;
+  padding-top: 0px;
   margin-top: 10px;
 }
 .highlight-container[data-rel]::before {
   position: absolute;
-  content: attr(data-rel);
   line-height: 42px;
   border-radius: 18px;
   box-shadow: none;

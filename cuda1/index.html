@@ -41,7 +41,7 @@
     <script id="hexo-configurations">
     let REDEFINE = window.REDEFINE || {};
     REDEFINE.hexo_config = {"hostname":"fengyiqi.github.com","root":"/","language":"zh-CN"};
-    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#005080","avatar":"/images/avatar.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#f78736","right":"#367df7","transparency":35},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://evan.beee.top/img/wallhaven-wqery6-light.webp","dark":"https://evan.beee.top/img/wallhaven-wqery6-dark.webp"},"title_color":{"light":"#fff","dark":"#d1d1b6"},"description":"我是在做算法还是在调参？"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":true},"version":"0.4.4"};
+    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#005080","avatar":"/images/avatar.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#f78736","right":"#367df7","transparency":35},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://evan.beee.top/img/wallhaven-wqery6-light.webp","dark":"https://evan.beee.top/img/wallhaven-wqery6-dark.webp"},"title_color":{"light":"#fff","dark":"#d1d1b6"},"description":"我是在做算法还是在调参？"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
     REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
   </script>
 <meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
@@ -470,15 +470,11 @@ mjx-container[display="true"] + br {
 <p>可以用相应的构造函数构造多维网格：</p>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">dim3 <span class="title">grid_size</span><span class="params">(<span class="number">2</span>, <span class="number">2</span>)</span></span>;</span><br><span class="line"><span class="function">dim3 <span class="title">block_size</span><span class="params">(<span class="number">3</span>, <span class="number">2</span>)</span></span>;</span><br></pre></td></tr></table></figure></div>
 <p>定义了如下网格：</p>
-<!-- <p align="center">
-    <img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="cuda1/multidim_grid.png"
-                      height="400" 
-                >
-</p> -->
-<p><img lazyload="" src="/images/loading.svg" data-src="/./cuda1/multidim_grid.png"></p>
+<p align="center">
+    <img src="/cuda1/multidim_grid.png" height="400">
+</p>
+<!-- ![](./cuda1/multidim_grid.png) -->
+
 <h3 id="网格与线程块大小的限制"><a href="#网格与线程块大小的限制" class="headerlink" title="网格与线程块大小的限制"></a>网格与线程块大小的限制</h3><p>任何从开普勒到图灵架构的GPU来说：</p>
 <ul>
 <li>网格大小在x, y和z这3个方向的最大允许值分别为2<sup>31</sup>-1、65535和65535</li>
@@ -589,7 +585,7 @@ mjx-container[display="true"] + br {
 
 <h3 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h3><p>原书作者用上述程序测试了一系列显卡，结果如下</p>
 <p align="center">
-    <img lazyload="" src="/images/loading.svg" data-src="/cuda1/cards_time.png" height="300">
+    <img src="/cuda1/cards_time.png" height="300">
 </p>
 
 <blockquote>
@@ -791,10 +787,6 @@ mjx-container[display="true"] + br {
 <script src="/js/code-copy.js"></script>
 
 
-
-
-    
-<script src="/js/lazyload.js"></script>
 
 
 
