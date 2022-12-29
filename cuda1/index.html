@@ -471,7 +471,7 @@ mjx-container[display="true"] + br {
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">dim3 <span class="title">grid_size</span><span class="params">(<span class="number">2</span>, <span class="number">2</span>)</span></span>;</span><br><span class="line"><span class="function">dim3 <span class="title">block_size</span><span class="params">(<span class="number">3</span>, <span class="number">2</span>)</span></span>;</span><br></pre></td></tr></table></figure></div>
 <p>定义了如下网格：</p>
 <p align="center">
-    <img src="/cuda1/multidim_grid.png">
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/multidim_grid.png">
 </p>
 <!-- ![](./cuda1/multidim_grid.png) -->
 
@@ -585,7 +585,7 @@ mjx-container[display="true"] + br {
 
 <h3 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h3><p>原书作者用上述程序测试了一系列显卡，结果如下</p>
 <p align="center">
-    <img src="/cuda1/cards_time.png">
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cards_time.png">
 </p>
 
 <blockquote>
@@ -603,7 +603,10 @@ mjx-container[display="true"] + br {
 <h2 id="影响GPU加速的关键因素"><a href="#影响GPU加速的关键因素" class="headerlink" title="影响GPU加速的关键因素"></a>影响GPU加速的关键因素</h2><h3 id="数据传输的比例"><a href="#数据传输的比例" class="headerlink" title="数据传输的比例"></a>数据传输的比例</h3><p>GPU计算核心和设备内存之间数据传输的理论带宽要远高于GPU和CPU之间数据传输的带宽。<strong>应避免过多数据经由PICe传递</strong></p>
 <h3 id="算数强度"><a href="#算数强度" class="headerlink" title="算数强度"></a>算数强度</h3><p>—个计算问题的算术强度指的是其中算术操作的工作量与必要的内存操作的工作量之比。提高算术强度能够显著地提高GPU相对于CPU的加速比。</p>
 <h3 id="并行规模"><a href="#并行规模" class="headerlink" title="并行规模"></a>并行规模</h3><p>并行规模可用GPU中总的线程数目来衡量。从硬件的角度来看，一个GPU由多个流多处理器SM构成，而每个SM中有若干CUDA核心。每个SM是相对独立的。对于图灵架构，一个SM中最多能驻留的线程个数是1024。一块GPU中—般有几个到几十个SM。所以一块GPU一共可以驻留几万到几十万个线程。如果一个核函数中定义的线程数目远小于这个数的话，就很难得到很高的加速比。</p>
-<p><img src="/./cuda1/speedup.png"></p>
+<p align="center">
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cards_time.png">
+</p>
+
 <h2 id="CUDA中的数学函数库"><a href="#CUDA中的数学函数库" class="headerlink" title="CUDA中的数学函数库"></a>CUDA中的数学函数库</h2><ul>
 <li>数学函数：经过重载，精度较高<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">double</span> <span class="title">sqrt</span><span class="params">(<span class="type">double</span> x)</span></span>;</span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">sqrt</span><span class="params">(<span class="type">float</span> x)</span></span>;</span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">sqrtf</span><span class="params">(<span class="type">float</span> x)</span></span>;</span><br></pre></td></tr></table></figure></div></li>
 <li>内建函数：效率较高，准确性较低<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> __fsqrt_rd(<span class="type">float</span> x);        <span class="comment">// round-down mode</span></span><br><span class="line"><span class="type">float</span> __fsqrt_rn(<span class="type">float</span> x);        <span class="comment">// round-to-nearest-even mode</span></span><br><span class="line"><span class="type">float</span> __fsqrt_ru(<span class="type">float</span> x);        <span class="comment">// round-up mode</span></span><br><span class="line"><span class="type">float</span> __fsqrt_rz(<span class="type">float</span> x);        <span class="comment">// round-towards-zero mode</span></span><br></pre></td></tr></table></figure></div></li>
