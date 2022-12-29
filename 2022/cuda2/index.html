@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    <meta name="description" content="Hexo Theme Redefine">
+    <meta name="author" content="Yiqi">
+    
+    <title>
+        
+            CUDA编程02: CUDA内存组织 |
+        
+        早日毕业
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
+    
+<link rel="stylesheet" href="/project/css/style.css">
+
+    <link rel="shortcut icon" href="/project/images/logo.svg">
+    
+<link rel="stylesheet" href="/project/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/project/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/project/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/project/css/regular.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/project/css/css2.css">
+
+    <script id="hexo-configurations">
+    let REDEFINE = window.REDEFINE || {};
+    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/project/","language":"zh-CN"};
+    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/avatar.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#f78736","right":"#367df7","transparency":35},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://evan.beee.top/img/wallhaven-wqery6-light.webp","dark":"https://evan.beee.top/img/wallhaven-wqery6-dark.webp"},"title_color":{"light":"#fff","dark":"#d1d1b6"},"description":"我是在做算法还是在调参？"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
+    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+    
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                早日毕业
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/project/" >
+                                
+                                    
+                                        <i class="fa-regular fa-house"></i>
+                                    
+                                    首页
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/project/archives" >
+                                
+                                    
+                                        <i class="fa-regular fa-archive"></i>
+                                    
+                                    归档
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/project/categories" >
+                                
+                                    
+                                        <i class="fa-regular fa-list"></i>
+                                    
+                                    分类
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/project/about" >
+                                
+                                    
+                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                    
+                                    关于
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/project/" >
+                         
+                            
+                                <i class="fa-regular fa-house"></i>
+                            
+                            首页
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/project/archives" >
+                         
+                            
+                                <i class="fa-regular fa-archive"></i>
+                            
+                            归档
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/project/categories" >
+                         
+                            
+                                <i class="fa-regular fa-list"></i>
+                            
+                            分类
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/project/about" >
+                         
+                            
+                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                            
+                            关于
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+            <div class="article-title">
+                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">CUDA编程02: CUDA内存组织</h1></span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/project/images/avatar.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">Yiqi</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="pc">2022-12-29 13:45:27</span>
+        <span class="mobile">2022-12-29 13:45</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/project/categories/CUDA/">CUDA</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/project/tags/CUDA/">CUDA</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>2k 字</span>
+        </span>
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <h2 id="CUDA内存组织"><a href="#CUDA内存组织" class="headerlink" title="CUDA内存组织"></a>CUDA内存组织</h2><p align="center">
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/mem_struc.png" >
+</p>
+
+<p align="center">
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/mem_struc2.png" >
+</p>
+
+<h2 id="CUDA中不同类型的内存"><a href="#CUDA中不同类型的内存" class="headerlink" title="CUDA中不同类型的内存"></a>CUDA中不同类型的内存</h2><h3 id="全局内存"><a href="#全局内存" class="headerlink" title="全局内存"></a>全局内存</h3><p>对所有线程开放访问，生命周期从<code>cudaMalloc()</code>开始到<code>cudaFree()</code>结束。</p>
+<p>在CUDA中也允许定义静态全局变量，在所有主机与设备函数外定义。定义方法：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__device__ T x;     <span class="comment">// 单个变量</span></span><br><span class="line">__device__ T y[N];  <span class="comment">// 固定长度的数组</span></span><br></pre></td></tr></table></figure></div>
+
+<p>主机不可直接访问CUDA静态全局变量，需要通过<code>cudaMemcpyToSymbol()</code>和<code>cudaMemcpyFromSymbol</code>在CUDA静态全局内存与主机内存之间传递数据。这两个函数原型为</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">cudaError_t <span class="title">cudaMemcpyToSymbol</span> <span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">char</span> * 	    symbol,         <span class="comment">// 静态全局内存变量名</span></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">void</span> * 	    src,            <span class="comment">// 主机内存缓冲区指针</span></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">size_t</span> 	            count,          <span class="comment">// 复制的字节数</span></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">size_t</span> 	            offset = <span class="number">0</span>,     <span class="comment">// 从symbol对应设备地址开始偏移的字节数</span></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">enum</span> cudaMemcpyKind kind = cudaMemcpyHostToDevice	 <span class="comment">// 可选参数</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span>	</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">cudaError_t <span class="title">cudaMemcpyFromSymbol</span> <span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">void</span> * 	            dst,            <span class="comment">// 主机内存缓冲区指针</span></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">char</span> * 	    symbol,         <span class="comment">// 静态全局内存变量名</span></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">size_t</span> 	            count,          <span class="comment">// 复制的字节数</span></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">size_t</span> 	            offset = <span class="number">0</span>,     <span class="comment">// 从symbol对应设备地址开始偏移的字节数</span></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">enum</span> cudaMemcpyKind kind = cudaMemcpyDeviceToHost   <span class="comment">// 可选参数</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span>	</span></span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>这两个函数的参数<code>symbol</code>可以是静态全局内存变量的变量名, 也可以是下面要介绍的常量内存变量的变量名</li>
+</ul>
+<p>示例代码如下：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cuda.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;error.cuh&quot;</span></span></span><br><span class="line"></span><br><span class="line">__device__ <span class="type">int</span> d_x = <span class="number">1</span>;</span><br><span class="line">__device__ <span class="type">int</span> d_y[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> __global__ <span class="title">my_kernel</span><span class="params">(<span class="type">void</span>)</span> </span>&#123;</span><br><span class="line">    d_y[<span class="number">0</span>] += d_x;</span><br><span class="line">    d_y[<span class="number">1</span>] += d_x;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;d_x = %d, d_y[0] = %d, d_y[1] = %d. \n&quot;</span>, d_x, d_y[<span class="number">0</span>], d_y[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> h_y[<span class="number">2</span>] = &#123;<span class="number">10</span>, <span class="number">20</span>&#125;;</span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaMemcpyToSymbol</span>(d_y, h_y, <span class="built_in">sizeof</span>(<span class="type">int</span>) * <span class="number">2</span>));</span><br><span class="line"></span><br><span class="line">    my_kernel&lt;&lt;&lt;<span class="number">1</span>, <span class="number">1</span>&gt;&gt;&gt;();</span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaDeviceSynchronize</span>());</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaMemcpyFromSymbol</span>(h_y, d_y, <span class="built_in">sizeof</span>(<span class="type">int</span>) * <span class="number">2</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;h_y[0] = %d, h_y[1] = %d. \n&quot;</span>, h_y[<span class="number">0</span>], h_y[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>输出结果：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d_x = 1, d_y[0] = 11, d_y[1] = 21. </span><br><span class="line">h_y[0] = 11, h_y[1] = 21. </span><br></pre></td></tr></table></figure></div>
+
+<h3 id="常量内存"><a href="#常量内存" class="headerlink" title="常量内存"></a>常量内存</h3><p>常量内存是有常量缓存的全局内存，仅有64KB，生命周期与全局内存一样。仅可读不可写，访问速度比全局内存高（前提是一个线程束中的线程（一个线程块中相邻的32个线程）要读取相同的内存数据）</p>
+<blockquote>
+<p>函数参数通过值传递时就是使用的常量内存，另外也可以传递结构体（传值还是传指针？）</p>
+</blockquote>
+<h3 id="纹理内存和表面内存"><a href="#纹理内存和表面内存" class="headerlink" title="纹理内存和表面内存"></a>纹理内存和表面内存</h3><p>类似于常量内存，也是一种具有缓存的全局内存，一般仅可读（表面内存也可写），但容量更大，使用方式也不同。</p>
+<p>将某些只读的全局内存数据使用<code>__ldg()</code>修饰可以达到利用纹理内存的目的</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T __ldg(<span class="type">const</span> T* address);</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>对帕斯卡架构和更高的架构来说，全局内存的读取在默认情况下就利用了<code>__ldg()</code>函数</p>
+</blockquote>
+<h3 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h3><p>在核函数中定义的不加任何限定符的变量一般来说就存放于寄存器中。核函数中定义的不加任何限定符的数组有可能存放于寄存器中，但也有可能存放于局部内存中。寄存器变量仅对一个线程可见。</p>
+<h3 id="局部内存"><a href="#局部内存" class="headerlink" title="局部内存"></a>局部内存</h3><p>寄存器中放不下的变量，以及索引值不能在编译时就确定的数组，都有可能放在局部内存中，这种判断是由编译器自动做的。虽然局部内存在用法上类似于寄存器，但从硬件来看，局部内存只是全局内存的一部分。所以，局部内存的延迟也很高。每个线程最多能使用高达512KB的局部内存，但使用过多会降低程序的性能。</p>
+<h3 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h3><p>共享内存和寄存器类似，存在于芯片上，具有仅次于寄存器的读写速度，数量也有限。不同于寄存器的是，共享内存对整个线程块可见，其生命周期也与整个线程块<br>一致。</p>
+<p align="center">
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/performance.png" >
+</p>
+
+<h3 id="L1和L2缓存"><a href="#L1和L2缓存" class="headerlink" title="L1和L2缓存"></a>L1和L2缓存</h3><p>对某些架构来说，还可以针对单个核函数或者整个程序改变L1缓存和共享内存的比例。本书不涉及。</p>
+<h2 id="SM及其占有率"><a href="#SM及其占有率" class="headerlink" title="SM及其占有率"></a>SM及其占有率</h2><h3 id="SM的构成"><a href="#SM的构成" class="headerlink" title="SM的构成"></a>SM的构成</h3><p>一个GPU由多个SM构成，一个SM包括如下资源：</p>
+<ul>
+<li>一定数量的寄存器</li>
+<li>一定数量的共享内存</li>
+<li>常量内存的缓存</li>
+<li>纹理和表面内存的缓存</li>
+<li>L1缓存</li>
+<li>两个（计算能力6.0）或4个（其他计算能力）线程束调度器，用于在不同线程的上下文之间迅速地切换，以及为准备就绪的线程束发出执行指令。</li>
+<li>执行核心，包括：<ul>
+<li>若干整型数运算的核心（INT32）</li>
+<li>若干单精度浮点数运算核心（FP32）</li>
+<li>若干双精度浮点数运算核心（FP64）</li>
+<li>若干单精度浮点数超越函数的特殊函数单元（？）</li>
+<li>若干混合精度的张量核心</li>
+</ul>
+</li>
+</ul>
+<h3 id="SM的占有率"><a href="#SM的占有率" class="headerlink" title="SM的占有率"></a>SM的占有率</h3><p>要分析SM的理论占有率，还需要知道两个指标：</p>
+<ul>
+<li>一个SM中最多能拥有的线程块个数为N<sub>b</sub>＝16（开普勒架构和图灵架构）或者N<sub>b</sub>＝32（麦克斯韦架构、帕斯卡架构和伏特架构）。</li>
+<li>一个SM中最多能拥有的线程个数为N<sub>t</sub>≡2048（从开普勒架构到伏特架构）或者N<sub>t</sub>＝1024（图灵架构）。</li>
+</ul>
+<blockquote>
+<p>SM中线程的执行是以线程束为单位的,所以最好将线程块大小取为线程束大小（32个线程）的整数倍</p>
+</blockquote>
+<p>分几种情况进行分析：</p>
+<ol>
+<li><p>寄存器和共享内存使用量很少的情况</p>
+<p> 在该前提下，任何不小于N<sub>t</sub> &#x2F; N<sub>b</sub>而且能整除N<sub>t</sub>的线程块大小都能得到100％的占有率。</p>
+</li>
+<li><p>有限的寄存器数量对占有率的约束情况</p>
+<p> 对于表6.2中列出的所有计算能力，一个SM最多能使用的寄存器个数为64K（64×1024）。除图灵架构外，如果我们希望在一个SM中驻留最多的线程（2048个），核函数中的每个线程最多只能用32个寄存器。当每个线程所用寄存器个数大于64时，SM的占有率将小于50％；当每个线程所用寄存器个数大于128时，SM的占有率将小于25％。</p>
+<p> 对于图灵架构，同样的占有率允许使用更多的寄存器。</p>
+</li>
+<li><p>有限的共享内存对占有率的约束情况</p>
+<p> 针对计算能力3.5来说，。如果线程块大小为128，那么每个SM要激活16个线程块才能有2048个线程，达到100％的占有率。此时，—个线程块最多能使用3KB的共享内存。在不改变线程块大小的情况下，要达到50％的占有率，一个线程块最多能使用6KB的共享内存。要达到25％的占有率，一个线程块最多能使用12KB的共享内存。如果—个线程块使用了超过48KB的共享内存，会直接导致核函数无法运行。</p>
+</li>
+</ol>
+<p>使用CUDA工具<a class="link"   target="_blank" rel="noopener" href="https://developer.nvidia.com/nsight-compute" >NVIDIA Nsight Compute<i class="fa-solid fa-up-right-from-square"></i></a>可对SM占用率进行分析</p>
+<p>编译器选项<code>--ptxas-options=-v</code>可以报道每个核函数的寄存器使用数量。使用此选项对数组相加程序进行编译，得到如下结果</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ptxas info    : 0 bytes gmem</span><br><span class="line">ptxas info    : Compiling entry function &#x27;_Z3addPKfS0_Pf&#x27; for &#x27;sm_30&#x27;</span><br><span class="line">ptxas info    : Function properties for _Z3addPKfS0_Pf</span><br><span class="line">    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads</span><br><span class="line">ptxas info    : Used 8 registers, 344 bytes cmem[0]</span><br></pre></td></tr></table></figure></div>
+
+<p>CUDA还提供了核函数的<code>__launch_bounds__()</code>修饰符和<code>--maxrregcount=</code>编译选项来让用户分别对—个核函数和所有核函数中寄存器的使用数量进行控制。</p>
+<h2 id="使用CUDA运行时API获取设备信息"><a href="#使用CUDA运行时API获取设备信息" class="headerlink" title="使用CUDA运行时API获取设备信息"></a>使用CUDA运行时API获取设备信息</h2><p>程序见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/query.cu" >query.cu<i class="fa-solid fa-up-right-from-square"></i></a>结果如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Device id:                                 0</span><br><span class="line">Device name:                               GeForce RTX 2070 SUPER</span><br><span class="line">Compute capability:                        7.5</span><br><span class="line">Amount of global memory:                   7.77332 GB</span><br><span class="line">Amount of constant memory:                 64 KB</span><br><span class="line">Maximum grid size:                         2147483647 65535 65535</span><br><span class="line">Maximum block size:                        1024 1024 64</span><br><span class="line">Number of SMs:                             40</span><br><span class="line">Maximum amount of shared memory per block: 48 KB</span><br><span class="line">Maximum amount of shared memory per SM:    64 KB</span><br><span class="line">Maximum number of registers per block:     64 K</span><br><span class="line">Maximum number of registers per SM:        64 K</span><br><span class="line">Maximum number of threads per block:       1024</span><br><span class="line">Maximum number of threads per SM:          1024</span><br></pre></td></tr></table></figure></div>
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/project/tags/CUDA/">#CUDA</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/project/2022/cuda1/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">CUDA编程01: 一个简单的CUDA C++程序</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E5%86%85%E5%AD%98%E7%BB%84%E7%BB%87"><span class="nav-text">CUDA内存组织</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E4%B8%AD%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%86%85%E5%AD%98"><span class="nav-text">CUDA中不同类型的内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%86%85%E5%AD%98"><span class="nav-text">全局内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%86%85%E5%AD%98"><span class="nav-text">常量内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E5%86%85%E5%AD%98%E5%92%8C%E8%A1%A8%E9%9D%A2%E5%86%85%E5%AD%98"><span class="nav-text">纹理内存和表面内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-text">寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E5%86%85%E5%AD%98"><span class="nav-text">局部内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-text">共享内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L1%E5%92%8CL2%E7%BC%93%E5%AD%98"><span class="nav-text">L1和L2缓存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SM%E5%8F%8A%E5%85%B6%E5%8D%A0%E6%9C%89%E7%8E%87"><span class="nav-text">SM及其占有率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SM%E7%9A%84%E6%9E%84%E6%88%90"><span class="nav-text">SM的构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SM%E7%9A%84%E5%8D%A0%E6%9C%89%E7%8E%87"><span class="nav-text">SM的占有率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8CUDA%E8%BF%90%E8%A1%8C%E6%97%B6API%E8%8E%B7%E5%8F%96%E8%AE%BE%E5%A4%87%E4%BF%A1%E6%81%AF"><span class="nav-text">使用CUDA运行时API获取设备信息</span></a></li></ol>
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+
+
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2022&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">Yiqi. 版权所有.</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+        </div>
+        
+        
+        <script async data-pjax defer>
+            function odometer_init(){
+                    let el = document.getElementsByClassName('odometer');
+                    for (i = 0; i < el.length; i++) {
+                        od = new Odometer({
+                            el: el[i],
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    }
+            }
+            odometer_init();
+        </script>
+        <div id="start_time_div" style="display:none">
+            2022/12/28 11:45:14
+        </div>
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fa-solid fa-left-right"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fa-solid fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fa-solid fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fa-solid fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/project/js/utils.js"></script>
+
+<script src="/project/js/main.js"></script>
+
+<script src="/project/js/header-shrink.js"></script>
+
+<script src="/project/js/back2top.js"></script>
+
+<script src="/project/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/project/js/code-copy.js"></script>
+
+
+
+
+
+
+    
+<script src="/project/js/runtime.js"></script>
+
+    
+<script src="/project/js/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/project/css/odometer-theme-minimal.css">
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/project/js/toc-toggle.js"></script>
+
+<script src="/project/js/libs/anime.min.js"></script>
+
+<script src="/project/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/project/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            REDEFINE.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            REDEFINE.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            REDEFINE.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
