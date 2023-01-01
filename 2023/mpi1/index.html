@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    <meta name="description" content="Hexo Theme Redefine">
+    <meta name="author" content="Yiqi">
+    
+    <title>
+        
+            MPI并行计算01: 几个最常用的函数 |
+        
+        早日毕业
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/css/regular.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/css2.css">
+
+    <script id="hexo-configurations">
+    let REDEFINE = window.REDEFINE || {};
+    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#f78736","right":"#367df7","transparency":35},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
+    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+    
+    <div class="header-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="logo-title" href="/">
+                早日毕业
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/" >
+                                
+                                    
+                                        <i class="fa-regular fa-house"></i>
+                                    
+                                    首页
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/archives" >
+                                
+                                    
+                                        <i class="fa-regular fa-archive"></i>
+                                    
+                                    归档
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/categories" >
+                                
+                                    
+                                        <i class="fa-regular fa-list"></i>
+                                    
+                                    分类
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/about" >
+                                
+                                    
+                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                    
+                                    关于
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/" >
+                         
+                            
+                                <i class="fa-regular fa-house"></i>
+                            
+                            首页
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/archives" >
+                         
+                            
+                                <i class="fa-regular fa-archive"></i>
+                            
+                            归档
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/categories" >
+                         
+                            
+                                <i class="fa-regular fa-list"></i>
+                            
+                            分类
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/about" >
+                         
+                            
+                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                            
+                            关于
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+            <div class="article-title">
+                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">MPI并行计算01: 几个最常用的函数</h1></span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/logo.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">Yiqi</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="pc">2023-01-01 13:58:29</span>
+        <span class="mobile">2023-01-01 13:58</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/MPI/">MPI</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/MPI/">MPI</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/C/">C</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>6.1k 字</span>
+        </span>
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <p>第一部分概述参考自 <a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40765537/article/details/106425355" >JacksonKim<i class="fa-solid fa-up-right-from-square"></i></a>，其他部分整理自<a class="link"   target="_blank" rel="noopener" href="https://mpitutorial.com/" >MPI Tutorials<i class="fa-solid fa-up-right-from-square"></i></a>，只留下了干货。初学者建议仔细阅读<a class="link"   target="_blank" rel="noopener" href="https://mpitutorial.com/" >MPI Tutorials<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<p>编程环境：</p>
+<ul>
+<li>i7-9700F 8-cores</li>
+<li>mpicxx for MPICH version 3.3.2</li>
+<li>Ubuntu 20.04 LTS</li>
+</ul>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="什么是MPI"><a href="#什么是MPI" class="headerlink" title="什么是MPI"></a>什么是MPI</h3><p>Massage Passing Interface:是消息传递函数库的标准规范，由MPI论坛开发。</p>
+<ul>
+<li>一种新的库描述，不是一种语言。共有上百个函数调用接口，提供与C和Fortran语言的绑定</li>
+<li>MPI是一种标准或规范的代表，而不是特指某一个对它的具体实现</li>
+<li>MPI是一种消息传递编程模型，并成为这种编程模型的代表和事实上的标准</li>
+</ul>
+<h3 id="MPI的特点"><a href="#MPI的特点" class="headerlink" title="MPI的特点"></a>MPI的特点</h3><p>MPI有以下的特点：</p>
+<ul>
+<li>消息传递式并行程序设计，指用户必须通过显式地发送和接收消息来实现处理机间的数据交换。在这种并行编程中，每个并行进程均有自己独立的地址空间，相互之间访问不能直接进行，必须通过显式的消息传递来实现。这种编程方式是大规模并行处理机（MPP）和机群（Cluster）采用的主要编程方式。</li>
+<li>并行计算粒度大，特别适合于大规模可扩展并行算法。用户决定问题分解策略、进程间的数据交换策略，在挖掘潜在并行性方面更主动,并行计算粒度大,特别适合于大规模可扩展并行算法</li>
+<li>消息传递是当前并行计算领域的一个非常重要的并行程序设计方式</li>
+</ul>
+<h2 id="Hello-world程序"><a href="#Hello-world程序" class="headerlink" title="Hello world程序"></a>Hello world程序</h2><p>完整的代码如下（见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppMPI/blob/master/01_basic/hello.cpp" >hello.cpp<i class="fa-solid fa-up-right-from-square"></i></a>）</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mpi.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span>* argv[])</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    </span><br><span class="line">    <span class="built_in">MPI_Init</span>(&amp;argc,&amp;argv); </span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> rank, size, name_len; </span><br><span class="line">    <span class="type">char</span> processor_name[MPI_MAX_PROCESSOR_NAME];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">MPI_Comm_rank</span>(MPI_COMM_WORLD, &amp;rank); </span><br><span class="line">    <span class="built_in">MPI_Comm_size</span>(MPI_COMM_WORLD, &amp;size);</span><br><span class="line">    <span class="built_in">MPI_Get_processor_name</span>(processor_name, &amp;name_len);</span><br><span class="line">    </span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Hello world from processor &quot;</span> &lt;&lt; processor_name &lt;&lt; <span class="string">&quot;, rank &quot;</span> &lt;&lt; rank &lt;&lt; <span class="string">&quot; out of &quot;</span> &lt;&lt; size &lt;&lt; <span class="string">&quot; processors&quot;</span> &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">MPI_Finalize</span>(); </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><p>MPI环境必须以以下代码来初始化：</p>
+  <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Init</span>(<span class="type">int</span>* argc, <span class="type">char</span>*** argv);</span><br></pre></td></tr></table></figure></div>
+<p>  在<code>MPI_Init</code>的过程中，所有MPI的全局变量或者内部变量都会被创建。比如<code>rank</code></p>
+</li>
+<li><p>在<code>MPI_Init</code>之后，有两个主要的函数被调用到了。这两个函数是几乎所有 MPI 程序都会用到的。</p>
+  <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Comm_size</span>(MPI_Comm communicator, <span class="type">int</span>* size);</span><br><span class="line"><span class="built_in">MPI_Comm_rank</span>(MPI_Comm communicator, <span class="type">int</span>* rank);</span><br></pre></td></tr></table></figure></div>
+
+<p>  <code>MPI_Comm_size</code>会返回<code>communicator</code>的大小，也就是<code>communicator</code>中可用的进程数量。<code>MPI_COMM_WORLD</code>这个变量包含了当前MPI任务中所有的进程，因此在我们的代码里的这个调用会返回所有的可用的进程数目。</p>
+<p>  <code>MPI_Comm_rank</code>这个函数会返回<code>communicator</code>中当前进程的<code>rank</code>。</p>
+</li>
+<li><p><code>MPI_Get_processor_name(char* name, int* name_length)</code>会得到当前进程实际跑的时候所在的处理器名字。</p>
+</li>
+<li><p>代码中最后一个调用<code>MPI_Finalize()</code>是用来清理MPI环境的。</p>
+</li>
+</ul>
+<p>我们用4个核心调用这个程序，注意Makefile相应的编译和执行规则：</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">hello: </span></span><br><span class="line">	mpicxx 01_basic/hello.cpp -o build/hello</span><br><span class="line">	mpiexec -n 4 ./build/hello</span><br></pre></td></tr></table></figure></div>
+<p>得到结果：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Hello world from processor yiqi-OMEN-by-HP, rank 0 out of 4 processors</span><br><span class="line">Hello world from processor yiqi-OMEN-by-HP, rank 1 out of 4 processors</span><br><span class="line">Hello world from processor yiqi-OMEN-by-HP, rank 2 out of 4 processors</span><br><span class="line">Hello world from processor yiqi-OMEN-by-HP, rank 3 out of 4 processors</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="MPI的发送和接收简介"><a href="#MPI的发送和接收简介" class="headerlink" title="MPI的发送和接收简介"></a>MPI的发送和接收简介</h2><p>MPI的发送和接收方法是按以下方式进行的：开始的时候，<em>A</em> 进程决定要发送一些消息给 <em>B</em> 进程。<em>A</em> 进程就会把需要发送给 <em>B</em> 进程的所有数据打包好，放到一个缓存里面。因为所有数据会被打包到一个大的信息里面，因此缓存常常会被比作 <em>信封</em> 。数据打包进缓存之后，通信设备（通常是网络）就需要负责把信息传递到正确的地方。这个正确的地方也就是根据特定<code>rank</code>确定的那个进程。</p>
+<p>尽管数据已经被送达到 <em>B</em> 了，但是进程 <em>B</em> 依然需要确认它想要接收 <em>A</em> 的数据。一旦它确定了这点，数据就被传输成功了。进程 <em>A</em> 会接收到数据传递成功的信息，然后去干其他事情。</p>
+<p>有时候 <em>A</em> 需要传递很多不同的消息给 <em>B</em>。为了让 <em>B</em> 能比较方便地区分不同的消息，MPI运行发送者和接受者额外地指定一些信息 <em>ID</em> (正式名称是 <em>标签</em> , <em>tags</em> )。当 <em>B</em> 只要求接收某种特定标签的信息的时候，其他的不是这个标签的信息会先被缓存起来，等到 <em>B</em> 需要的时候才会给 <em>B</em> 。</p>
+<p>MPI发送和接收方法的定义:</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Send</span>(</span><br><span class="line">    <span class="type">void</span>* data,</span><br><span class="line">    <span class="type">int</span> count,</span><br><span class="line">    MPI_Datatype datatype,</span><br><span class="line">    <span class="type">int</span> destination,</span><br><span class="line">    <span class="type">int</span> tag,</span><br><span class="line">    MPI_Comm communicator</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Recv</span>(</span><br><span class="line">    <span class="type">void</span>* data,</span><br><span class="line">    <span class="type">int</span> count,</span><br><span class="line">    MPI_Datatype datatype,</span><br><span class="line">    <span class="type">int</span> source,</span><br><span class="line">    <span class="type">int</span> tag,</span><br><span class="line">    MPI_Comm communicator,</span><br><span class="line">    MPI_Status* status</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<p><code>data</code>是数据起始地址。<code>count</code>和<code>datatype</code>分别描述了数据的数量和类型。<code>MPI_send</code>会精确地发送<code>count</code>指定的数量个元素，<code>MPI_Recv</code> 会<strong>最多</strong>接受<code>count</code>个元素。<code>destination</code>和<code>tag</code>指定了发送方&#x2F;接受方进程的<code>rank</code>以及信息的标签。<code>MPI_Recv</code> 方法特有的最后一个参数提供了接受到的信息的状态。</p>
+<h3 id="基础MPI-Datatype"><a href="#基础MPI-Datatype" class="headerlink" title="基础MPI_Datatype"></a>基础MPI_Datatype</h3><table>
+<thead>
+<tr>
+<th>MPI datatype</th>
+<th>C equivalent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MPI_SHORT</td>
+<td>short int</td>
+</tr>
+<tr>
+<td>MPI_INT</td>
+<td>int</td>
+</tr>
+<tr>
+<td>MPI_LONG</td>
+<td>long int</td>
+</tr>
+<tr>
+<td>MPI_LONG_LONG</td>
+<td>long long int</td>
+</tr>
+<tr>
+<td>MPI_UNSIGNED_CHAR</td>
+<td>unsigned char</td>
+</tr>
+<tr>
+<td>MPI_UNSIGNED_SHORT</td>
+<td>unsigned short int</td>
+</tr>
+<tr>
+<td>MPI_UNSIGNED</td>
+<td>unsigned int</td>
+</tr>
+<tr>
+<td>MPI_UNSIGNED_LONG</td>
+<td>unsigned long int</td>
+</tr>
+<tr>
+<td>MPI_UNSIGNED_LONG_LONG</td>
+<td>unsigned long long int</td>
+</tr>
+<tr>
+<td>MPI_FLOAT</td>
+<td>float</td>
+</tr>
+<tr>
+<td>MPI_DOUBLE</td>
+<td>double</td>
+</tr>
+<tr>
+<td>MPI_LONG_DOUBLE</td>
+<td>long double</td>
+</tr>
+<tr>
+<td>MPI_BYTE</td>
+<td>char</td>
+</tr>
+</tbody></table>
+<h3 id="MPI发送-x2F-接收程序"><a href="#MPI发送-x2F-接收程序" class="headerlink" title="MPI发送&#x2F;接收程序"></a>MPI发送&#x2F;接收程序</h3><p>见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppMPI/blob/master/02_sendrecv/send_recv.cpp" >send_recv.cpp<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mpi.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">MPI_Init</span>(<span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="type">int</span> rank;</span><br><span class="line">    <span class="built_in">MPI_Comm_rank</span>(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    <span class="type">int</span> size;</span><br><span class="line">    <span class="built_in">MPI_Comm_size</span>(MPI_COMM_WORLD, &amp;size);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> number;</span><br><span class="line">    <span class="keyword">if</span> (rank == <span class="number">0</span>) &#123;</span><br><span class="line">        number = <span class="number">-1</span>;</span><br><span class="line">        <span class="built_in">MPI_Send</span>(&amp;number, <span class="number">1</span>, MPI_INT, <span class="number">1</span>, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (rank == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="built_in">MPI_Recv</span>(&amp;number, <span class="number">1</span>, MPI_INT, <span class="number">0</span>, <span class="number">0</span>, MPI_COMM_WORLD, MPI_STATUS_IGNORE);</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Processor 1 received number &quot;</span> &lt;&lt; number &lt;&lt; <span class="string">&quot; from processor 0&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">MPI_Finalize</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>输出结果：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Processor 1 received number -1 from processor 0</span><br></pre></td></tr></table></figure></div>
+
+<p>还有另外两个示例程序：MPI乒乓球程序和MPI环程序，见附录I和附录II</p>
+<h2 id="动态消息"><a href="#动态消息" class="headerlink" title="动态消息"></a>动态消息</h2><h3 id="MPI-Status结构体"><a href="#MPI-Status结构体" class="headerlink" title="MPI_Status结构体"></a>MPI_Status结构体</h3><p>尽管可以将消息的长度作为单独的发送&#x2F;接收操作发送，但是MPI本身仅通过几个额外的函数调用即可支持动态消息。</p>
+<p><code>MPI_Recv</code>将<code>MPI_Status</code>结构体的地址作为参数（可以使用<code>MPI_STATUS_IGNORE</code>忽略）。如果我们将<code>MPI_Status</code>结构体传递给<code>MPI_Recv</code>函数，则操作完成后将在该结构体中填充有关接收操作的其他信息。三个主要的信息包括：</p>
+<ol>
+<li><strong>发送端秩</strong>: 发送端的秩存储在结构体的<code>MPI_SOURCE</code>元素中。也就是说，如果我们声明一个<code>MPI_Status stat</code>变量，则可以通过<code>stat.MPI_SOURCE</code>访问秩。</li>
+<li><strong>消息的标签</strong>: 消息的标签可以通过结构体的<code>MPI_TAG</code>元素访问（类似于<code>MPI_SOURCE</code>）。</li>
+<li><strong>消息的长度</strong>: 消息的长度在结构体中没有预定义的元素。相反，我们必须使用<code>MPI_Get_count</code>找出消息的长度。</li>
+</ol>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Get_count</span>(MPI_Status* status, MPI_Datatype datatype, <span class="type">int</span>* count)</span><br></pre></td></tr></table></figure></div>
+
+<p>在<code>MPI_Get_count</code>函数中，使用者需要传递<code>MPI_Status</code>结构体，消息的<code>datatype</code>，并返回<code>count</code>。变量<code>count</code>是已接收的<code>datatype</code>元素的数目。</p>
+<p>为什么需要这些信息？</p>
+<ul>
+<li><code>MPI_Recv</code>可以将<code>MPI_ANY_SOURCE</code>用作发送端的秩，将<code>MPI_ANY_TAG</code>用作消息的标签。在这种情况下，<code>MPI_Status</code>结构体是找出消息的实际发送端和标签的唯一方法。</li>
+<li>此外，并不能保证<code>MPI_Recv</code>能够接收函数调用参数的全部元素。相反，它只接收已发送给它的元素数量（如果发送的元素多于所需的接收数量，则返回错误）。<code>MPI_Get_count</code>函数用于确定实际的接收量。</li>
+</ul>
+<p>MPI_Status结构体查询示例。代码的主要部分如下所示，完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppMPI/blob/master/03_dynamic_recv/check_status.cpp" >check_status.cpp<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> MAX_NUMBERS = <span class="number">100</span>;</span><br><span class="line"><span class="type">int</span> numbers[MAX_NUMBERS];</span><br><span class="line"><span class="type">int</span> number_amount;</span><br><span class="line"><span class="keyword">if</span> (world_rank == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">srand</span>(<span class="built_in">time</span>(<span class="literal">NULL</span>));</span><br><span class="line">    number_amount = (<span class="built_in">rand</span>() / (<span class="type">float</span>)RAND_MAX) * MAX_NUMBERS;</span><br><span class="line">    <span class="built_in">MPI_Send</span>(numbers, number_amount, MPI_INT, <span class="number">1</span>, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;0 sent %d numbers to 1\n&quot;</span>, number_amount);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (world_rank == <span class="number">1</span>) &#123;</span><br><span class="line">    MPI_Status status;</span><br><span class="line">    <span class="built_in">MPI_Recv</span>(numbers, MAX_NUMBERS, MPI_INT, <span class="number">0</span>, <span class="number">0</span>, MPI_COMM_WORLD,</span><br><span class="line">             &amp;status);</span><br><span class="line">    <span class="comment">// After receiving the message, check the status to determine</span></span><br><span class="line">    <span class="comment">// how many numbers were actually received</span></span><br><span class="line">    <span class="built_in">MPI_Get_count</span>(&amp;status, MPI_INT, &amp;number_amount);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;1 received %d numbers from 0. Message source = %d, tag = %d\n&quot;</span>,</span><br><span class="line">           number_amount, status.MPI_SOURCE, status.MPI_TAG);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>进程<code>0</code>发送随机数量的数据给进程<code>1</code></li>
+<li>尽管进程<code>1</code>以<code>MAX_NUMBERS</code>作为<code>MPI_Recv</code>函数参数，但进程<code>1</code>将最多接收到此数量的数字。</li>
+</ul>
+<p>输出结果为：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0 sent 11 numbers to 1</span><br><span class="line">1 received 11 numbers from 0. Message source = 0, tag = 0</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="MPI-Probe确定消息大小"><a href="#MPI-Probe确定消息大小" class="headerlink" title="MPI_Probe确定消息大小"></a>MPI_Probe确定消息大小</h3><p>除了传递接收消息并简易地配备一个很大的缓冲区来为所有可能的大小的消息提供处理，还可以使用<code>MPI_Probe</code>在实际接收消息之前查询消息大小。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Probe</span>(<span class="type">int</span> source, <span class="type">int</span> tag, MPI_Comm comm, MPI_Status* status)</span><br></pre></td></tr></table></figure></div>
+
+<p><code>MPI_Probe</code>看起来与<code>MPI_Recv</code>非常相似。实际上，可以将<code>MPI_Probe</code>视为<code>MPI_Recv</code>，除了不接收消息外，它们执行相同的功能。与 <code>MPI_Recv</code>类似，<code>MPI_Probe</code>将阻塞具有匹配标签和发送端的消息。当消息可用时，它将填充<code>status</code>结构体。然后，用户可以使用<code>MPI_Recv</code>接收实际的消息。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> number_amount;</span><br><span class="line"><span class="keyword">if</span> (world_rank == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> MAX_NUMBERS = <span class="number">100</span>;</span><br><span class="line">    <span class="type">int</span> numbers[MAX_NUMBERS];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">srand</span>(<span class="built_in">time</span>(<span class="literal">NULL</span>));</span><br><span class="line">    number_amount = (<span class="built_in">rand</span>() / (<span class="type">float</span>)RAND_MAX) * MAX_NUMBERS;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">MPI_Send</span>(numbers, number_amount, MPI_INT, <span class="number">1</span>, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;0 sent %d numbers to 1\n&quot;</span>, number_amount);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (world_rank == <span class="number">1</span>) &#123;</span><br><span class="line">    MPI_Status status;</span><br><span class="line">    <span class="comment">// Probe for an incoming message from process zero</span></span><br><span class="line">    <span class="built_in">MPI_Probe</span>(<span class="number">0</span>, <span class="number">0</span>, MPI_COMM_WORLD, &amp;status);</span><br><span class="line">    <span class="comment">// When probe returns, the status object has the size and other</span></span><br><span class="line">    <span class="comment">// attributes of the incoming message. Get the message size</span></span><br><span class="line">    <span class="built_in">MPI_Get_count</span>(&amp;status, MPI_INT, &amp;number_amount);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* number_buf = (<span class="type">int</span>*)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(<span class="type">int</span>) * number_amount);</span><br><span class="line">    <span class="built_in">MPI_Recv</span>(number_buf, number_amount, MPI_INT, <span class="number">0</span>, <span class="number">0</span>, MPI_COMM_WORLD, MPI_STATUS_IGNORE);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;1 dynamically received %d numbers from 0.\n&quot;</span>, number_amount);</span><br><span class="line">    <span class="built_in">free</span>(number_buf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>输出结果</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0 sent 85 numbers to 1</span><br><span class="line">1 dynamically received 85 numbers from 0</span><br></pre></td></tr></table></figure></div>
+
+<p>尽管这个例子很简单，但是<code>MPI_Probe</code>构成了许多动态MPI应用程序的基础。例如，控制端&#x2F;执行子程序在交换变量大小的消息时通常会大量使用<code>MPI_Probe</code>。</p>
+<h2 id="MPI广播以及集体通信"><a href="#MPI广播以及集体通信" class="headerlink" title="MPI广播以及集体通信"></a>MPI广播以及集体通信</h2><h3 id="集体通信以及同步点"><a href="#集体通信以及同步点" class="headerlink" title="集体通信以及同步点"></a>集体通信以及同步点</h3><p>关于集体通信需要记住的一点是它在进程间引入了同步点的概念。这意味着所有的进程在执行代码的时候必须首先<em>都</em>到达一个同步点才能继续执行后面的代码。</p>
+<p>在看具体的集体通信方法之前，让我们更仔细地看一下同步这个概念。事实上，MPI有一个特殊的函数来做同步进程的这个操作。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Barrier</span>(MPI_Comm communicator)</span><br></pre></td></tr></table></figure></div>
+
+<p align="center">
+    <img src="https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/barrier.png">
+</p>
+
+<blockquote>
+<p>关于同步一个要注意的地方是：始终记得每一个你调用的集体通信方法都是同步的。也就是说，如果你没法让所有进程都完成<code>MPI_Barrier</code>，那么你也没法完成任何集体调用。如果你在没有确保所有进程都调用 <code>MPI_Barrier</code> 的情况下调用了它，那么程序会空闲下来。这对初学者来说会很迷惑，所以小心这类问题。</p>
+</blockquote>
+<h3 id="MPI-Bcast广播"><a href="#MPI-Bcast广播" class="headerlink" title="MPI_Bcast广播"></a>MPI_Bcast广播</h3><p><em>广播</em> (broadcast) 是标准的集体通信技术之一。一个广播发生的时候，一个进程会把同样一份数据传递给一个<code>communicator</code>里的所有其他进程。</p>
+<p align="center">
+    <img src="https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/broadcast_pattern.png">
+</p>
+
+<p>在MPI里面，广播可以使用<code>MPI_Bcast</code>来做到。函数签名看起来像这样：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Bcast</span>(</span><br><span class="line">    <span class="type">void</span>* data,</span><br><span class="line">    <span class="type">int</span> count,</span><br><span class="line">    MPI_Datatype datatype,</span><br><span class="line">    <span class="type">int</span> root,</span><br><span class="line">    MPI_Comm communicator</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<p>尽管根节点和接收节点做不同的事情，它们都是调用同样的这个<code>MPI_Bcast</code>函数来实现广播。当根节点调用<code>MPI_Bcast</code>函数的时候，<code>data</code>变量里的值会被发送到其他的节点上。当其他的节点调用<code>MPI_Bcast</code>的时候，<code>data</code>变量会被赋值成从根节点接收到的数据。</p>
+<p><code>MPI_Bcast</code>的实现使用了一个类似的树形广播算法来获得比较好的网络利用率。我们可以实现一个基于<code>MPI_Send</code>和<code>MPI_Recv</code>的<code>my_bcast()</code>函数（见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppMPI/blob/master/04_collective/my_bcast.cpp" >my_bcast.cpp<i class="fa-solid fa-up-right-from-square"></i></a>），来与<code>MPI_Bcast</code>比较效率。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; num_trials; i++) &#123;</span><br><span class="line">  <span class="comment">// Time my_bcast</span></span><br><span class="line">  <span class="comment">// Synchronize before starting timing</span></span><br><span class="line">  <span class="built_in">MPI_Barrier</span>(MPI_COMM_WORLD);</span><br><span class="line">  total_my_bcast_time -= <span class="built_in">MPI_Wtime</span>();</span><br><span class="line">  <span class="built_in">my_bcast</span>(data, num_elements, MPI_INT, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">  <span class="comment">// Synchronize again before obtaining final time</span></span><br><span class="line">  <span class="built_in">MPI_Barrier</span>(MPI_COMM_WORLD);</span><br><span class="line">  total_my_bcast_time += <span class="built_in">MPI_Wtime</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Time MPI_Bcast</span></span><br><span class="line">  <span class="built_in">MPI_Barrier</span>(MPI_COMM_WORLD);</span><br><span class="line">  total_mpi_bcast_time -= <span class="built_in">MPI_Wtime</span>();</span><br><span class="line">  <span class="built_in">MPI_Bcast</span>(data, num_elements, MPI_INT, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">  <span class="built_in">MPI_Barrier</span>(MPI_COMM_WORLD);</span><br><span class="line">  total_mpi_bcast_time += <span class="built_in">MPI_Wtime</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>使用8个进程运行，输出结果为</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Data size = 400000, Trials = 10</span><br><span class="line">Avg my_bcast time = 0.000292659</span><br><span class="line">Avg MPI_Bcast time = 0.000147843</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>并行的进程越多差距越大</p>
+</blockquote>
+<h3 id="MPI-Scatter分发"><a href="#MPI-Scatter分发" class="headerlink" title="MPI_Scatter分发"></a>MPI_Scatter分发</h3><p><code>MPI_Scatter</code>是一个跟<code>MPI_Bcast</code>类似的集体通信机制。<code>MPI_Scatter</code>的操作会设计一个指定的根进程，根进程会将数据发送到<code>communicator</code>里面的所有进程。<code>MPI_Bcast</code>和<code>MPI_Scatter</code>的主要区别很小但是很重要。<code>MPI_Bcast</code>给每个进程发送的是<em>同样</em>的数据，然而<code>MPI_Scatter</code>给每个进程发送的是<em>一个数组的一部分数据</em>。下图进一步展示了这个区别。</p>
+<p align="center">
+    <img src="https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/broadcastvsscatter.png">
+</p>
+
+<p>下面的 <code>MPI_Scatter</code> 函数的原型。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Scatter</span>(</span><br><span class="line">    <span class="type">void</span>* send_data,</span><br><span class="line">    <span class="type">int</span> send_count,</span><br><span class="line">    MPI_Datatype send_datatype,</span><br><span class="line">    <span class="type">void</span>* recv_data,</span><br><span class="line">    <span class="type">int</span> recv_count,</span><br><span class="line">    MPI_Datatype recv_datatype,</span><br><span class="line">    <span class="type">int</span> root,</span><br><span class="line">    MPI_Comm communicator</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+<p>第一个参数，<code>send_data</code>，是在根进程上的一个数据数组。第二个和第三个参数，<code>send_count</code>和<code>send_datatype</code>分别描述了发送给每个进程的数据数量和数据类型。比如：</p>
+<ul>
+<li>如果<code>send_count</code>是1，<code>send_datatype</code>是<code>MPI_INT</code>的话，进程0会得到数据里的第一个整数，以此类推，</li>
+<li>如果<code>send_count</code>是2，进程0会得到前两个整数，进程1会得到第三个和第四个整数，以此类推。<br>在实践中，一般来说<code>send_count</code>会等于数组的长度除以进程的数量。</li>
+</ul>
+<p>函数定义里面接收数据的参数跟发送的参数几乎相同。<code>recv_data</code>参数是一个缓存，它里面存了<code>recv_count</code>个<code>recv_datatype</code>数据类型的元素。最后两个参数，<code>root</code>和<code>communicator</code>分别指定开始分发数组的根进程以及对应的communicator。</p>
+<h3 id="MPI-Gather收集"><a href="#MPI-Gather收集" class="headerlink" title="MPI_Gather收集"></a>MPI_Gather收集</h3><p><code>MPI_Gather</code>跟<code>MPI_Scatter</code>是相反的。<code>MPI_Gather</code>从好多进程里面收集数据到一个进程上面而不是从一个进程分发数据到多个进程。</p>
+<p align="center">
+    <img src="https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/gather.png">
+</p>
+
+<p>跟<code>MPI_Scatter</code>类似，<code>MPI_Gather</code>从其他进程收集元素到根进程上面。元素是根据接收到的进程的秩排序的。<code>MPI_Gather</code>的函数原型跟<code>MPI_Scatter</code>长的一样。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Gather</span>(</span><br><span class="line">    <span class="type">void</span>* send_data,</span><br><span class="line">    <span class="type">int</span> send_count,</span><br><span class="line">    MPI_Datatype send_datatype,</span><br><span class="line">    <span class="type">void</span>* recv_data,</span><br><span class="line">    <span class="type">int</span> recv_count,</span><br><span class="line">    MPI_Datatype recv_datatype,</span><br><span class="line">    <span class="type">int</span> root,</span><br><span class="line">    MPI_Comm communicator</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<p>在<code>MPI_Gather</code>中，只有根进程需要一个有效的接收缓存。所有其他的调用进程可以传递<code>NULL</code>给<code>recv_data</code>。另外，别忘记<code>recv_count</code>参数是从<em>每个进程</em>接收到的数据数量，而不是所有进程的数据总量之和。</p>
+<h3 id="使用MPI-Scatter和MPI-Gather来计算平均数"><a href="#使用MPI-Scatter和MPI-Gather来计算平均数" class="headerlink" title="使用MPI_Scatter和MPI_Gather来计算平均数"></a>使用MPI_Scatter和MPI_Gather来计算平均数</h3><p>完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppMPI/blob/master/04_collective/avg.cpp" >avg.cpp<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (world_rank == <span class="number">0</span>) &#123;</span><br><span class="line">  rand_nums = <span class="built_in">create_rand_nums</span>(elements_per_proc * world_size);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> *sub_rand_nums = <span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(<span class="type">float</span>) * elements_per_proc);</span><br><span class="line"><span class="built_in">MPI_Scatter</span>(rand_nums, elements_per_proc, MPI_FLOAT, sub_rand_nums, elements_per_proc, MPI_FLOAT, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> sub_avg = <span class="built_in">compute_avg</span>(sub_rand_nums, elements_per_proc);</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> *sub_avgs = <span class="literal">NULL</span>;</span><br><span class="line"><span class="keyword">if</span> (world_rank == <span class="number">0</span>) &#123;</span><br><span class="line">  sub_avgs = <span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(<span class="type">float</span>) * world_size);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">MPI_Gather</span>(&amp;sub_avg, <span class="number">1</span>, MPI_FLOAT, sub_avgs, <span class="number">1</span>, MPI_FLOAT, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (world_rank == <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="type">float</span> avg = <span class="built_in">compute_avg</span>(sub_avgs, world_size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>输出结果如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Avg of all elements is 0.529195</span><br><span class="line">Avg computed across original data is 0.529195</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="MPI-Allgather以及修改后的平均程序"><a href="#MPI-Allgather以及修改后的平均程序" class="headerlink" title="MPI_Allgather以及修改后的平均程序"></a>MPI_Allgather以及修改后的平均程序</h3><p>对于分发在所有进程上的一组数据来说，<code>MPI_Allgather</code>会收集所有数据到所有进程上。从最基础的角度来看，<code>MPI_Allgather</code>相当于一个<code>MPI_Gather</code>操作之后跟着一个<code>MPI_Bcast</code>操作。下面的示意图显示了<code>MPI_Allgather</code>调用之后数据是如何分布的。</p>
+<p align="center">
+    <img src="https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/allgather.png">
+</p>
+
+
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Allgather</span>(</span><br><span class="line">    <span class="type">void</span>* send_data,</span><br><span class="line">    <span class="type">int</span> send_count,</span><br><span class="line">    MPI_Datatype send_datatype,</span><br><span class="line">    <span class="type">void</span>* recv_data,</span><br><span class="line">    <span class="type">int</span> recv_count,</span><br><span class="line">    MPI_Datatype recv_datatype,</span><br><span class="line">    MPI_Comm communicator</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<p>把计算平均数的代码修改成了使用<code>MPI_Allgather</code>来计算。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> *sub_avgs = (<span class="type">float</span> *)<span class="built_in">malloc</span>(<span class="built_in">sizeof</span>(<span class="type">float</span>) * world_size);</span><br><span class="line"><span class="built_in">MPI_Allgather</span>(&amp;sub_avg, <span class="number">1</span>, MPI_FLOAT, sub_avgs, <span class="number">1</span>, MPI_FLOAT, MPI_COMM_WORLD);</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> avg = <span class="built_in">compute_avg</span>(sub_avgs, world_size);</span><br></pre></td></tr></table></figure></div>
+<p>完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppMPI/blob/master/04_collective/all_avg.cpp" >all_avg.cpp<i class="fa-solid fa-up-right-from-square"></i></a>。输出结果为</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Avg of all elements from 0 is 0.483204</span><br><span class="line">Avg of all elements from 1 is 0.483204</span><br><span class="line">Avg of all elements from 2 is 0.483204</span><br><span class="line">Avg of all elements from 3 is 0.483204</span><br></pre></td></tr></table></figure></div>
+
+
+<h2 id="归约简介"><a href="#归约简介" class="headerlink" title="归约简介"></a>归约简介</h2><p>数据归约包括通过函数将一组数字归约为较小的一组数字。例如，假设我们有一个数字列表<code>[1,2,3,4,5]</code>，</p>
+<ul>
+<li>用<code>sum</code>函数归约此数字列表将产生<code>sum([1、2、3、4、5]) = 15</code></li>
+<li>用乘法归约将产生<code>multiply([1、2、3、4、5]) = 120</code></li>
+</ul>
+<h3 id="MPI-Reduce"><a href="#MPI-Reduce" class="headerlink" title="MPI_Reduce"></a>MPI_Reduce</h3><p>与<code>MPI_Gather</code>类似，<code>MPI_Reduce</code>在每个进程上获取一个输入元素数组，并将输出元素数组返回给根进程。<br><code>MPI_Reduce</code> 的原型如下所示：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Reduce</span>(</span><br><span class="line">    <span class="type">void</span>* send_data,</span><br><span class="line">    <span class="type">void</span>* recv_data,</span><br><span class="line">    <span class="type">int</span> count,</span><br><span class="line">    MPI_Datatype datatype,</span><br><span class="line">    MPI_Op op,</span><br><span class="line">    <span class="type">int</span> root,</span><br><span class="line">    MPI_Comm communicator</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<p><code>send_data</code>参数是每个进程都希望归约的<code>datatype</code>类型元素的数组。<br><code>recv_data</code>仅与具有<code>root</code>秩的进程相关。<code>recv_data</code>数组包含归约的结果，大小为<code>sizeof（datatype）* count</code>。<br><code>op</code> 参数是您希望应用于数据的操作。MPI 定义的归约操作包括：</p>
+<ul>
+<li><code>MPI_MAX</code> - 返回最大元素。</li>
+<li><code>MPI_MIN</code> - 返回最小元素。</li>
+<li><code>MPI_SUM</code> - 对元素求和。</li>
+<li><code>MPI_PROD</code> - 将所有元素相乘。</li>
+<li><code>MPI_LAND</code> - 对元素执行逻辑<em>与</em>运算。</li>
+<li><code>MPI_LOR</code> - 对元素执行逻辑<em>或</em>运算。</li>
+<li><code>MPI_BAND</code> - 对元素的各个位按位<em>与</em>执行。</li>
+<li><code>MPI_BOR</code> - 对元素的位执行按位<em>或</em>运算。</li>
+<li><code>MPI_MAXLOC</code> - 返回最大值和所在的进程的秩。</li>
+<li><code>MPI_MINLOC</code> - 返回最小值和所在的进程的秩。</li>
+</ul>
+<p>下面是 <code>MPI_Reduce</code> 通信模式的说明。</p>
+<p align="center">
+    <img src="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/mpi_reduce_1.png">
+</p>
+
+<p>在上图中，每个进程包含一个整数。根进程调用<code>MPI_Reduce</code>，并使用<code>MPI_SUM</code>作为归约运算。这四个数字相加后将结果存储在根进程中。</p>
+<p>下图显示了每个进程归约多个数字的情况。</p>
+<p align="center">
+    <img src="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/mpi_reduce_2.png">
+</p>
+
+<p>上图中的每个进程都有两个元素。结果求和基于每个元素进行。换句话说，不是将所有数组中的所有元素累加到一个元素中，而是将每个数组中的第<code>i</code>个元素累加到进程<code>0</code>结果数组中的第<code>i</code>个元素中。</p>
+<p>示例程序：使用 MPI_Reduce 计算均值</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> *rand_nums = <span class="literal">NULL</span>;</span><br><span class="line">rand_nums = <span class="built_in">create_rand_nums</span>(num_elements_per_proc);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Sum the numbers locally</span></span><br><span class="line"><span class="type">float</span> local_sum = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; num_elements_per_proc; i++) &#123;</span><br><span class="line">  local_sum += rand_nums[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Print the random numbers on each process</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Local sum for process %d - %f, avg = %f\n&quot;</span>, world_rank, local_sum, local_sum / num_elements_per_proc);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Reduce all of the local sums into the global sum</span></span><br><span class="line"><span class="type">float</span> global_sum;</span><br><span class="line"><span class="built_in">MPI_Reduce</span>(&amp;local_sum, &amp;global_sum, <span class="number">1</span>, MPI_FLOAT, MPI_SUM, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Print the result</span></span><br><span class="line"><span class="keyword">if</span> (world_rank == <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Total sum = %f, avg = %f\n&quot;</span>, global_sum, global_sum / (world_size * num_elements_per_proc));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>只有根进城的<code>global_sum</code>有效</p>
+</blockquote>
+<p>输出结果如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Local sum for process 0 - 133.853, avg = 0.522864</span><br><span class="line">Local sum for process 1 - 131.135, avg = 0.512248</span><br><span class="line">Local sum for process 3 - 125.31, avg = 0.489492</span><br><span class="line">Local sum for process 2 - 127.639, avg = 0.49859</span><br><span class="line">Total sum = 517.938, avg = 0.505798</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="MPI-Allreduce"><a href="#MPI-Allreduce" class="headerlink" title="MPI_Allreduce"></a>MPI_Allreduce</h3><p>许多并行程序中，需要在所有进程而不是仅仅在根进程中访问归约的结果。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Allreduce</span>(</span><br><span class="line">    <span class="type">void</span>* send_data,</span><br><span class="line">    <span class="type">void</span>* recv_data,</span><br><span class="line">    <span class="type">int</span> count,</span><br><span class="line">    MPI_Datatype datatype,</span><br><span class="line">    MPI_Op op,</span><br><span class="line">    MPI_Comm communicator</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<p>您可能已经注意到，<code>MPI_Allreduce</code>与<code>MPI_Reduce</code>相同，不同之处在于它不需要根进程 ID（因为结果分配给所有进程）。</p>
+<p align="center">
+    <img src="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/mpi_allreduce_1.png">
+</p>
+
+
+<p>示例程序：使用 MPI_Allreduce 计算标准差</p>
+<p>许多计算问题需要进行多次归约来解决。一个这样的问题是找到一组分布式数字的标准差。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">rand_nums = <span class="built_in">create_rand_nums</span>(num_elements_per_proc);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Sum the numbers locally</span></span><br><span class="line"><span class="type">float</span> local_sum = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; num_elements_per_proc; i++) &#123;</span><br><span class="line">  local_sum += rand_nums[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Reduce all of the local sums into the global sum in order to calculate the mean</span></span><br><span class="line"><span class="type">float</span> global_sum;</span><br><span class="line"><span class="built_in">MPI_Allreduce</span>(&amp;local_sum, &amp;global_sum, <span class="number">1</span>, MPI_FLOAT, MPI_SUM, MPI_COMM_WORLD);</span><br><span class="line"><span class="type">float</span> mean = global_sum / (num_elements_per_proc * world_size);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Compute the local sum of the squared differences from the mean</span></span><br><span class="line"><span class="type">float</span> local_sq_diff = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; num_elements_per_proc; i++) &#123;</span><br><span class="line">  local_sq_diff += (rand_nums[i] - mean) * (rand_nums[i] - mean);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Reduce the global sum of the squared differences to the root process and print off the answer</span></span><br><span class="line"><span class="type">float</span> global_sq_diff;</span><br><span class="line"><span class="built_in">MPI_Reduce</span>(&amp;local_sq_diff, &amp;global_sq_diff, <span class="number">1</span>, MPI_FLOAT, MPI_SUM, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line"></span><br><span class="line"><span class="comment">// The standard deviation is the square root of the mean of the squared differences.</span></span><br><span class="line"><span class="keyword">if</span> (world_rank == <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="type">float</span> stddev = <span class="built_in">sqrt</span>(global_sq_diff / (num_elements_per_proc * world_size));</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Mean - %f, Standard deviation = %f\n&quot;</span>, mean, stddev);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>输出如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mean - 0.519573, standard deviation = 0.286734</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="通讯器概述"><a href="#通讯器概述" class="headerlink" title="通讯器概述"></a>通讯器概述</h2><p>在以前的教程中，使用了通讯器<code>MPI_COMM_WORLD</code>。对于简单的程序，这已经足够了，因为我们的进程数量相对较少，并且通常要么一次要与其中之一对话，要么一次要与所有对话。当程序规模开始变大时，这变得不那么实用了，我们可能只想一次与几个进程进行对话。</p>
+<h3 id="MPI-Comm-split"><a href="#MPI-Comm-split" class="headerlink" title="MPI_Comm_split"></a>MPI_Comm_split</h3><p>第一个也是最常见的用于创建新的通讯器的函数：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MPI_Comm_split</span>(</span><br><span class="line">	MPI_Comm comm,</span><br><span class="line">	<span class="type">int</span> color,</span><br><span class="line">	<span class="type">int</span> key,</span><br><span class="line">	MPI_Comm* newcomm</span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<p><code>MPI_Comm_split</code>通过基于输入值<code>color</code>和<code>key</code>将通讯器“拆分”为一组子通讯器来创建新的通讯器。</p>
+<ul>
+<li>第一个参数<code>comm</code>是通讯器，它将用作新通讯器的基础。这可能是<code>MPI_COMM_WORLD</code>，但也可能是其他任何通讯器。</li>
+<li>第二个参数<code>color</code>确定每个进程将属于哪个新的通讯器。为<code>color</code>传递相同值的所有进程都分配给同一通讯器。如果<code>color</code>为<code>MPI_UNDEFINED</code>，则该进程将不包含在任何新的通讯器中。</li>
+<li>第三个参数<code>key</code>确定每个新通讯器中的顺序（秩）。传递<code>key</code>最小值的进程将为0，下一个最小值将为1，依此类推。如果存在平局，则在原始通讯器中秩较低的进程将是第一位。</li>
+<li>最后一个参数<code>newcomm</code>是 MPI 如何将新的通讯器返回给用户。</li>
+</ul>
+<h4 id="使用多个通讯器的示例"><a href="#使用多个通讯器的示例" class="headerlink" title="使用多个通讯器的示例"></a>使用多个通讯器的示例</h4><p>现在，让我们看一个简单的示例，在该示例中，我们尝试将单个全局通讯器拆分为一组较小的通讯器。在此示例中，我们将想象我们已经在逻辑上将原始通讯器布局为共 16 个进程的 4x4 网格，并且希望按行划分网格。为此，每一行将获得自己的颜色（参数 <code>color</code>）。在下图中，您可以看到左图具有相同颜色的每组进程如何最终变成右图的自己的通讯器。</p>
+<p align="center">
+    <img src="https://mpitutorial.com/tutorials/introduction-to-groups-and-communicators/comm_split.png">
+</p>
+
+
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取原始通讯器的秩和大小</span></span><br><span class="line"><span class="type">int</span> world_rank, world_size;</span><br><span class="line"><span class="built_in">MPI_Comm_rank</span>(MPI_COMM_WORLD, &amp;world_rank);</span><br><span class="line"><span class="built_in">MPI_Comm_size</span>(MPI_COMM_WORLD, &amp;world_size);</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> color = world_rank / <span class="number">4</span>; <span class="comment">// 根据行确定颜色</span></span><br><span class="line"><span class="comment">// 根据颜色拆分通讯器，然后调用</span></span><br><span class="line"><span class="comment">// 利用原始秩</span></span><br><span class="line">MPI_Comm row_comm;</span><br><span class="line"><span class="built_in">MPI_Comm_split</span>(MPI_COMM_WORLD, color, world_rank, &amp;row_comm);</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> row_rank, row_size;</span><br><span class="line"><span class="built_in">MPI_Comm_rank</span>(row_comm, &amp;row_rank);</span><br><span class="line"><span class="built_in">MPI_Comm_size</span>(row_comm, &amp;row_size);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;WORLD RANK/SIZE: %d/%d \t ROW RANK/SIZE: %d/%d\n&quot;</span>, world_rank, world_size, row_rank, row_size);</span><br><span class="line"></span><br><span class="line"><span class="built_in">MPI_Comm_free</span>(&amp;row_comm);</span><br></pre></td></tr></table></figure></div>
+
+<p>请记住，<code>color</code>决定了拆分后该进程所属的通讯器。这里使用原始秩<code>world_rank</code>作为拆分操作的<code>key</code>。最后，使用<code>MPI_Comm_free</code>释放通讯器。输出如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">WORLD RANK/SIZE: 0/16    ROW RANK/SIZE: 0/4</span><br><span class="line">WORLD RANK/SIZE: 1/16    ROW RANK/SIZE: 1/4</span><br><span class="line">WORLD RANK/SIZE: 4/16    ROW RANK/SIZE: 0/4</span><br><span class="line">WORLD RANK/SIZE: 5/16    ROW RANK/SIZE: 1/4</span><br><span class="line">WORLD RANK/SIZE: 2/16    ROW RANK/SIZE: 2/4</span><br><span class="line">WORLD RANK/SIZE: 8/16    ROW RANK/SIZE: 0/4</span><br><span class="line">WORLD RANK/SIZE: 12/16   ROW RANK/SIZE: 0/4</span><br><span class="line">WORLD RANK/SIZE: 14/16   ROW RANK/SIZE: 2/4</span><br><span class="line">WORLD RANK/SIZE: 15/16   ROW RANK/SIZE: 3/4</span><br><span class="line">WORLD RANK/SIZE: 3/16    ROW RANK/SIZE: 3/4</span><br><span class="line">WORLD RANK/SIZE: 9/16    ROW RANK/SIZE: 1/4</span><br><span class="line">WORLD RANK/SIZE: 13/16   ROW RANK/SIZE: 1/4</span><br><span class="line">WORLD RANK/SIZE: 10/16   ROW RANK/SIZE: 2/4</span><br><span class="line">WORLD RANK/SIZE: 6/16    ROW RANK/SIZE: 2/4</span><br><span class="line">WORLD RANK/SIZE: 7/16    ROW RANK/SIZE: 3/4</span><br><span class="line">WORLD RANK/SIZE: 11/16   ROW RANK/SIZE: 3/4</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>每次运行，打印结果的顺序并不一致，这很正常</p>
+</blockquote>
+<h2 id="附录I"><a href="#附录I" class="headerlink" title="附录I"></a>附录I</h2><p>MPI乒乓程序</p>
+<p>两个进程会一直使用<code>MPI_Send</code>和<code>MPI_Recv</code>方法来“推挡”消息，直到他们决定不玩了。代码如下（见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppMPI/blob/master/02_sendrecv/pingpang.cpp" >pingpang.cpp<i class="fa-solid fa-up-right-from-square"></i></a>）</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mpi.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> PING_PONG_LIMIT = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">MPI_Init</span>(<span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="type">int</span> rank;</span><br><span class="line">    <span class="built_in">MPI_Comm_rank</span>(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    <span class="type">int</span> size;</span><br><span class="line">    <span class="built_in">MPI_Comm_size</span>(MPI_COMM_WORLD, &amp;size);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> ping_pong_count = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> partner_rank = (rank + <span class="number">1</span>) % <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (ping_pong_count &lt; PING_PONG_LIMIT) &#123;</span><br><span class="line">        <span class="keyword">if</span> (rank == ping_pong_count % <span class="number">2</span>) &#123;</span><br><span class="line">            ping_pong_count++;</span><br><span class="line">            <span class="built_in">MPI_Send</span>(&amp;ping_pong_count, <span class="number">1</span>, MPI_INT, partner_rank, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">            std::cout &lt;&lt; rank &lt;&lt; <span class="string">&quot; sent and incremented ping_pong_count &quot;</span> &lt;&lt; ping_pong_count &lt;&lt; <span class="string">&quot; to &quot;</span> &lt;&lt; partner_rank &lt;&lt; std::endl;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">MPI_Recv</span>(&amp;ping_pong_count, <span class="number">1</span>, MPI_INT, partner_rank, <span class="number">0</span>, MPI_COMM_WORLD, MPI_STATUS_IGNORE);</span><br><span class="line">            std::cout &lt;&lt; rank &lt;&lt; <span class="string">&quot;received ping_pong_count &quot;</span> &lt;&lt; ping_pong_count &lt;&lt; <span class="string">&quot; from &quot;</span> &lt;&lt; partner_rank &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">MPI_Finalize</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>输出结果如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">0 sent and incremented ping_pong_count 1 to 1</span><br><span class="line">0 received ping_pong_count 2 from 1</span><br><span class="line">0 sent and incremented ping_pong_count 3 to 1</span><br><span class="line">0 received ping_pong_count 4 from 1</span><br><span class="line">0 sent and incremented ping_pong_count 5 to 1</span><br><span class="line">0 received ping_pong_count 6 from 1</span><br><span class="line">0 sent and incremented ping_pong_count 7 to 1</span><br><span class="line">0 received ping_pong_count 8 from 1</span><br><span class="line">0 sent and incremented ping_pong_count 9 to 1</span><br><span class="line">0 received ping_pong_count 10 from 1</span><br><span class="line">1 received ping_pong_count 1 from 0</span><br><span class="line">1 sent and incremented ping_pong_count 2 to 0</span><br><span class="line">1 received ping_pong_count 3 from 0</span><br><span class="line">1 sent and incremented ping_pong_count 4 to 0</span><br><span class="line">1 received ping_pong_count 5 from 0</span><br><span class="line">1 sent and incremented ping_pong_count 6 to 0</span><br><span class="line">1 received ping_pong_count 7 from 0</span><br><span class="line">1 sent and incremented ping_pong_count 8 to 0</span><br><span class="line">1 received ping_pong_count 9 from 0</span><br><span class="line">1 sent and incremented ping_pong_count 10 to 0</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="附录II"><a href="#附录II" class="headerlink" title="附录II"></a>附录II</h2><p>环程序。</p>
+<p>代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppMPI/blob/master/02_sendrecv/ring.cpp" >ring.cpp<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mpi.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">MPI_Init</span>(<span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> rank;</span><br><span class="line">    <span class="built_in">MPI_Comm_rank</span>(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    <span class="type">int</span> size;</span><br><span class="line">    <span class="built_in">MPI_Comm_size</span>(MPI_COMM_WORLD, &amp;size);</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> token;</span><br><span class="line">    <span class="keyword">if</span> (rank != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">MPI_Recv</span>(&amp;token, <span class="number">1</span>, MPI_INT, rank - <span class="number">1</span>, <span class="number">0</span>, MPI_COMM_WORLD, MPI_STATUS_IGNORE);</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Process &quot;</span> &lt;&lt; rank &lt;&lt; <span class="string">&quot; received token &quot;</span> &lt;&lt; token &lt;&lt; <span class="string">&quot; from process&quot;</span> &lt;&lt; rank - <span class="number">1</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        token = <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">MPI_Send</span>(&amp;token, <span class="number">1</span>, MPI_INT, (rank + <span class="number">1</span>) % size, <span class="number">0</span>, MPI_COMM_WORLD);</span><br><span class="line">    <span class="keyword">if</span> (rank == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">MPI_Recv</span>(&amp;token, <span class="number">1</span>, MPI_INT, size - <span class="number">1</span>, <span class="number">0</span>, MPI_COMM_WORLD, MPI_STATUS_IGNORE);</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;Process &quot;</span> &lt;&lt; rank &lt;&lt; <span class="string">&quot; received token &quot;</span> &lt;&lt; token &lt;&lt; <span class="string">&quot; from process&quot;</span> &lt;&lt; size - <span class="number">1</span> &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">MPI_Finalize</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>输出结果如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Process 1 received token -1 from process0</span><br><span class="line">Process 2 received token -1 from process1</span><br><span class="line">Process 3 received token -1 from process2</span><br><span class="line">Process 0 received token -1 from process3</span><br></pre></td></tr></table></figure></div>
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/MPI/">#MPI</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C++</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2022/cuda2/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">CUDA编程02: CUDA内存组织</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFMPI"><span class="nav-text">什么是MPI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-text">MPI的特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-world%E7%A8%8B%E5%BA%8F"><span class="nav-text">Hello world程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MPI%E7%9A%84%E5%8F%91%E9%80%81%E5%92%8C%E6%8E%A5%E6%94%B6%E7%AE%80%E4%BB%8B"><span class="nav-text">MPI的发送和接收简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80MPI-Datatype"><span class="nav-text">基础MPI_Datatype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI%E5%8F%91%E9%80%81-x2F-%E6%8E%A5%E6%94%B6%E7%A8%8B%E5%BA%8F"><span class="nav-text">MPI发送&#x2F;接收程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E6%B6%88%E6%81%AF"><span class="nav-text">动态消息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI-Status%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-text">MPI_Status结构体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI-Probe%E7%A1%AE%E5%AE%9A%E6%B6%88%E6%81%AF%E5%A4%A7%E5%B0%8F"><span class="nav-text">MPI_Probe确定消息大小</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MPI%E5%B9%BF%E6%92%AD%E4%BB%A5%E5%8F%8A%E9%9B%86%E4%BD%93%E9%80%9A%E4%BF%A1"><span class="nav-text">MPI广播以及集体通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E4%BD%93%E9%80%9A%E4%BF%A1%E4%BB%A5%E5%8F%8A%E5%90%8C%E6%AD%A5%E7%82%B9"><span class="nav-text">集体通信以及同步点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI-Bcast%E5%B9%BF%E6%92%AD"><span class="nav-text">MPI_Bcast广播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI-Scatter%E5%88%86%E5%8F%91"><span class="nav-text">MPI_Scatter分发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI-Gather%E6%94%B6%E9%9B%86"><span class="nav-text">MPI_Gather收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8MPI-Scatter%E5%92%8CMPI-Gather%E6%9D%A5%E8%AE%A1%E7%AE%97%E5%B9%B3%E5%9D%87%E6%95%B0"><span class="nav-text">使用MPI_Scatter和MPI_Gather来计算平均数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI-Allgather%E4%BB%A5%E5%8F%8A%E4%BF%AE%E6%94%B9%E5%90%8E%E7%9A%84%E5%B9%B3%E5%9D%87%E7%A8%8B%E5%BA%8F"><span class="nav-text">MPI_Allgather以及修改后的平均程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E7%BA%A6%E7%AE%80%E4%BB%8B"><span class="nav-text">归约简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI-Reduce"><span class="nav-text">MPI_Reduce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI-Allreduce"><span class="nav-text">MPI_Allreduce</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%AE%AF%E5%99%A8%E6%A6%82%E8%BF%B0"><span class="nav-text">通讯器概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MPI-Comm-split"><span class="nav-text">MPI_Comm_split</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E9%80%9A%E8%AE%AF%E5%99%A8%E7%9A%84%E7%A4%BA%E4%BE%8B"><span class="nav-text">使用多个通讯器的示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%BD%95I"><span class="nav-text">附录I</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%BD%95II"><span class="nav-text">附录II</span></a></li></ol>
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+
+
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">Yiqi. 版权所有.</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+        </div>
+        
+        
+        <script async data-pjax defer>
+            function odometer_init(){
+                    let el = document.getElementsByClassName('odometer');
+                    for (i = 0; i < el.length; i++) {
+                        od = new Odometer({
+                            el: el[i],
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    }
+            }
+            odometer_init();
+        </script>
+        <div id="start_time_div" style="display:none">
+            2022/12/28 11:45:14
+        </div>
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fa-solid fa-left-right"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fa-solid fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fa-solid fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fa-solid fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/runtime.js"></script>
+
+    
+<script src="/js/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/toc-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            REDEFINE.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            REDEFINE.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            REDEFINE.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
