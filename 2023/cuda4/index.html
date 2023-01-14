@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    <meta name="description" content="Hexo Theme Redefine">
+    <meta name="author" content="YiQi">
+    
+    <title>
+        
+            CUDA编程04: 线程束基本函数与协作组 |
+        
+        YiQi&#39;s Blog
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/css/regular.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/css2.css">
+
+    <script id="hexo-configurations">
+    let REDEFINE = window.REDEFINE || {};
+    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
+    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+    
+    <div class="header-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="logo-title" href="/">
+                YiQi&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/" >
+                                
+                                    
+                                        <i class="fa-regular fa-house"></i>
+                                    
+                                    首页
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/archives" >
+                                
+                                    
+                                        <i class="fa-regular fa-archive"></i>
+                                    
+                                    归档
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/categories" >
+                                
+                                    
+                                        <i class="fa-regular fa-list"></i>
+                                    
+                                    分类
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/about" >
+                                
+                                    
+                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                    
+                                    关于
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/" >
+                         
+                            
+                                <i class="fa-regular fa-house"></i>
+                            
+                            首页
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/archives" >
+                         
+                            
+                                <i class="fa-regular fa-archive"></i>
+                            
+                            归档
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/categories" >
+                         
+                            
+                                <i class="fa-regular fa-list"></i>
+                            
+                            分类
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/about" >
+                         
+                            
+                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                            
+                            关于
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+            <div class="article-title">
+                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">CUDA编程04: 线程束基本函数与协作组</h1></span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/logo.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">YiQi</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="pc">2023-01-14 21:30:50</span>
+        <span class="mobile">2023-01-14 21:30</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/CUDA/">CUDA</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/CUDA/">CUDA</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/C/">C</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>3.1k 字</span>
+        </span>
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <p>一个线程块中连续的32个线程为一个线程束 (warp)。一个SM可以处理一个或多个线程块，一个线程块又可分为若干个线程束。</p>
+<h2 id="单指令多线程执行模式"><a href="#单指令多线程执行模式" class="headerlink" title="单指令多线程执行模式"></a>单指令多线程执行模式</h2><p>在伏特架构之前，一个线程束中的线程拥有同一个程序计数器。一个线程束同一时刻只能执行一个共同的指令或闲置，即单指令多线程执行模式（single instruction multiple thread, SIMT）。</p>
+<p>例如：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition) </span><br><span class="line">    A</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    B</span><br></pre></td></tr></table></figure></div>
+<p>满足<code>condition</code>的线程会执行语句<code>A</code>，其他的线程闲置，反之亦然，即发生了分支发散（branch divergence）。</p>
+<p>从伏特架构开始，引入了独立线程调度机制（independent thread scheduling），每个线程有自己的程序计数器，代价是增加了寄存器负担：单个线程的程序计数器一般需要使用两个寄存器。另外，独立线程调度机制使得假设了线程束同步的代码变得不再安全，需要显式指定同步。</p>
+<h2 id="线程束内的线程同步函数"><a href="#线程束内的线程同步函数" class="headerlink" title="线程束内的线程同步函数"></a>线程束内的线程同步函数</h2><p>在我们的归约问题中,当所涉及的线程都在一个线程束内时，可以将线程块同步函数<code>__synthreads()</code>换成一个更加廉价的线程束同步函数<code>__syncwarp()</code>，它的原型为：<br><span id="__syncwarp"></p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __syncwarp(<span class="type">unsigned</span> mask = <span class="number">0xffffffff</span>)</span><br></pre></td></tr></table></figure></div>
+</span>
+
+<p>该函数有一个可选的参数，该参数是一个代表掩码的无符号整型数，默认值的全部32个二进制位都为1，代表线程束中的所有线程都参与同步。如果要排除一些线程，可以用一个对应的二进制位为0的掩码参数，例如，掩码<code>Oxfffffffe</code>代表排除第0号线程。基于此，可将上一章的归约核函数修改为</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> __global__ <span class="title">reduce_syncwarp</span><span class="params">(<span class="type">const</span> real *d_x, real *d_y, <span class="type">const</span> <span class="type">int</span> N)</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> tid = threadIdx.x;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> bid = blockIdx.x;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> n = bid * blockDim.x + tid;</span><br><span class="line">    <span class="keyword">extern</span> __shared__ real s_y[];</span><br><span class="line">    s_y[tid] = (n &lt; N) ? d_x[n] : <span class="number">0.0</span>;</span><br><span class="line">    __syncthreads();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = blockDim.x &gt;&gt; <span class="number">1</span>; offset &gt;= <span class="number">32</span>; offset &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (tid &lt; offset) &#123;</span><br><span class="line">            s_y[tid] += s_y[tid + offset];</span><br><span class="line">        &#125;</span><br><span class="line">        __syncthreads();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (tid &lt; offset) &#123;</span><br><span class="line">            s_y[tid] += s_y[tid + offset];</span><br><span class="line">        &#125;</span><br><span class="line">        __syncwarp();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (tid == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">atomicAdd</span>(d_y, s_y[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/reduceGPU_warp.cu" >reduceGPU_warp.cu<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<p>当<code>offset &gt;= 32</code>时还是使用线程块同步，当<code>offset &lt;= 16</code>是启用线程束同步。使用</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvcc -O3 -<span class="built_in">arch</span>=sm_75 reduce.cu</span><br></pre></td></tr></table></figure></div>
+<p>进行编译后，程序大概耗时3.5ms，比起原函数大概快了10%。注意不能写成</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">    s_y[tid] += s_y[tid + offset];</span><br><span class="line">    __syncwarp();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>比如对<code>tid = 0</code>和<code>tid = 16</code>，分别有<code>s_y[0] += s_y[16]</code>和<code>s_y[16] += s_y[32]</code>，既读又写，会有读写竞争（race condition）。</p>
+<h2 id="更多线程束内的基本函数"><a href="#更多线程束内的基本函数" class="headerlink" title="更多线程束内的基本函数"></a>更多线程束内的基本函数</h2><p>线程束表决函数：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> __ballot_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br><span class="line"><span class="type">int</span> __all_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br><span class="line"><span class="type">int</span> __any_sync(<span class="type">unsigned</span> mask, <span class="type">int</span> predicate);</span><br></pre></td></tr></table></figure></div>
+<p>线程束洗牌函数：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T __shfl_sync(<span class="type">unsigned</span> mask, T v, <span class="type">int</span> srcLane, <span class="type">int</span> w = warpSize);</span><br><span class="line">T __shfl_up_sync(<span class="type">unsigned</span> mask, T v, <span class="type">unsigned</span> d, <span class="type">int</span> w = warpSize);</span><br><span class="line">T __shfl_down_sync(<span class="type">unsigned</span> mask, T v, <span class="type">unsigned</span> d, <span class="type">int</span> w = warpSize);</span><br><span class="line">T __shfl_xor_sync(<span class="type">unsigned</span> mask, T v, <span class="type">int</span> laneMask, <span class="type">int</span> w = warpSize);</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li><code>w</code>只能取2、4、8、16、32</li>
+<li>获取束内指标，可使用<code>int lane_id = threadIdx.x % w;</code>或者使用按位与<code>int lane_id = threadIdx.x &amp; (w - 1);</code></li>
+<li>参数<code>mask</code>见<a href="#__syncwarp"><code>__syncwarp</code></a></li>
+<li>各种函数返回的结果对被掩码排除的线程来说是没有定义的。所以不要尝试在这些被排除的线程中使用函数的返回值</li>
+</ul>
+<p>各函数功能：</p>
+<ul>
+<li><code>unsigned __ballot_sync(mask, predicate)</code>：<br>  如果线程束内第n个线程参与计算且<code>predicate</code>值非零，则将所返回无符号整数的第n个二进制位取为1，否则取为0</li>
+<li><code>int __all_sync(mask, predicate)</code><br>  线程束内所有参与线程的<code>predicate</code>值都不为零才返回1，否则返回0</li>
+<li><code>int __any_sync(mask, predicate)</code><br>  线程束内所有参与线程的<code>predicate</code>值有一个不为零则返回1，否则返回0</li>
+<li><code>T __shfl_sync(mask, v, srcLane, w)</code><br>  参与线程返回标号为<code>srcLane</code>的线程中变量<code>v</code>的值。这是一种广播式数据交换，即将一个线程中的数据广播到所有（包括自己）线程</li>
+<li><code>T __shfl_up_sync(mask, v, d, w)</code><br>  标号为<code>t</code>的参与线程返回标号为<code>t - d</code>的线程中变量<code>v</code>的值。标号满足<code>t - d &lt; O</code>的线程返回原来的<code>v</code>。例如，当<code>w＝8</code>，<code>d = 2</code>时，该函数将第0 ~ 5号线程中变量<code>v</code>的值传送到第2 ~ 7号线程，而第0 ~ 1号线程返回它们原来的<code>v</code>。形象地说，这是—种将数据向上平移的操作</li>
+<li><code>T __shfl_down_sync(mask, v, d, w)</code><br>  标号为<code>t</code>的参与线程返回标号为<code>t + d</code>的线程中变量<code>v</code>的值。标号满足<code>t + d &gt;= O</code>的线程返回原来的<code>v</code>。例如，当<code>w＝8</code>，<code>d = 2</code>时，该函数将第2 ~ 7号线程中变量<code>v</code>的值传送到第0 ~ 5号线程，而第6 ~ 7号线程返回它们原来的<code>v</code>。形象地说，这是—种将数据向下平移的操作</li>
+<li><code>T __shfl_xor_sync(mask, v, laneMask, w)</code><br>  标号为<code>t</code>的参与线程返回标号为<code>t ^ 1aneMask</code>的线程中变量<code>v</code>的值。这里，<code>t ^ 1aneMask</code>表示两个整数按位异或运算的结果。例如，当<code>w = 8</code>，<code>1aneMask = 2</code>时，第0 ~ 7号线程的按位异或运算<code>t ^ 1aneMask</code>分别如下：  <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0 ^ 2 = 0000 ^ 0010 = 0010 = 2</span><br><span class="line">1 ^ 2 = 0001 ^ 0010 = 0011 = 3</span><br><span class="line">2 ^ 2 = 0010 ^ 0010 = 0000 = 0</span><br><span class="line">3 ^ 2 = 0011 ^ 0010 = 0001 = 1</span><br><span class="line">4 ^ 2 = 0100 ^ 0010 = 0110 = 6</span><br><span class="line">5 ^ 2 = 0101 ^ 0010 = 0111 = 7</span><br><span class="line">6 ^ 2 = 0110 ^ 0010 = 0100 = 4</span><br><span class="line">7 ^ 2 = 0111 ^ 0010 = 0101 = 5</span><br></pre></td></tr></table></figure></div>
+有一测试程序，见<a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/warp_func.cu" >warp_func.cu<i class="fa-solid fa-up-right-from-square"></i></a><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">threadIdx.x:  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 </span><br><span class="line">lane_id:      0  1  2  3  4  5  6  7  0  1  2  3  4  5  6  7 </span><br><span class="line">FULL_MASK = ffffffff</span><br><span class="line">mask1     = fffe</span><br><span class="line">mask2     = 1</span><br><span class="line">all_sync (FULL_MASK): 0</span><br><span class="line">all_sync     (mask1): 1</span><br><span class="line">any_sync (FULL_MASK): 1</span><br><span class="line">any_sync     (mask2): 0</span><br><span class="line">shfl:       2  2  2  2  2  2  2  2 10 10 10 10 10 10 10 10 </span><br><span class="line">shfl_up:    0  0  1  2  3  4  5  6  8  8  9 10 11 12 13 14 </span><br><span class="line">shfl_down:  1  2  3  4  5  6  7  7  9 10 11 12 13 14 15 15 </span><br><span class="line">shfl_xor:   1  0  3  2  5  4  7  6  9  8 11 10 13 12 15 14 </span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h3 id="利用线程束洗牌函数进行归约计算"><a href="#利用线程束洗牌函数进行归约计算" class="headerlink" title="利用线程束洗牌函数进行归约计算"></a>利用线程束洗牌函数进行归约计算</h3><p>几个线程束洗牌函数中，<code>T __shfl_down_sync()</code>比较适合进行我们的归约计算，函数如下：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> __global__ <span class="title">reduce_shfl</span><span class="params">(<span class="type">const</span> real *d_x, real *d_y, <span class="type">const</span> <span class="type">int</span> N)</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> tid = threadIdx.x;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> bid = blockIdx.x;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> n = bid * blockDim.x + tid;</span><br><span class="line">    <span class="keyword">extern</span> __shared__ real s_y[];</span><br><span class="line">    s_y[tid] = (n &lt; N) ? d_x[n] : <span class="number">0.0</span>;</span><br><span class="line">    __syncthreads();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = blockDim.x &gt;&gt; <span class="number">1</span>; offset &gt;= <span class="number">32</span>; offset &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (tid &lt; offset) &#123;</span><br><span class="line">            s_y[tid] += s_y[tid + offset];</span><br><span class="line">        &#125;</span><br><span class="line">        __syncthreads();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    real y = s_y[tid];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = <span class="number">16</span>; offset &gt; <span class="number">0</span>; offset &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        y += __shfl_down_sync(FULL_MASK, y, offset);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (tid == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">atomicAdd</span>(d_y, y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/reduceGPU_warp.cu" >reduceGPU_warp.cu<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<ul>
+<li>在进行线程束内的循环之前，这里将共享内存中数据复制到了寄存器，寄存器更高效</li>
+<li>因为洗牌函数能够自动处理同步与读写竞争问题，所以去掉了同步函数</li>
+</ul>
+<p>在本人机器上测试，大概耗时2.8ms.</p>
+<h2 id="协作组"><a href="#协作组" class="headerlink" title="协作组"></a>协作组</h2><p>使用协作组功能要包含源文件</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cooperative_groups.h&gt;</span></span></span><br></pre></td></tr></table></figure></div>
+<p>并使用<code>cooperative_groups</code>命名空间</p>
+<h3 id="线程块级别的协作组"><a href="#线程块级别的协作组" class="headerlink" title="线程块级别的协作组"></a>线程块级别的协作组</h3><p>（这里东西有点多，这几个类型间的关系有点迷惑）</p>
+<p>协作组编程模型中最基本的类型（基类？）是线程组<code>thread_group</code>，有如下成员：</p>
+<ol>
+<li><code>void sync()</code>: 同步组内所有线程</li>
+<li><code>unsigned size()</code>: 组的大小</li>
+<li><code>unsigned thread_rank()</code>: 当前调用该函数的线程在组内的标号</li>
+<li><code>bool is_valid()</code>: 如果定义的组违反了任何CUDA限制，则为假，否则为真</li>
+</ol>
+<p>线程组类型有一个称为<code>thread_block</code>的导出类型，有额外的两个函数：</p>
+<ol>
+<li><code>dim3 group_index()</code>: 等价于<code>blockIdx</code></li>
+<li><code>dim3 thread_index()</code>: 等价于<code>threadIdx</code></li>
+</ol>
+<p>可以使用</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">thread_block g = <span class="built_in">this_thread_block</span>();</span><br></pre></td></tr></table></figure></div>
+<p>定义并初始化一个线程块对象。<code>g.sync()</code>完全等价于<code>__syncthreads()</code>，<code>g.group_index()</code>完全等价于<code>blockIdx</code>，<code>g.thread_index()</code>完全等价于<code>threadIdx</code>。</p>
+<p>可以使用函数<code>tiled_partition()</code>将一个线程块划分为若干片（tile），每一片构成一个新的线程组。目前仅仅可以将片的大小设置为2的正整数次方且不大于32。例如，下面语句将一个线程块分割为我们熟知的线程束：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">thread_group g32 = <span class="built_in">tiled_partition</span>(<span class="built_in">this_thread_block</span>(), <span class="number">32</span>);</span><br></pre></td></tr></table></figure></div>
+<p>还可以进一步细分，比如把一个线程束再分割为包含4个线程的线程组：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">thread_group g4 = <span class="built_in">tiled_partition</span>(g32, <span class="number">4</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>如果分割在编译期就已知，可使用模板：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">thread_block_tile&lt;<span class="number">32</span>&gt; g32 = <span class="built_in">tiled_partition</span>&lt;<span class="number">32</span>&gt;(<span class="built_in">this_thread_block</span>());</span><br><span class="line">thread_block_tile&lt;<span class="number">4</span>&gt;  g4  = <span class="built_in">tiled_partition</span>&lt;<span class="number">4</span>&gt;(<span class="built_in">this_thread_block</span>());</span><br></pre></td></tr></table></figure></div>
+<p>这样定义的线程组称为线程块片（thread block tile）。线程块片还有一系列类似线程束内函数的方法：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> __ballot_sync(<span class="type">int</span> predicate);</span><br><span class="line"><span class="type">int</span> __all_sync(<span class="type">int</span> predicate);</span><br><span class="line"><span class="type">int</span> __any_sync(<span class="type">int</span> predicate);</span><br><span class="line">T __shfl_sync(T v, <span class="type">int</span> srcLane);</span><br><span class="line">T __shfl_up_sync(T v, <span class="type">unsigned</span> d);</span><br><span class="line">T __shfl_down_sync(T v, <span class="type">unsigned</span> d);</span><br><span class="line">T __shfl_xor_sync(T v, <span class="type">int</span> laneMask);</span><br></pre></td></tr></table></figure></div>
+
+<p>线程块片的函数有两点不同:</p>
+<ol>
+<li>线程块片的函数少了第亿个代表掩码的参数，因为线程组内的所有线程都必须参与相关函数的运算</li>
+<li>线程块片的洗牌函数（上述函数中的后4个）少了最后一个代表宽度的参数，因为该宽度就是线程块片的大小，即定义线程块片的模板参数。</li>
+</ol>
+<h3 id="利用协作组进行归约计算"><a href="#利用协作组进行归约计算" class="headerlink" title="利用协作组进行归约计算"></a>利用协作组进行归约计算</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> __global__ <span class="title">reduce_cp</span><span class="params">(<span class="type">const</span> real *d_x, real *d_y, <span class="type">const</span> <span class="type">int</span> N)</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> tid = threadIdx.x;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> bid = blockIdx.x;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> n = bid * blockDim.x + tid;</span><br><span class="line">    <span class="keyword">extern</span> __shared__ real s_y[];</span><br><span class="line">    s_y[tid] = (n &lt; N) ? d_x[n] : <span class="number">0.0</span>;</span><br><span class="line">    __syncthreads();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = blockDim.x &gt;&gt; <span class="number">1</span>; offset &gt;= <span class="number">32</span>; offset &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (tid &lt; offset)</span><br><span class="line">        &#123;</span><br><span class="line">            s_y[tid] += s_y[tid + offset];</span><br><span class="line">        &#125;</span><br><span class="line">        __syncthreads();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    real y = s_y[tid];</span><br><span class="line"></span><br><span class="line">    thread_block_tile&lt;<span class="number">32</span>&gt; g = <span class="built_in">tiled_partition</span>&lt;<span class="number">32</span>&gt;(<span class="built_in">this_thread_block</span>());</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = g.<span class="built_in">size</span>() &gt;&gt; <span class="number">1</span>; i &gt; <span class="number">0</span>; i &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        y += g.<span class="built_in">shfl_down</span>(y, i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (tid == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">atomicAdd</span>(d_y, y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/reduceGPU_warp.cu" >reduceGPU_warp.cu<i class="fa-solid fa-up-right-from-square"></i></a><br>计算耗时与使用线程束洗牌函数的一样。</p>
+<h2 id="数组归约程序的进一步优化"><a href="#数组归约程序的进一步优化" class="headerlink" title="数组归约程序的进一步优化"></a>数组归约程序的进一步优化</h2><h3 id="提高线程利用率"><a href="#提高线程利用率" class="headerlink" title="提高线程利用率"></a>提高线程利用率</h3><p>之前折半归约只有1&#x2F;2，1&#x2F;4，1&#x2F;8, … 的线程在工作，其他闲置。线程利用率较低。</p>
+<p>提升的中心思想是，一个线程以跨度为<code>grid_size * block_size</code>去处理整个数组的数据，再用洗牌函数归约到长度为<code>grid_size</code>的数组，再调用一次函数，此时<code>grid_size = 1</code>，这样就可以将剩下的数归约到<code>d_y[0]</code>了。完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/reduceGPU_stride.cu" >reduceGPU_stride.cu<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<p>归约函数为：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> __global__ <span class="title">reduce_cp</span><span class="params">(<span class="type">const</span> real *d_x, real *d_y, <span class="type">const</span> <span class="type">int</span> N)</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> tid = threadIdx.x;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> bid = blockIdx.x;</span><br><span class="line">    <span class="keyword">extern</span> __shared__ real s_y[];</span><br><span class="line"></span><br><span class="line">    real y = <span class="number">0.0</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> stride = blockDim.x * gridDim.x;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> n = bid * blockDim.x + tid; n &lt; N; n += stride) &#123;</span><br><span class="line">        y += d_x[n];</span><br><span class="line">    &#125;</span><br><span class="line">    s_y[tid] = y;</span><br><span class="line">    __syncthreads();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> offset = blockDim.x &gt;&gt; <span class="number">1</span>; offset &gt;= <span class="number">32</span>; offset &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (tid &lt; offset)</span><br><span class="line">        &#123;</span><br><span class="line">            s_y[tid] += s_y[tid + offset];</span><br><span class="line">        &#125;</span><br><span class="line">        __syncthreads();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    y = s_y[tid];</span><br><span class="line"></span><br><span class="line">    thread_block_tile&lt;<span class="number">32</span>&gt; g = <span class="built_in">tiled_partition</span>&lt;<span class="number">32</span>&gt;(<span class="built_in">this_thread_block</span>());</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = g.<span class="built_in">size</span>() &gt;&gt; <span class="number">1</span>; i &gt; <span class="number">0</span>; i &gt;&gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        y += g.<span class="built_in">shfl_down</span>(y, i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (tid == <span class="number">0</span>) &#123;</span><br><span class="line">        d_y[bid] = y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>调用函数为：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">real <span class="title">reduce</span><span class="params">(<span class="type">const</span> real *d_x)</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> ymem = <span class="built_in">sizeof</span>(real) * GRID_SIZE;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> smem = <span class="built_in">sizeof</span>(real) * BLOCK_SIZE;</span><br><span class="line"></span><br><span class="line">    real h_y[<span class="number">1</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    real *d_y;</span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaMalloc</span>(&amp;d_y, ymem));</span><br><span class="line"></span><br><span class="line">    reduce_cp&lt;&lt;&lt;GRID_SIZE, BLOCK_SIZE, smem&gt;&gt;&gt;(d_x, d_y, N);</span><br><span class="line">    reduce_cp&lt;&lt;&lt;<span class="number">1</span>, <span class="number">1024</span>, <span class="built_in">sizeof</span>(real) * <span class="number">1024</span>&gt;&gt;&gt;(d_y, d_y, GRID_SIZE);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaMemcpy</span>(h_y, d_y, <span class="built_in">sizeof</span>(real), cudaMemcpyDeviceToHost));</span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaFree</span>(d_y));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> h_y[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>本机执行时间约为1.3ms左右，有大幅度提升。更为重要的是，该计算结果为123000064.0，相比精确结果123000000.0有七位有效数字。之前使用原子函数所得到的结果为123633392.0，仅有3位准确的有效数字。这是因为，在使用两个核函数时，将数组<code>d_y</code>归约到最终结果的计算也使用了折半求和，比直接累加要稳健。</p>
+<h3 id="避免反复分配与释放设备内存"><a href="#避免反复分配与释放设备内存" class="headerlink" title="避免反复分配与释放设备内存"></a>避免反复分配与释放设备内存</h3><p>设备内存的分配与释放是比较耗时的。可以使用静态全局内存为<code>d_y</code>提前分配好空间（编译期），在使用运行时API函数<code>cudaGetSymbolAddress()</code>将<code>d_y</code>与静态全局内存地址绑定。完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/reduceGPU_static.cu" >reduceGPU_static.cu<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">__device__ real static_y[GRID_SIZE]; </span><br><span class="line"></span><br><span class="line"><span class="function">real <span class="title">reduce</span><span class="params">(<span class="type">const</span> real *d_x)</span> </span>&#123;</span><br><span class="line">    real *d_y;</span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaGetSymbolAddress</span>((<span class="type">void</span>**)&amp;d_y, static_y));</span><br><span class="line">    </span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> smem = <span class="built_in">sizeof</span>(real) * BLOCK_SIZE;</span><br><span class="line"></span><br><span class="line">    reduce_cp&lt;&lt;&lt;GRID_SIZE, BLOCK_SIZE, smem&gt;&gt;&gt;(d_x, d_y, N);</span><br><span class="line">    reduce_cp&lt;&lt;&lt;<span class="number">1</span>, <span class="number">1024</span>, <span class="built_in">sizeof</span>(real) * <span class="number">1024</span>&gt;&gt;&gt;(d_y, d_y, GRID_SIZE);</span><br><span class="line"></span><br><span class="line">    real h_y[<span class="number">1</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaMemcpy</span>(h_y, d_y, <span class="built_in">sizeof</span>(real), cudaMemcpyDeviceToHost));</span><br><span class="line">    <span class="comment">// CHECK(cudaMemcpyFromSymbol(h_y, static_y, sizeof(real)); // also ok</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> h_y[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>本机执行时间约为1.1ms，有进一步的提升。</p>
+<p>作者的测试结果如为下表：</p>
+<p align="center">
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/reduce_summary.png" width=100%>
+</p>
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/CUDA/">#CUDA</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C++</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/cuda3/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">CUDA编程03: 全局内存、共享内存以及原子函数的合理使用</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E6%8C%87%E4%BB%A4%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-text">单指令多线程执行模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%9D%9F%E5%86%85%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E5%87%BD%E6%95%B0"><span class="nav-text">线程束内的线程同步函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%9D%9F%E5%86%85%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0"><span class="nav-text">更多线程束内的基本函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%9D%9F%E6%B4%97%E7%89%8C%E5%87%BD%E6%95%B0%E8%BF%9B%E8%A1%8C%E5%BD%92%E7%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-text">利用线程束洗牌函数进行归约计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E4%BD%9C%E7%BB%84"><span class="nav-text">协作组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%9D%97%E7%BA%A7%E5%88%AB%E7%9A%84%E5%8D%8F%E4%BD%9C%E7%BB%84"><span class="nav-text">线程块级别的协作组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%8D%8F%E4%BD%9C%E7%BB%84%E8%BF%9B%E8%A1%8C%E5%BD%92%E7%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-text">利用协作组进行归约计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%BD%92%E7%BA%A6%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%BF%9B%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96"><span class="nav-text">数组归约程序的进一步优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E9%AB%98%E7%BA%BF%E7%A8%8B%E5%88%A9%E7%94%A8%E7%8E%87"><span class="nav-text">提高线程利用率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E5%8F%8D%E5%A4%8D%E5%88%86%E9%85%8D%E4%B8%8E%E9%87%8A%E6%94%BE%E8%AE%BE%E5%A4%87%E5%86%85%E5%AD%98"><span class="nav-text">避免反复分配与释放设备内存</span></a></li></ol></li></ol>
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+
+
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+        </div>
+        
+        
+        <script async data-pjax defer>
+            function odometer_init(){
+                    let el = document.getElementsByClassName('odometer');
+                    for (i = 0; i < el.length; i++) {
+                        od = new Odometer({
+                            el: el[i],
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    }
+            }
+            odometer_init();
+        </script>
+        <div id="start_time_div" style="display:none">
+            2022/12/28 11:45:14
+        </div>
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fa-solid fa-left-right"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fa-solid fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fa-solid fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fa-solid fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/runtime.js"></script>
+
+    
+<script src="/js/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/toc-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            REDEFINE.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            REDEFINE.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            REDEFINE.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

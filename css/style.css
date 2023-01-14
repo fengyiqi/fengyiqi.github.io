@@ -1950,7 +1950,7 @@ pre .deletion {
   padding: 5px;
   position: relative;
   margin-left: 30px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   cursor: pointer;
   color: var(--default-text-color);
 }
