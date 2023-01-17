@@ -240,7 +240,7 @@
         
         <div class="page-template-content markdown-body">
             
-                <p>慕尼黑工业大学在读博士生，研究方向包括</p>
+                <p>慕尼黑工业大学在读博士生，主要研究机器学习、深度学习等方法在传统计算流体力学问题上的应用，涉及</p>
 <ul>
 <li>可压缩流体数值模拟</li>
 <li>黎曼求解器</li>
@@ -251,6 +251,16 @@
 <li>多目标贝叶斯优化</li>
 <li>强化学习</li>
 </ul>
+<p>比如，对于二维内爆（implosion）算例，位于$y&#x3D;x$对角线的射流越长、激波处无震荡，则代表格式性质越好。基于提出的框架，分别使用原始数值格式、贝叶斯优化的数值格式、强化学习优化的数值格式对二维内爆问题进行求解，得到的结果如下：</p>
+<p align="center">
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/about/implosion.jpg" width=100%>
+</p>
+
+<hr>
+<p>编程语言主要使用C&#x2F;C++，Python，CUDA。CFD求解器使用我们自研的基于MPI并行和自适应网格的多相可压缩流体求解器：</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/abs/pii/S004578252100699X?via=ihub" >A parallel modular computing environment for three-dimensional multiresolution simulations of compressible flows<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/abs/pii/S0010465521003581?via=ihub" >ALPACA - a level-set based sharp-interface multiresolution solver for conservation laws<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<hr>
 <p>这个网站用于分享我个人的学习笔记，主要以编程和可压缩流体数值求解为主。对于后者，还会涉及相关的数值分析方法，包括修正方程、数值耗散率、湍动能谱等。</p>
 
             
