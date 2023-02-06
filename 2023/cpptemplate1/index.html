@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    <meta name="description" content="Hexo Theme Redefine">
+    <meta name="author" content="YiQi">
+    
+    <title>
+        
+            C++模板系列01：模板的特化与偏特化 |
+        
+        YiQi&#39;s Blog
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/css/regular.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/css2.css">
+
+    <script id="hexo-configurations">
+    let REDEFINE = window.REDEFINE || {};
+    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
+    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+    
+    <div class="header-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="logo-title" href="/">
+                YiQi&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/" >
+                                
+                                    
+                                        <i class="fa-regular fa-house"></i>
+                                    
+                                    首页
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/archives" >
+                                
+                                    
+                                        <i class="fa-regular fa-archive"></i>
+                                    
+                                    归档
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/categories" >
+                                
+                                    
+                                        <i class="fa-regular fa-list"></i>
+                                    
+                                    分类
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/about" >
+                                
+                                    
+                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                    
+                                    关于
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/" >
+                         
+                            
+                                <i class="fa-regular fa-house"></i>
+                            
+                            首页
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/archives" >
+                         
+                            
+                                <i class="fa-regular fa-archive"></i>
+                            
+                            归档
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/categories" >
+                         
+                            
+                                <i class="fa-regular fa-list"></i>
+                            
+                            分类
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/about" >
+                         
+                            
+                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                            
+                            关于
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+            <div class="article-title">
+                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">C++模板系列01：模板的特化与偏特化</h1></span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/logo.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">YiQi</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="pc">2023-02-06 14:53:53</span>
+        <span class="mobile">2023-02-06 14:53</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/C/">C++</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/C-%E6%A8%A1%E6%9D%BF/">C++模板</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>3.3k 字</span>
+        </span>
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <p>笔记摘抄自<a class="link"   target="_blank" rel="noopener" href="https://github.com/wuye9036/CppTemplateTutorial" >C++ Template 进阶指南<i class="fa-solid fa-up-right-from-square"></i></a>。</p>
+<p>文章看得我似懂非懂，不过有些基础的概念倒是强化了一下。</p>
+<h2 id="模板基础使用中需要注意的点"><a href="#模板基础使用中需要注意的点" class="headerlink" title="模板基础使用中需要注意的点"></a>模板基础使用中需要注意的点</h2><ul>
+<li>类模板普遍不支持分离式编译，参考<a class="link"   target="_blank" rel="noopener" href="https://www.jianshu.com/p/ebb131009142" >【C++ 类模板】声明和定义要在同一文件中<i class="fa-solid fa-up-right-from-square"></i></a>.</li>
+<li>模板参数除了类型外（包括基本类型、结构、类类型等），也可以是一个整型数（Integral Number）。这里的整型数比较宽泛，包括布尔型，不同位数、有无符号的整型，甚至包括指针。</li>
+<li>宏是基于文本的替换，而模板会在分析模板时以及实例化模板时时候都会进行检查，而且源代码中也能与调试符号一一对应，所以无论是编译时还是运行时，排错都相对简单。</li>
+<li>模板与宏最大的不同在于它是“可以运算”的。</li>
+</ul>
+<h2 id="模板的特化与偏特化"><a href="#模板的特化与偏特化" class="headerlink" title="模板的特化与偏特化"></a>模板的特化与偏特化</h2><h3 id="特化"><a href="#特化" class="headerlink" title="特化"></a>特化</h3><h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 首先，要写出模板的一般形式（原型）</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class</span> <span class="title class_">AddFloatOrMulInt</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="type">static</span> T <span class="title">Do</span><span class="params">(T a, T b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 在这个例子里面一般形式里面是什么内容不重要，因为用不上</span></span><br><span class="line">        <span class="comment">// 这里就随便给个0吧。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">T</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 其次，我们要指定T是int时候的代码，这就是特化：</span></span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">class</span> <span class="title class_">AddFloatOrMulInt</span>&lt;<span class="type">int</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">Do</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> <span class="comment">// </span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a * b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 再次，我们要指定T是float时候的代码：</span></span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">class</span> <span class="title class_">AddFloatOrMulInt</span>&lt;<span class="type">float</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">float</span> <span class="title">Do</span><span class="params">(<span class="type">float</span> a, <span class="type">float</span> b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 这里面就不写了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>解释：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们这个模板的基本形式是什么？</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class</span> <span class="title class_">AddFloatOrMulInt</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 但是这个类，是给T是Int的时候用的，于是我们写作</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AddFloatOrMulInt</span>&lt;<span class="type">int</span>&gt;;</span><br><span class="line"><span class="comment">// 当然，这里编译是通不过的。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 但是它又不是个普通类，而是类模板的一个特化（特例）。</span></span><br><span class="line"><span class="comment">// 所以前面要加模板关键字template，</span></span><br><span class="line"><span class="comment">// 以及模板参数列表</span></span><br><span class="line"><span class="keyword">template</span> &lt;/* 这里要填什么？ */&gt; <span class="keyword">class</span> <span class="title class_">AddFloatOrMulInt</span>&lt;<span class="type">int</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 最后，模板参数列表里面填什么？因为原型的T已经被int取代了。所以这里就不能也不需要放任何额外的参数了。</span></span><br><span class="line"><span class="comment">// 所以这里放空。</span></span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">class</span> <span class="title class_">AddFloatOrMulInt</span>&lt;<span class="type">int</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ... 针对Int的实现 ... </span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bingo!</span></span><br></pre></td></tr></table></figure></div>
+
+<p>需要注意：</p>
+<ul>
+<li>当模板实例化时提供的模板参数不能匹配到任何的特化形式的时候，它就会去匹配类模板的“原型”形式。</li>
+<li>和继承不同，类模板的“原型”和它的特化类在实现上是没有关系的，比如下面的代码  <div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class</span> <span class="title class_">TypeToID</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> <span class="type">const</span> NotID = <span class="number">-2</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">class</span> <span class="title class_">TypeToID</span>&lt;<span class="type">float</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> <span class="type">const</span> ID = <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">PrintID</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;ID of float: &quot;</span> &lt;&lt; TypeToID&lt;<span class="type">float</span>&gt;::ID &lt;&lt; endl;       <span class="comment">// Print &quot;1&quot;</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;NotID of float: &quot;</span> &lt;&lt; TypeToID&lt;<span class="type">float</span>&gt;::NotID &lt;&lt; endl; <span class="comment">// Error! TypeToID&lt;float&gt;使用的特化的类，这个类的实现没有NotID这个成员。</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;ID of double: &quot;</span> &lt;&lt; TypeToID&lt;<span class="type">double</span>&gt;::ID &lt;&lt; endl;     <span class="comment">// Error! TypeToID&lt;double&gt;是由类模板实例化出来的，它只有NotID，没有ID这个成员。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h4 id="模板推导"><a href="#模板推导" class="headerlink" title="模板推导"></a>模板推导</h4><p>考虑下面的例子和问题：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct</span> <span class="title class_">X</span> &#123;&#125;;</span><br><span class="line">	</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct</span> <span class="title class_">Y</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">typedef</span> X&lt;T&gt; ReboundType;				        <span class="comment">// 类型定义1</span></span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> X&lt;T&gt;::MemberType MemberType;	<span class="comment">// 类型定义2</span></span><br><span class="line">    <span class="keyword">typedef</span> UnknownType MemberType3;			    <span class="comment">// 类型定义3</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        X&lt;T&gt; instance0;</span><br><span class="line">        <span class="keyword">typename</span> X&lt;T&gt;::MemberType instance1;</span><br><span class="line">        WTF instance2</span><br><span class="line">        大王叫我来巡山 - + &amp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<p>把这段代码编译一下，类型定义3出错，其它的都没问题。不过到这里你应该会有几个问题：</p>
+<ol>
+<li>不是<code>struct X&lt;T&gt;</code>的定义是空的吗？为什么在<code>struct Y</code>内的类型定义2使用了 <code>X&lt;T&gt;::MemberType</code> 编译器没有报错？</li>
+<li>类型定义2中的<code>typename</code>是什么鬼？为什么类型定义1就不需要？</li>
+<li>为什么类型定义3会导致编译错误？</li>
+<li>为什么<code>void foo()</code>在MSVC下什么错误都没报？</li>
+</ol>
+<p>先看第四个问题。</p>
+<p>按照C++标准的意思，名称查找会在模板定义和实例化时各做一次，分别处理非依赖性名称和依赖性名称的查找。这就是“两阶段名称查找”这一名词的由来。为什么MSVC中，函数模板的定义内不管填什么编译器都不报错？因为MSVC在分析模板中成员函数定义时没有做任何事情。因为C++的语义将会直接干扰到语法，为了偷懒，MSVC将包括所有模板成员函数的语法&#x2F;语义分析工作都挪到了第二个Phase，于是乎连带着语法分析都送进了第二个阶段。符合标准么？显然不符合。这样做会带来两个问题：</p>
+<ol>
+<li>如果类模板中有一些与模板参数无关的错误，如果名称查找&#x2F;语义分析在两个阶段完成，那么这些错误会很早、且唯一的被提示出来；但是如果一切都在实例化时处理，那么可能会导致不同的实例化过程提示同样的错误。而模板在运用过程中，往往会产生很多实例，此时便会大量报告同样的错误。当然，MSVC并不会真的这么做。根据推测，最终他们是合并了相同的错误。</li>
+<li>另一个缺点也与之类似。因为没有足够的检查，如果你写的模板没有被实例化，那么很可能缺陷会一直存在于代码之中。特别是模板代码多在头文件。虽然不如接口那么重要，但也是属于被公开的部分，别人很可能会踩到坑上。缺陷一旦传播开修复起来就没那么容易了。</li>
+</ol>
+<p>但也有一个优点：MSVC的实现要比标准更加易于写和维护。</p>
+<p>再看其他问题。</p>
+<p>先对Y内部做一下分析：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct</span> <span class="title class_">Y</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// X可以查找到原型；</span></span><br><span class="line">    <span class="comment">// X&lt;T&gt;是一个依赖性名称，模板定义阶段并不管X&lt;T&gt;是不是正确的。</span></span><br><span class="line">    <span class="keyword">typedef</span> X&lt;T&gt; ReboundType;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// X可以查找到原型；</span></span><br><span class="line">    <span class="comment">// X&lt;T&gt;是一个依赖性名称，X&lt;T&gt;::MemberType也是一个依赖性名称；</span></span><br><span class="line">    <span class="comment">// 所以模板声明时也不会管X模板里面有没有MemberType这回事。</span></span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> X&lt;T&gt;::MemberType MemberType2;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// UnknownType 不是一个依赖性名称</span></span><br><span class="line">    <span class="comment">// 而且这个名字在当前作用域中不存在，所以直接报错。</span></span><br><span class="line">    <span class="keyword">typedef</span> UnknownType MemberType3;				</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<p>标准中规定了形如 <code>T::MemberType</code> 这样的 <code>qualified id</code> 在默认情况下不是一个类型，而是解释为 <code>T</code> 的一个成员变量 <code>MemberType</code>，只有当 <code>typename</code> 修饰之后才能作为类型出现。<br>比如代码：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a * b</span><br></pre></td></tr></table></figure></div>
+<p>在没有模板的情况下，这个语句有两种可能的意思：如果<code>a</code>是一个类型，这就是定义了一个指针<code>b</code>，它拥有类型<code>a*</code>；如果<code>a</code>是一个对象或引用，这就是计算一个表达式<code>a*b</code>，虽然结果并没有保存下来。可是如果上面的<code>a</code>是模板参数的成员，会发生什么呢？</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="type">void</span> <span class="title">meow</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    T::a * b; <span class="comment">// 这是指针定义还是表达式语句？</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>编译器对模板进行语法检查的时候，必须要知道上面那一行到底是个什么——这当然可以推迟到实例化的时候进行（比如VC，这也是上面说过VC可以不加<code>typename</code>的原因），不过那是另一个故事了——显然在模板定义的时候，编译器并不能妄断。因此，C++标准规定，在没有<code>typename</code>约束的情况下认为这里<code>T::a</code>不是类型，因此<code>T::a * b;</code> 会被当作表达式语句（例如乘法）；而为了告诉编译器这是一个指针的定义，我们必须在<code>T::a</code>之前加上<code>typename</code>关键字，告诉编译器<code>T::a</code>是一个类型，这样整个语句才能符合指针定义的语法。</p>
+<p>在这里，我举几个例子帮助大家理解<code>typename</code>的用法，这几个例子已经足以涵盖日常使用[（预览）][3]：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">A</span>;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct</span> <span class="title class_">B</span>;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct</span> <span class="title class_">X</span> &#123;</span><br><span class="line">    <span class="keyword">typedef</span> X&lt;T&gt; TA; <span class="comment">// 编译器当然知道 X&lt;T&gt; 是一个类型。</span></span><br><span class="line">    <span class="keyword">typedef</span> X    TB; <span class="comment">// X 等价于 X&lt;T&gt; 的缩写</span></span><br><span class="line">    <span class="keyword">typedef</span> T    TC; <span class="comment">// T 不是一个类型还玩毛</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ！！！注意我要变形了！！！</span></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">Y</span> &#123;</span><br><span class="line">        <span class="keyword">typedef</span> X&lt;T&gt;     TD;          <span class="comment">// X 的内部，既然外部高枕无忧，内部更不用说了</span></span><br><span class="line">        <span class="keyword">typedef</span> X&lt;T&gt;::Y  TE;          <span class="comment">// 嗯，这里也没问题，编译器知道Y就是当前的类型，</span></span><br><span class="line">                                      <span class="comment">// 这里在VS2015上会有错，需要添加 typename，</span></span><br><span class="line">                                      <span class="comment">// Clang 上顺利通过。</span></span><br><span class="line">        <span class="keyword">typedef</span> <span class="keyword">typename</span> X&lt;T*&gt;::Y TF; <span class="comment">// 这个居然要加 typename！</span></span><br><span class="line">                                      <span class="comment">// 因为，X&lt;T*&gt;和X&lt;T&gt;不一样哦，</span></span><br><span class="line">                                      <span class="comment">// 它可能会在实例化的时候被别的偏特化给抢过去实现了。</span></span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">typedef</span> A TG;                   <span class="comment">// 嗯，没问题，A在外面声明啦</span></span><br><span class="line">    <span class="keyword">typedef</span> B&lt;T&gt; TH;                <span class="comment">// B&lt;T&gt;也是一个类型</span></span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">typename</span> B&lt;T&gt;::type TI; <span class="comment">// 嗯，因为不知道B&lt;T&gt;::type的信息，</span></span><br><span class="line">                                    <span class="comment">// 所以需要typename</span></span><br><span class="line">    <span class="keyword">typedef</span> B&lt;<span class="type">int</span>&gt;::type TJ;        <span class="comment">// B&lt;int&gt; 不依赖模板参数，</span></span><br><span class="line">                                    <span class="comment">// 所以编译器直接就实例化（instantiate）了</span></span><br><span class="line">                                    <span class="comment">// 但是这个时候，B并没有被实现，所以就出错了</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="偏特化"><a href="#偏特化" class="headerlink" title="偏特化"></a>偏特化</h3><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt; <span class="keyword">struct</span> <span class="title class_">X</span>            ;    <span class="comment">// 0 </span></span><br><span class="line">                                                           <span class="comment">// 原型有两个类型参数</span></span><br><span class="line">                                                           <span class="comment">// 所以下面的这些偏特化的实参列表</span></span><br><span class="line">                                                           <span class="comment">// 也需要两个类型参数对应</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;             <span class="keyword">struct</span> <span class="title class_">X</span>&lt;T,  T  &gt; &#123;&#125;;    <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;             <span class="keyword">struct</span> <span class="title class_">X</span>&lt;T*, T  &gt; &#123;&#125;;    <span class="comment">// 2</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;             <span class="keyword">struct</span> <span class="title class_">X</span>&lt;T,  T* &gt; &#123;&#125;;    <span class="comment">// 3</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> U&gt;             <span class="keyword">struct</span> <span class="title class_">X</span>&lt;U,  <span class="type">int</span>&gt; &#123;&#125;;    <span class="comment">// 4</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> U&gt;             <span class="keyword">struct</span> <span class="title class_">X</span>&lt;U*, <span class="type">int</span>&gt; &#123;&#125;;    <span class="comment">// 5</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> U, <span class="keyword">typename</span> T&gt; <span class="keyword">struct</span> <span class="title class_">X</span>&lt;U*, T* &gt; &#123;&#125;;    <span class="comment">// 6</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> U, <span class="keyword">typename</span> T&gt; <span class="keyword">struct</span> <span class="title class_">X</span>&lt;U,  T* &gt; &#123;&#125;;    <span class="comment">// 7</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;             <span class="keyword">struct</span> <span class="title class_">X</span>&lt;unique_ptr&lt;T&gt;, shared_ptr&lt;T&gt;&gt;; <span class="comment">// 8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 以下特化，分别对应哪个偏特化的实例？</span></span><br><span class="line"><span class="comment">// 此时偏特化中的T或U分别是什么类型？</span></span><br><span class="line"></span><br><span class="line">X&lt;<span class="type">float</span>*,  <span class="type">int</span>&gt;      v0;                       </span><br><span class="line">X&lt;<span class="type">double</span>*, <span class="type">int</span>&gt;      v1;                       </span><br><span class="line">X&lt;<span class="type">double</span>,  <span class="type">double</span>&gt;   v2;                          </span><br><span class="line">X&lt;<span class="type">float</span>*,  <span class="type">double</span>*&gt;  v3;                           </span><br><span class="line">X&lt;<span class="type">float</span>*,  <span class="type">float</span>*&gt;   v4;                          </span><br><span class="line">X&lt;<span class="type">double</span>,  <span class="type">float</span>*&gt;   v5;                          </span><br><span class="line">X&lt;<span class="type">int</span>,     <span class="type">double</span>*&gt;  v6;                           </span><br><span class="line">X&lt;<span class="type">int</span>*,    <span class="type">int</span>&gt;      v7;                       </span><br><span class="line">X&lt;<span class="type">double</span>*, <span class="type">double</span>&gt;   v8;</span><br></pre></td></tr></table></figure></div>
+
+<p>个别几个匹配上会有歧义，所以会报错</p>
+<h4 id="不定长的模板参数"><a href="#不定长的模板参数" class="headerlink" title="不定长的模板参数"></a>不定长的模板参数</h4><div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Ts&gt; <span class="keyword">class</span> <span class="title class_">tuple</span>;</span><br></pre></td></tr></table></figure></div>
+<p>这里的<code>typename... Ts</code>相当于一个声明，是说<code>Ts</code>不是一个类型，而是一个不定常的类型列表。同C语言的不定长参数一样，它通常只能放在参数列表的最后。看下面的例子：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Ts, <span class="keyword">typename</span> U&gt; <span class="keyword">class</span> <span class="title class_">X</span> &#123;&#125;;              <span class="comment">// (1) error!</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Ts&gt;             <span class="keyword">class</span> <span class="title class_">Y</span> &#123;&#125;;              <span class="comment">// (2)</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Ts, <span class="keyword">typename</span> U&gt; <span class="keyword">class</span> <span class="title class_">Y</span>&lt;U, Ts...&gt; &#123;&#125;;    <span class="comment">// (3)</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Ts, <span class="keyword">typename</span> U&gt; <span class="keyword">class</span> <span class="title class_">Y</span>&lt;Ts..., U&gt; &#123;&#125;;    <span class="comment">// (4) error!</span></span><br></pre></td></tr></table></figure></div>
+<p>为什么第(1)条语句会出错呢？(1)是模板原型，模板实例化时，要以它为基础和实例化时的类型实参相匹配。因为C++的模板是自左向右匹配的，所以不定长参数只能结尾。其他形式，无论写作<code>Ts, U</code>，或者是<code>Ts, V, Us,</code>，或者是<code>V, Ts, Us</code>都是不可取的。(4) 也存在同样的问题。</p>
+<p>但是，为什么(3)中， 模板参数和(1)相同，都是<code>typename... Ts, typename U</code>，但是编译器却并没有报错呢？</p>
+<p>答案在这一节的早些时候。(3)和(1)不同，它并不是模板的原型，它只是<code>Y</code>的一个偏特化。回顾我们在之前所提到的，偏特化时，模板参数列表并不代表匹配顺序，它们只是为偏特化的模式提供的声明，也就是说，它们的匹配顺序，只是按照<code>&lt;U, Ts...&gt;</code>来，而之前的参数只是告诉你<code>Ts</code>是一个类型列表，而<code>U</code>是一个类型，排名不分先后。</p>
+<h4 id="模板的默认实参"><a href="#模板的默认实参" class="headerlink" title="模板的默认实参"></a>模板的默认实参</h4><p>实际上，模板的默认参数不仅仅可以是一个确定的类型，它还能是以其他类型为参数的一个类型表达式。</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">include &lt;type_traits&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function">T <span class="title">CustomDiv</span><span class="params">(T lhs, T rhs)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Custom Div的实现</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="type">bool</span> IsFloat = std::is_floating_point&lt;T&gt;::value&gt; <span class="keyword">struct</span> SafeDivide &#123;</span><br><span class="line">    <span class="type">static</span> T <span class="built_in">Do</span>(T lhs, T rhs) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">CustomDiv</span>(lhs, rhs);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct</span> <span class="title class_">SafeDivide</span>&lt;T, <span class="literal">true</span>&gt;&#123;    <span class="comment">// 偏特化A</span></span><br><span class="line">    <span class="function"><span class="type">static</span> T <span class="title">Do</span><span class="params">(T lhs, T rhs)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> lhs/rhs;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct</span> <span class="title class_">SafeDivide</span>&lt;T, <span class="literal">false</span>&gt;&#123;   <span class="comment">// 偏特化B</span></span><br><span class="line">    <span class="function"><span class="type">static</span> T <span class="title">Do</span><span class="params">(T lhs, T rhs)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> lhs;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">    SafeDivide&lt;<span class="type">float</span>&gt;::<span class="built_in">Do</span>(<span class="number">1.0f</span>, <span class="number">2.0f</span>);	<span class="comment">// 调用偏特化A</span></span><br><span class="line">    SafeDivide&lt;<span class="type">int</span>&gt;::<span class="built_in">Do</span>(<span class="number">1</span>, <span class="number">2</span>);          <span class="comment">// 调用偏特化B</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C++</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C-%E6%A8%A1%E6%9D%BF/">#C++模板</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/cuda5/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">CUDA编程05: CUDA流与统一内存</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9"><span class="nav-text">模板基础使用中需要注意的点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E7%9A%84%E7%89%B9%E5%8C%96%E4%B8%8E%E5%81%8F%E7%89%B9%E5%8C%96"><span class="nav-text">模板的特化与偏特化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%8C%96"><span class="nav-text">特化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E6%8E%A8%E5%AF%BC"><span class="nav-text">模板推导</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%8F%E7%89%B9%E5%8C%96"><span class="nav-text">偏特化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E5%AE%9A%E9%95%BF%E7%9A%84%E6%A8%A1%E6%9D%BF%E5%8F%82%E6%95%B0"><span class="nav-text">不定长的模板参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E7%9A%84%E9%BB%98%E8%AE%A4%E5%AE%9E%E5%8F%82"><span class="nav-text">模板的默认实参</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+
+
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+        </div>
+        
+        
+        <script async data-pjax defer>
+            function odometer_init(){
+                    let el = document.getElementsByClassName('odometer');
+                    for (i = 0; i < el.length; i++) {
+                        od = new Odometer({
+                            el: el[i],
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    }
+            }
+            odometer_init();
+        </script>
+        <div id="start_time_div" style="display:none">
+            2022/12/28 11:45:14
+        </div>
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fa-solid fa-left-right"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fa-solid fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fa-solid fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fa-solid fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/runtime.js"></script>
+
+    
+<script src="/js/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/toc-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            REDEFINE.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            REDEFINE.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            REDEFINE.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
