@@ -348,12 +348,12 @@
 <p>这个程序比较了随着CUDA流增多（数据量也成倍增多）执行时间的变化情况。一开始执行时间并没有明显增加，说明使用同样的时间可以处理更多的数据。</p>
 <p>Tesla K40有15个SM，作者使用Tesla K40测试时，在流数量达到15时，加速就不是很明显，似乎说明一个核函数占用了一个SM，如下图所示：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_sm.png" width=100%>
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_sm.png" width=100% >
 </p>
 
 <p>上面说明制约GPU加速的是计算资源，另外还有一个因素是单个GPU中能够并发执行的核函数个数上限。不同计算能力这个上限不同，比如计算能力7.5对应的是128。K40计算能力3.5，最大核函数并发数目为32，将上述程序的单个核函数线程束由1024降为128，测试结果如下：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_smlimit.png" width=100%>
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_smlimit.png" width=100% >
 </p>
 
 <h2 id="用非默认CUDA流重叠核函数的执行与数据传递"><a href="#用非默认CUDA流重叠核函数的执行与数据传递" class="headerlink" title="用非默认CUDA流重叠核函数的执行与数据传递"></a>用非默认CUDA流重叠核函数的执行与数据传递</h2><h3 id="不可分页主机内存与异步的数据传输函数"><a href="#不可分页主机内存与异步的数据传输函数" class="headerlink" title="不可分页主机内存与异步的数据传输函数"></a>不可分页主机内存与异步的数据传输函数</h3><p>要实现核函数执行与数据传输的并发（重叠），必须让这两个操作处于不同的非默认流，而且数据传输必须使用<code>cudaMemcpy()</code>函数的异步版本，即<code>cudaMemcpyAsync()</code>函数。异步传输由GPU中的DMA（direct memory access）直接实现，不需要主机参与。异步传输函数原型为：</p>
@@ -376,7 +376,7 @@
 
 <p>作者的测试结果如下：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_transfer.png" width=100%>
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_transfer.png" width=100% >
 </p>
 
 
