@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    <meta name="description" content="Hexo Theme Redefine">
+    <meta name="author" content="YiQi">
+    
+    <title>
+        
+            EMCPP条款1：理解模板型别推导 |
+        
+        YiQi&#39;s Blog
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/css/regular.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/css2.css">
+
+    <script id="hexo-configurations">
+    let REDEFINE = window.REDEFINE || {};
+    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
+    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+    
+    <div class="header-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="logo-title" href="/">
+                YiQi&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/" >
+                                
+                                    
+                                        <i class="fa-regular fa-house"></i>
+                                    
+                                    首页
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/archives" >
+                                
+                                    
+                                        <i class="fa-regular fa-archive"></i>
+                                    
+                                    归档
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/categories" >
+                                
+                                    
+                                        <i class="fa-regular fa-list"></i>
+                                    
+                                    分类
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/about" >
+                                
+                                    
+                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                    
+                                    关于
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/" >
+                         
+                            
+                                <i class="fa-regular fa-house"></i>
+                            
+                            首页
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/archives" >
+                         
+                            
+                                <i class="fa-regular fa-archive"></i>
+                            
+                            归档
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/categories" >
+                         
+                            
+                                <i class="fa-regular fa-list"></i>
+                            
+                            分类
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/about" >
+                         
+                            
+                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                            
+                            关于
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+            <div class="article-title">
+                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">EMCPP条款1：理解模板型别推导</h1></span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/logo.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">YiQi</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="pc">2023-03-12 22:59:07</span>
+        <span class="mobile">2023-03-12 22:59</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/EMCPP/">EMCPP</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/EMCPP/">EMCPP</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>2.2k 字</span>
+        </span>
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <p>整理自“Effective Modern C++”.</p>
+<blockquote>
+<ul>
+<li>中文翻译不准确的或者不易于理解的地方使用英文原文代替</li>
+</ul>
+</blockquote>
+<p>型别推导的目的是使人们不必再去写下那些不言自明或是完全冗余的型别。它还让C++软件获得更高的适应性，因为在源代码的一个地方对一个型别实施的改动，可以自动通过型别推导传播到其他地方。</p>
+<p>用一小段伪代码来说明，函数模板大致形如：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(ParamType param)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">f</span>(expr) <span class="comment">// 从expr来推导T和ParamType的型别</span></span><br></pre></td></tr></table></figure></div>
+<p>T的型别推导结果要分三种情况讨论：</p>
+<ul>
+<li><code>ParamType</code>具有指针或引用型别，但不是个万能引用（万能引用会在条款24中介绍，现在你只需知道有这么个东西，并且它们与左值引用和右值引用都有所区别即可）。</li>
+<li><code>ParamType</code>是一个万能引用。</li>
+<li><code>ParamType</code>既非指针也非引用。</li>
+</ul>
+<h2 id="情况1-ParamType是个指针或引用，但不是个万能引用"><a href="#情况1-ParamType是个指针或引用，但不是个万能引用" class="headerlink" title="情况1: ParamType是个指针或引用，但不是个万能引用"></a>情况1: <code>ParamType</code>是个指针或引用，但不是个万能引用</h2><ol>
+<li>若<code>expr</code>具有引用型别，先将引用部分忽略。</li>
+<li>尔后，对<code>expr</code>的型别和<code>ParamType</code>的型别执行模式匹配，来决定<code>T</code>的型别。</li>
+</ol>
+<p>例如，我们的模式如下：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T&amp; param)</span></span>;  <span class="comment">// param 是个引用</span></span><br></pre></td></tr></table></figure></div>
+<p>又声明了下列变量：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> X = <span class="number">27</span>;         <span class="comment">// x 的型别是 int</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> ex= x;    <span class="comment">// ex 的型别是 const int</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span>&amp; rx = x;  <span class="comment">// rx 是 x 的型别为 const int 的引用</span></span><br></pre></td></tr></table></figure></div>
+<p>在各次调用中，对<code>param</code>和<code>T</code>的型别推导结果如下：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">f</span>(x);   <span class="comment">// T 的型别是 int. param 的型别是 int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cx);  <span class="comment">// T 的型别是 const int, param 的型别是 const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(rx);  <span class="comment">// T 的和别是 const int, param 的和别是 const int&amp;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>尽量上述调用语句示例演示的都是左值引用形参，但是右值引用形参的型别推导运作 方式是完全相同的。当然，传给右值引用形参的，只能是右值引用实参，但这个限制和型别推导无关。</p>
+<p>如果我们将形参型别从<code>T＆</code>改为<code>const T&amp;</code>，结果会有一点变化，但这些变化并没有什么出人意料之处，<code>ex</code>和<code>rx</code>的常量性仍然得到了满足:</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">const</span> T&amp; param)</span></span>;  <span class="comment">// param 是个引用</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> X = <span class="number">27</span>;         <span class="comment">// x 的型别是 int</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> ex= x;    <span class="comment">// ex 的型别是 const int</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span>&amp; rx = x;  <span class="comment">// rx 是 x 的型别为 const int 的引用</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">f</span>(x);   <span class="comment">// T 的型别是 int. param 的型别是 const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cx);  <span class="comment">// T 的型别是 int, param 的型别是 const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(rx);  <span class="comment">// T 的和别是 int, param 的和别是 const int&amp;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>如果<code>param</code>是个指针（或指涉到<code>const</code>对象的指针）而非引用，运作方式本质上并无不同：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T* param)</span></span>;   <span class="comment">// param is now a pointer</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> x = <span class="number">27</span>;         <span class="comment">// as before</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *px = &amp;x; <span class="comment">// px is a ptr to x as a const int</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">f</span>(&amp;x);              <span class="comment">// T is int, param&#x27;s type is int*</span></span><br><span class="line"><span class="built_in">f</span>(px);              <span class="comment">// T is const int, param&#x27;s type is const int*</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="情况2-ParamType是个万能引用"><a href="#情况2-ParamType是个万能引用" class="headerlink" title="情况2: ParamType是个万能引用"></a>情况2: <code>ParamType</code>是个万能引用</h2><ul>
+<li>如果<code>expr</code>是个左值，<code>T</code>和<code>ParamType</code>都会被推导为左值引用。这个结果具有双重的奇特之处：首先，这是在模板型别推导中，<code>T</code>被推导为<strong>引用型别</strong>的唯一情形。其次，尽管在声明时使用的是右值引用语法，它的型别推导结果却是左值引用。</li>
+<li>如果<code>expr</code>是个右值，则应用“常规＂（即情况1中的）规则。</li>
+</ul>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T&amp;&amp; param)</span></span>;  <span class="comment">// param is now a universal reference</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> x = <span class="number">27</span>;         <span class="comment">// as before</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> cx = x;   <span class="comment">// as before</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span>&amp; rx = x;  <span class="comment">// as before</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">f</span>(x);   <span class="comment">// x is lvalue, so T is int&amp;, param&#x27;s type is also int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cx);  <span class="comment">// cx is lvalue, so T is const int&amp;, param&#x27;s type is also const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(rx);  <span class="comment">// rx is lvalue, so T is const int&amp;, param&#x27;s type is also const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(<span class="number">27</span>);  <span class="comment">// 27 is rvalue, so T is int, param&#x27;s type is therefore int&amp;&amp;</span></span><br></pre></td></tr></table></figure></div>
+<p>当遇到万能引用时，型别推导规则会区分实参是左值还是右值。而非万能引用是从来不会作这样的区分的。</p>
+<h2 id="情况3-ParamType既非指针也非引用"><a href="#情况3-ParamType既非指针也非引用" class="headerlink" title="情况3: ParamType既非指针也非引用"></a>情况3: <code>ParamType</code>既非指针也非引用</h2><p>当<code>ParamType</code>既非指针也非引用时 ，我们面对的就是所谓按值传递了：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T param)</span></span>;    <span class="comment">// param 现在是按值传递</span></span><br></pre></td></tr></table></figure></div>
+<p><code>param</code>会是个全新对象这一事实促成了如何从<code>expr</code>推导出<code>T</code>的型别的规则：</p>
+<ul>
+<li>一如之前，若<code>expr</code>具有引用型别，则忽略其引用部分。</li>
+<li>忽略<code>expr</code>的引用性之后，若<code>expr</code>是个<code>const</code>对象，也忽略之。若其是个<code>volatile</code>对象，同忽略之（<code>volatile</code>对象不常用，它们 一般仅用千实现设备驱动程序。欲知详情，参见条款 40）。<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x = <span class="number">27</span>;         <span class="comment">// as before</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> cx = x;   <span class="comment">// as before</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span>&amp; rx = x;  <span class="comment">// as before</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">f</span>(x);   <span class="comment">// T&#x27;s and param&#x27;s types are both int</span></span><br><span class="line"><span class="built_in">f</span>(cx);  <span class="comment">// T&#x27;s and param&#x27;s types are again both int</span></span><br><span class="line"><span class="built_in">f</span>(rx);  <span class="comment">// T&#x27;s and param&#x27;s types are still both int</span></span><br></pre></td></tr></table></figure></div>
+仅仅由于<code>expr</code>不可修改，并不能断定其副本也不可修改。需要重点说明的是，<code>const</code>（和<code>volatile</code>）仅会在按值形参处被忽略。正如此前所见，若形参是<code>const</code>的引用或指针（references-to- or pointers-to <code>const</code>），<code>expr</code>的常量性会在型别推导过程中加以保留。但是，考虑这种情况：<code>expr</code>是个指涉到<code>const</code>对象的<code>const</code>指针，且<code>expr</code>按值传给<code>param</code>:<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T param)</span></span>; <span class="comment">// param is still passed by value</span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="type">const</span> ptr = <span class="string">&quot;Fun with pointers&quot;</span>;</span><br><span class="line"><span class="comment">// ptr is const pointer to const object</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">f</span>(ptr); <span class="comment">// pass arg of type const char * const</span></span><br></pre></td></tr></table></figure></div>
+左边<code>const</code>表示<code>ptr</code>指向的内容不能修改，右侧<code>const</code>表示<code>ptr</code>本身的值不能修改。按值传递时，其自身的<code>const</code>属性被忽略，所以<code>param</code>型别会被推导为<code>const char*</code>。The constness of what <code>ptr</code> points to is preserved during type deduction, but the constness of <code>ptr</code> itself is ignored when copying it to create the new pointer, <code>param</code>.</li>
+</ul>
+<h2 id="数组实参"><a href="#数组实参" class="headerlink" title="数组实参"></a>数组实参</h2><p>首先，在很多语境下，数组会退化成指涉到其首元素的指针：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span> name[] = <span class="string">&quot;J. P. Briggs&quot;</span>; <span class="comment">// name 的型别是 c on st char [1 3]</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span> * ptrToName = name;      <span class="comment">// 数组退化成指针</span></span><br></pre></td></tr></table></figure></div>
+
+<p>但当一个数组传递给持有按值形参的模板时，</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T param)</span></span>;    <span class="comment">// 持有按值形参的模板</span></span><br><span class="line"><span class="built_in">f</span>(name);            <span class="comment">// T和param的型别会被推导成什么呢？</span></span><br></pre></td></tr></table></figure></div>
+<p>由千数组形参声明会按照它们好像是指针形参那样加以处理，按值传递给函数模板的数组型别将被推导成指针型别。也就是说，在模板 <code>f</code> 的调用中，其型别形参 <code>T</code> 会被推导成 <code>const char*</code>:</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">f</span>(name); <span class="comment">// name 是个数组，但 T 的型别却披推导成 const char *</span></span><br></pre></td></tr></table></figure></div>
+<p>尽管函数无法声明真正的数组型别的形参，它们却能够将形参声明成数组的引用！所以，如果我们修改模板 <code>f</code>, 指定按引用方式传递其实参，</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T&amp; param)</span></span>;   <span class="comment">// 按引用方式传递形参的换板</span></span><br><span class="line"><span class="built_in">f</span>(name);            <span class="comment">// 向 f 传递－个数组</span></span><br></pre></td></tr></table></figure></div>
+<p>在这种情况下，<code>T</code> 的型别会被推导成实际的数组型别！这个型别中会包含数组尺寸，在本例中，<code>T</code> 的型别推导结果是 <code>const char [13]</code>，而 <code>f</code> 的形参（该数组的一个引用）型别则被推导为 <code>const char (&amp;)[13]</code>。 </p>
+<p>有意思的是，可以利用声明数组引用这一能力创造出一个模板，用来推导出数组含有的元素个数：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// return size of an array as a compile-time constant. (The</span></span><br><span class="line"><span class="comment">// array parameter has no name, because we care only about</span></span><br><span class="line"><span class="comment">// the number of elements it contains.)</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::<span class="type">size_t</span> N&gt; </span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> std::<span class="type">size_t</span> <span class="title">arraySize</span><span class="params">(T (&amp;)[N])</span> <span class="keyword">noexcept</span> </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> N;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h2 id="函数实参"><a href="#函数实参" class="headerlink" title="函数实参"></a>函数实参</h2><p>函数型别也同样会退化成函数指针，并且我们针对数组型别推导的一切讨论都适用千函数及其向函数指针的退化。所以结果如<br>下：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">someFunc</span><span class="params">(<span class="type">int</span>, <span class="type">double</span>)</span></span>; </span><br><span class="line"><span class="comment">// someFunc is a function. type is void(int, double)</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f1</span><span class="params">(T param)</span></span>;           <span class="comment">// in f1, param passed by value</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f2</span><span class="params">(T&amp; param)</span></span>;          <span class="comment">// in f2, param passed by ref</span></span><br><span class="line"><span class="built_in">f1</span>(someFunc);               </span><br><span class="line"><span class="comment">// param deduced as ptr-to-func; type is void (*)(int, double)</span></span><br><span class="line"><span class="built_in">f2</span>(someFunc); </span><br><span class="line"><span class="comment">// param deduced as ref-to-func; type is void (&amp;)(int, double)</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="要点速记"><a href="#要点速记" class="headerlink" title="要点速记"></a>要点速记</h2><ul>
+<li>在模板型别推导过程中，具有引用型别的实参会被当成非引用型别来处理。换言之，其引用性会被忽略。</li>
+<li>对万能引用形参进行推导时，左值实参会进行特殊处理。</li>
+<li>对按值传递的形参进行推导时，若实参型别中带有 <code>const</code> 或 <code>volatile</code> 饰词，则它们还是会被当作不带 <code>const</code> 或 <code>volatile</code> 饰词的型别来处理。</li>
+<li>在模板型别推导过程中，数组或函数型别的实参会退化成对应的指针，除非它们被用来初始化引用。</li>
+</ul>
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C++</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/EMCPP/">#EMCPP</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/fvm1/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">CFD有限体积法01: NS方程完整推导</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%83%85%E5%86%B51-ParamType%E6%98%AF%E4%B8%AA%E6%8C%87%E9%92%88%E6%88%96%E5%BC%95%E7%94%A8%EF%BC%8C%E4%BD%86%E4%B8%8D%E6%98%AF%E4%B8%AA%E4%B8%87%E8%83%BD%E5%BC%95%E7%94%A8"><span class="nav-text">情况1: ParamType是个指针或引用，但不是个万能引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%83%85%E5%86%B52-ParamType%E6%98%AF%E4%B8%AA%E4%B8%87%E8%83%BD%E5%BC%95%E7%94%A8"><span class="nav-text">情况2: ParamType是个万能引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%83%85%E5%86%B53-ParamType%E6%97%A2%E9%9D%9E%E6%8C%87%E9%92%88%E4%B9%9F%E9%9D%9E%E5%BC%95%E7%94%A8"><span class="nav-text">情况3: ParamType既非指针也非引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%AE%9E%E5%8F%82"><span class="nav-text">数组实参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9E%E5%8F%82"><span class="nav-text">函数实参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%E9%80%9F%E8%AE%B0"><span class="nav-text">要点速记</span></a></li></ol>
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+
+
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+        </div>
+        
+        
+        <script async data-pjax defer>
+            function odometer_init(){
+                    let el = document.getElementsByClassName('odometer');
+                    for (i = 0; i < el.length; i++) {
+                        od = new Odometer({
+                            el: el[i],
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    }
+            }
+            odometer_init();
+        </script>
+        <div id="start_time_div" style="display:none">
+            2022/12/28 11:45:14
+        </div>
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fa-solid fa-left-right"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fa-solid fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fa-solid fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fa-solid fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/runtime.js"></script>
+
+    
+<script src="/js/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/toc-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            REDEFINE.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            REDEFINE.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            REDEFINE.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
