@@ -9,7 +9,7 @@
     
     <title>
         
-            分类: CFD |
+            EMCPP条款5：优先选用auto而非显式型别声明 |
         
         YiQi&#39;s Blog
     </title>
@@ -118,7 +118,7 @@
                     
                         <li class="menu-item">
                             <!-- Menu -->
-                            <a class="active" 
+                            <a class="" 
                                 href="/categories" >
                                 
                                     
@@ -192,7 +192,7 @@
                 
             
                 <li class="drawer-menu-item flex-center">
-                    <a class="active" 
+                    <a class="" 
                        href="/categories" >
                          
                             
@@ -235,56 +235,170 @@
 
                 
                     <div class="fade-in-down-animation">
-    <div class="category-container">
-        <div class="category-name">
-            <i class="fa-solid fa-folder"></i>&nbsp;CFD
-        </div>
-        <div class="category-post-list">
-            
-<div class="archive-list-container">
-    
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[3]</span>
+    <div class="post-page-container">
+        <div class="article-content-container">
+            <div class="article-title">
+                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">EMCPP条款5：优先选用auto而非显式型别声明</h1></span>
             </div>
-            <ul class="article-list">
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/logo.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">YiQi</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="pc">2023-03-26 12:14:17</span>
+        <span class="mobile">2023-03-26 12:14</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
                 
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/fvm3/"
-                        >CFD-FVM-03: Turbulence</a>
-                        <span class="article-date">03-26</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/fvm2/"
-                        >CFD-FVM-02: Classification of Physical Behaviours</a>
-                        <span class="article-date">03-26</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/fvm1/"
-                        >CFD-FVM-01: Navier-Stokes Equations</a>
-                        <span class="article-date">03-11</span>
+                    <li>
+                        <a href="/categories/EMCPP/">EMCPP</a>&nbsp;
                     </li>
                 
             </ul>
-        </section>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/EMCPP/">EMCPP</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>578 字</span>
+        </span>
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <h2 id="避免冗长的型别声明"><a href="#避免冗长的型别声明" class="headerlink" title="避免冗长的型别声明"></a>避免冗长的型别声明</h2><p><code>lambda</code> 表达式的返回类型可以用 <code>auto</code></p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> derefUPLess = [](<span class="type">const</span> std::unique_ptr&lt;<span class="type">int</span>&gt;&amp; lhs,</span><br><span class="line">                      <span class="type">const</span> std::unique_ptr&lt;<span class="type">int</span>&gt;&amp; rhs) &#123;</span><br><span class="line">    <span class="keyword">return</span> *lhs &lt; *rhs;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+<p>在C++14中，<code>labmda</code> 表达式的参数列表中的参数也可以用 <code>auto</code></p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> derefUPLess = [](<span class="keyword">auto</span>&amp; lhs, <span class="keyword">auto</span>&amp; rhs) &#123;</span><br><span class="line">    <span class="keyword">return</span> *lhs &lt; *rhs;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>std::function</code> 是C++11标准库中的一个模板，它把函数指针的思想加以扩展，使得它可以表示任何可调用的东西，包括函数、函数对象、lambda表达式、成员函数、成员函数指针、函数指针等等。对上述函数使用 <code>std::function</code> 声明：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::function&lt;<span class="type">bool</span>(<span class="type">const</span> std::unique_ptr&lt;<span class="type">int</span>&gt;&amp;,</span><br><span class="line">                   <span class="type">const</span> std::unique_ptr&lt;<span class="type">int</span>&gt;&amp;)&gt; derefUPLess =</span><br><span class="line">    [](<span class="type">const</span> std::unique_ptr&lt;<span class="type">int</span>&gt;&amp; lhs,</span><br><span class="line">       <span class="type">const</span> std::unique_ptr&lt;<span class="type">int</span>&gt;&amp; rhs) &#123;</span><br><span class="line">        <span class="keyword">return</span> *lhs &lt; *rhs;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>从结果上看，<code>std::function</code> 对象一般都会比使用 <code>auto</code> 声明的变最使用更多内存。</li>
+<li>从可读性上看，<code>std::function</code> 对象的声明比使用 <code>auto</code> 声明的变量要长得多。</li>
+<li>从性能上看，<code>std::function</code> 对象的声明比使用 <code>auto</code> 声明的变量要慢得多。</li>
+</ul>
+<h2 id="避免“型别捷径”的问题"><a href="#避免“型别捷径”的问题" class="headerlink" title="避免“型别捷径”的问题"></a>避免“型别捷径”的问题</h2><p>比如，在32位Windows上，<code>unsigned</code> 和 <code>std::vector&lt;int&gt;::size_type</code> 的尺寸是一样的，但在64位Windows上，<code>unsigned</code> 的尺寸是4字节，而 <code>std::vector&lt;int&gt;::size_type</code> 的尺寸是8字节。使用 <code>auto</code> 就不会有这样问题。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; v;</span><br><span class="line"><span class="keyword">auto</span> sz = v.<span class="built_in">size</span>(); <span class="comment">// sz的型别是std::vector&lt;int&gt;::size_type</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="避免错误的隐式转换"><a href="#避免错误的隐式转换" class="headerlink" title="避免错误的隐式转换"></a>避免错误的隐式转换</h2><p>比如：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::unordered_map&lt;std::string, <span class="type">int</span>&gt; m;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">for</span> (<span class="type">const</span> std::pair&lt;std::string, <span class="type">int</span>&gt;&amp; p : m) &#123;</span><br><span class="line">   ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p><code>std::unordered_map</code> 的键值是 <code>const</code>，所以 <code>std::pair</code> 的键值应该也是 <code>const</code>，即 <code>std::pair&lt;const std::string, int&gt;</code>。编译器会努力将 <code>std::pair&lt;const std::string, int&gt;</code> 转换成 <code>std::pair&lt;std::string, int&gt;</code>，这一步是可以成功的，但多了一次复制操作，所以最好还是使用 <code>auto</code>，即：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; p : m) &#123;</span><br><span class="line">   ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h2 id="要点速记"><a href="#要点速记" class="headerlink" title="要点速记"></a>要点速记</h2><ul>
+<li><code>auto</code> 变量必须初始化，基本上对会导致兼容性和效率问题的型别不匹配现象免疫，还可以简化重构流程，通常也比显式指定型别要少打一些字。</li>
+<li><code>auto</code> 型别的变量都有着条款2和条款6中所描述的毛病。</li>
+</ul>
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C++</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/EMCPP/">#EMCPP</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                        <div class="article-prev">
+                            <a class="prev"
+                            rel="prev"
+                            href="/2023/emcpp6/"
+                            >
+                                <span class="left arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </span>
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">EMCPP条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法</span>
+                                    <span class="post-nav-item">上一篇</span>
+                                </span>
+                            </a>
+                        </div>
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/emcpp4/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">EMCPP条款4：掌握查看型别推导结果的方法</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
         </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E5%86%97%E9%95%BF%E7%9A%84%E5%9E%8B%E5%88%AB%E5%A3%B0%E6%98%8E"><span class="nav-text">避免冗长的型别声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E2%80%9C%E5%9E%8B%E5%88%AB%E6%8D%B7%E5%BE%84%E2%80%9D%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">避免“型别捷径”的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E9%94%99%E8%AF%AF%E7%9A%84%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2"><span class="nav-text">避免错误的隐式转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%E9%80%9F%E8%AE%B0"><span class="nav-text">要点速记</span></a></li></ol>
     </div>
-    <div class="category-paginator">
-        <div class="paginator">
-    
-
-    
 </div>
-
+            </div>
+        
     </div>
 </div>
 
@@ -356,6 +470,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-bottom-side-tools">
@@ -448,6 +579,14 @@
 
 
 <div class="post-scripts pjax">
+    
+        
+<script src="/js/toc-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
     
 </div>
 

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    <meta name="description" content="Hexo Theme Redefine">
+    <meta name="author" content="YiQi">
+    
+    <title>
+        
+            EMCPP条款2：理解auto型别推导 |
+        
+        YiQi&#39;s Blog
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/css/regular.min.css">
+
+    
+    
+    
+    
+<link rel="stylesheet" href="/css/css2.css">
+
+    <script id="hexo-configurations">
+    let REDEFINE = window.REDEFINE || {};
+    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
+    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+    
+    <div class="header-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="logo-title" href="/">
+                YiQi&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/" >
+                                
+                                    
+                                        <i class="fa-regular fa-house"></i>
+                                    
+                                    首页
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/archives" >
+                                
+                                    
+                                        <i class="fa-regular fa-archive"></i>
+                                    
+                                    归档
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/categories" >
+                                
+                                    
+                                        <i class="fa-regular fa-list"></i>
+                                    
+                                    分类
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                        <li class="menu-item">
+                            <!-- Menu -->
+                            <a class="" 
+                                href="/about" >
+                                
+                                    
+                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                    
+                                    关于
+                                
+                            </a>
+                            <!-- Submenu -->
+                            
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/" >
+                         
+                            
+                                <i class="fa-regular fa-house"></i>
+                            
+                            首页
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/archives" >
+                         
+                            
+                                <i class="fa-regular fa-archive"></i>
+                            
+                            归档
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/categories" >
+                         
+                            
+                                <i class="fa-regular fa-list"></i>
+                            
+                            分类
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class="" 
+                       href="/about" >
+                         
+                            
+                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                            
+                            关于
+                        
+                    </a>
+                </li>
+                <!-- Submenu -->
+                
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+            <div class="article-title">
+                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">EMCPP条款2：理解auto型别推导</h1></span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/logo.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">YiQi</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="pc">2023-03-26 12:13:14</span>
+        <span class="mobile">2023-03-26 12:13</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/EMCPP/">EMCPP</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/EMCPP/">EMCPP</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>816 字</span>
+        </span>
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <p>除了一个奇妙的例外情况以外，<code>auto</code> 型别推导就是模板型别推导。</p>
+<p>与条款1类似，也存在三种情况：</p>
+<ul>
+<li>情况1：型别饰词是指针或引用，但不是万能引用。</li>
+<li>情况2：型别饰词是万能引用。</li>
+<li>情况3：型别饰词既非指针也非引用。</li>
+</ul>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x = <span class="number">27</span>;        <span class="comment">// 情况3，x为int</span></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span> cx = x;  <span class="comment">// 情况3，cx为const int</span></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span>&amp; rx = x; <span class="comment">// 情况1，rx为const auto&amp;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>对于情况2：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span>&amp;&amp; uref1 = x;   <span class="comment">// x是左值，uref1的型别是int&amp;</span></span><br><span class="line"><span class="keyword">auto</span>&amp;&amp; uref2 = cx;  <span class="comment">// cx是左值，uref2的型别是const int&amp;</span></span><br><span class="line"><span class="keyword">auto</span>&amp;&amp; uref3 = <span class="number">27</span>;  <span class="comment">// 27是右值，uref3的型别是int&amp;&amp;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>条款1以一段数组和函数名字如何在非引用型别饰词的前提下退化成指针的讨论收官。同样的结论也适用 <code>auto</code> 型别推导：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span> name[] = <span class="string">&quot;R. N. Briggs&quot;</span>; <span class="comment">// name的型别是const char[13]</span></span><br><span class="line"><span class="keyword">auto</span> arrl = name;                   <span class="comment">// arr1的型别是const char*</span></span><br><span class="line"><span class="keyword">auto</span>&amp; arr2 = name;                  <span class="comment">// arr2的型别是const char (&amp;)[13]</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">someFunc</span><span class="params">(<span class="type">int</span>, <span class="type">double</span>)</span></span>;         </span><br><span class="line"><span class="keyword">auto</span> func1 = someFunc;              <span class="comment">// func1的型别是void (*)(int, double)</span></span><br><span class="line"><span class="keyword">auto</span>&amp; func2 = someFunc;             <span class="comment">// func2的型别是void (&amp;)(int, double)</span></span><br></pre></td></tr></table></figure></div>
+
+<p>C++11之后有四种方法声明一个int并初始化：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x1 = <span class="number">27</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">x2</span><span class="params">(<span class="number">27</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> x3 = &#123; <span class="number">27</span> &#125;;</span><br><span class="line"><span class="type">int</span> x4&#123; <span class="number">27</span> &#125;;</span><br></pre></td></tr></table></figure></div>
+<p>也可以使用 <code>auto</code>声明并初始化：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x1 = <span class="number">27</span>;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">x2</span><span class="params">(<span class="number">27</span>)</span></span>;</span><br><span class="line"><span class="keyword">auto</span> x3 = &#123; <span class="number">27</span> &#125;;</span><br><span class="line"><span class="keyword">auto</span> x4&#123; <span class="number">27</span> &#125;;</span><br></pre></td></tr></table></figure></div>
+<p>注意，前两个与使用 <code>int</code> 时一样，<del>而后面两个的型别是 <code>std::initializer_list&lt;int&gt;</code>，且含有单个值为27的元素</del></p>
+<blockquote>
+<p>经过测试发现 <code>x3</code> 是 <code>std::initializer_list&lt;int&gt;</code> 而 <code>x4</code> 是 <code>int</code></p>
+</blockquote>
+<p>这样一来，如果型别推导失败，就通不过编译，比如：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x5 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3.0</span>&#125;;</span><br></pre></td></tr></table></figure></div>
+
+<p>注意使用 <code>auto</code> 和大括号时，发生了两种推导，第一种是 <code>auto</code> 的推导，推导出 <code>std::initializer_list&lt;T&gt;</code> 模板，第二种是推导出 <code>T</code>。</p>
+<blockquote>
+<p>遍历形如 <code>auto x = &#123;1, 2, 3&#125;</code> 这种初始化列表的话，需要使用 <code>for (auto v : x)</code>，不能indexing。</p>
+</blockquote>
+<p>When an <code>auto</code>–declared variable is initialized with a braced initializer, the deduced type is an <strong>instantiation</strong> of <code>std::initializer_list</code>. But if the corresponding template is passed the same initializer, type deduction fails, and the code is rejected:</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x = &#123; <span class="number">11</span>, <span class="number">23</span>, <span class="number">9</span> &#125;; <span class="comment">// x&#x27;s type is std::initializer_list&lt;int&gt;</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;    <span class="comment">// template with parameter</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T param)</span></span>;        <span class="comment">// declaration equivalent to x&#x27;s declaration</span></span><br><span class="line"><span class="built_in">f</span>(&#123; <span class="number">11</span>, <span class="number">23</span>, <span class="number">9</span> &#125;);       <span class="comment">// error! can&#x27;t deduce type for T</span></span><br></pre></td></tr></table></figure></div>
+<p>However, if you specify in the template that <code>param</code> is a <code>std::initializer_list&lt;T&gt;</code> for some unknown <code>T</code>, template type deduction will deduce what <code>T</code> is:</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(std::initializer_list&lt;T&gt; initList)</span></span>;</span><br><span class="line"><span class="built_in">f</span>(&#123; <span class="number">11</span>, <span class="number">23</span>, <span class="number">9</span> &#125;); </span><br><span class="line"><span class="comment">// T deduced as int, and initList&#x27;s</span></span><br><span class="line"><span class="comment">// type is std::initializer_list&lt;int&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>一般只在必要的时候才会使用大括号括起的初始化表达式（至于什么是必要的时候，请参见条款 7）。</p>
+</blockquote>
+<p>关于C++11, 上面所说的就是全部了。但是关千C++14, 还有别的话要说。见条款3</p>
+<h2 id="要点速记"><a href="#要点速记" class="headerlink" title="要点速记"></a>要点速记</h2><ul>
+<li>在一般情况下，<code>auto</code> 型别推导和模板型别推导是一模一样的，但是 <code>auto</code> 型别推导会假定用大括号括起的初始化表达式代表一个 <code>std::initializer_list</code>，但模板型别推导却不会。</li>
+<li>在函数返回值或 <code>lambda</code> 式的形参中使用 <code>auto</code>，意思是使用模板型别推导而非 <code>auto</code> 型别推导。</li>
+</ul>
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C++</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/EMCPP/">#EMCPP</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                        <div class="article-prev">
+                            <a class="prev"
+                            rel="prev"
+                            href="/2023/emcpp3/"
+                            >
+                                <span class="left arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </span>
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">EMCPP条款3：理解decltype</span>
+                                    <span class="post-nav-item">上一篇</span>
+                                </span>
+                            </a>
+                        </div>
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/fvm3/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">CFD-FVM-03: Turbulence</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%E9%80%9F%E8%AE%B0"><span class="nav-text">要点速记</span></a></li></ol>
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+
+
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+        </div>
+        
+        
+        <script async data-pjax defer>
+            function odometer_init(){
+                    let el = document.getElementsByClassName('odometer');
+                    for (i = 0; i < el.length; i++) {
+                        od = new Odometer({
+                            el: el[i],
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    }
+            }
+            odometer_init();
+        </script>
+        <div id="start_time_div" style="display:none">
+            2022/12/28 11:45:14
+        </div>
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fa-solid fa-left-right"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fa-solid fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fa-solid fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fa-solid fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+    
+<script src="/js/code-copy.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/runtime.js"></script>
+
+    
+<script src="/js/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/toc-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            REDEFINE.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            REDEFINE.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            REDEFINE.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

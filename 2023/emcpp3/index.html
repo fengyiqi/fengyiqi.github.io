@@ -9,7 +9,7 @@
     
     <title>
         
-            标签: EMCPP |
+            EMCPP条款3：理解decltype |
         
         YiQi&#39;s Blog
     </title>
@@ -235,77 +235,169 @@
 
                 
                     <div class="fade-in-down-animation">
-    <div class="tag-container">
-        <div class="tag-name"><i class="fa-solid fa-tag"></i>&nbsp;EMCPP
-        </div>
-        <div class="tag-post-list">
-            
-<div class="archive-list-container">
-    
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[6]</span>
+    <div class="post-page-container">
+        <div class="article-content-container">
+            <div class="article-title">
+                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">EMCPP条款3：理解decltype</h1></span>
             </div>
-            <ul class="article-list">
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/logo.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">YiQi</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="pc">2023-03-26 12:14:13</span>
+        <span class="mobile">2023-03-26 12:14</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
                 
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/emcpp6/"
-                        >EMCPP条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法</a>
-                        <span class="article-date">03-26</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/emcpp5/"
-                        >EMCPP条款5：优先选用auto而非显式型别声明</a>
-                        <span class="article-date">03-26</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/emcpp4/"
-                        >EMCPP条款4：掌握查看型别推导结果的方法</a>
-                        <span class="article-date">03-26</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/emcpp3/"
-                        >EMCPP条款3：理解decltype</a>
-                        <span class="article-date">03-26</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/emcpp2/"
-                        >EMCPP条款2：理解auto型别推导</a>
-                        <span class="article-date">03-26</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/emcpp1/"
-                        >EMCPP条款1：理解模板型别推导</a>
-                        <span class="article-date">03-12</span>
+                    <li>
+                        <a href="/categories/EMCPP/">EMCPP</a>&nbsp;
                     </li>
                 
             </ul>
-        </section>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/EMCPP/">EMCPP</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>688 字</span>
+        </span>
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <h2 id="一般用法"><a href="#一般用法" class="headerlink" title="一般用法"></a>一般用法</h2><p>最基础的用法不赘述。</p>
+<p>返回值型别尾序语法（trailing return type syntax）</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, type Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">authAndAccess</span><span class="params">(Container&amp; c, Index i)</span> -&gt; <span class="title">decltype</span><span class="params">(c[i])</span> </span>&#123;</span><br><span class="line">    <span class="built_in">authenticateUser</span>();</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>在C++14中，上面代码中的 <code>-&gt; decltype(c[i])</code>其实可以省略，编译器会自动推导 <code>c[i]</code>作为函数返回值类型。但是，大多数含有型别 <code>T</code> 的对象的容器的 <code>operator[]</code> 会返回 <code>T&amp;</code>。条款1解释说，模板型别推导过程中，初始化表达的引用性会被忽略，所以下面代码就不会通过编译：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::deque&lt;<span class="type">int</span>&gt; d;</span><br><span class="line">...</span><br><span class="line"><span class="built_in">authAndAccess</span>(d, <span class="number">5</span>) = <span class="number">10</span>;</span><br></pre></td></tr></table></figure></div>
+<p>返回类型会被推导为 <code>int</code>，而且是个右值。</p>
+<p>可以使用 <code>decltype(auto)</code> 克服上述问题：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, type Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">authAndAccess</span><span class="params">(Container&amp; c, Index i)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">authenticateUser</span>();</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>这里函数返回值为 <code>T&amp;</code>，推导过程采用了 <code>decltype</code> 的规则。</p>
+<p>在变量声明上，也可以使用这种形式：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Widget w;</span><br><span class="line"><span class="type">const</span> Widget&amp; cw = w;</span><br><span class="line"><span class="keyword">auto</span> myWidget1 = cw;            <span class="comment">// myWidget1推导为Widget    </span></span><br><span class="line"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) myWidget2 = cw;  <span class="comment">// myWidget2推导为const Widget&amp;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="就收右值"><a href="#就收右值" class="headerlink" title="就收右值"></a>就收右值</h2><p><code>authAndAccess</code> 函数只能接收左值，但有时候可能需要传入一个右值，这时候可以使用万能引用：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, type Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">authAndAccess</span><span class="params">(Container&amp;&amp; c, Index i)</span></span></span><br></pre></td></tr></table></figure></div>
+<p>对未知型别的对象采用按值传递有着诸多风险：非必要的复制操作带来的性能隐患、对象截切 (slicing) 问题带来的行为异常（参见条款41），还有同行的嘲笑等。但是在容器下标这个特定问题上，遵循标准库中给出的下标值示例（例如 <code>std::string</code>、<code>std::vector</code> 和 <code>std::deque</code> 的 <code>operator[]</code>）应该是合理的，所以这里坚持使用了按值传递。不过，我们需要更新该模板的实现，以使它与条款25所教导我们的内容相符：对万能引用要应用 <code>std::forward</code>:</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, type Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">authAndAccess</span><span class="params">(Container&amp; c, Index i)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">authenticateUser</span>();</span><br><span class="line">    <span class="keyword">return</span> std::forward&lt;Container&gt;(c)[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>猎奇一下，如果 <code>decltype</code> 接收的仅有一个名字，那么行为保持不变，如果接收的是一个更复杂的表达式，它会得出左值引用。对于 <code>int x = 0;</code>，<code>decltype(x)</code> 的结果是 <code>int</code>，但 <code>decltype((x))</code> 的结果是 <code>int&amp;</code>。</p>
+<h2 id="要点速记："><a href="#要点速记：" class="headerlink" title="要点速记："></a>要点速记：</h2><ul>
+<li>绝大多数情况下，<code>decltype</code> 会得出变量或表达式的型别而不作任何修改。</li>
+<li>对于型别为 <code>T</code> 的左值表达式，除非该表达式仅有一个名字，<code>decltype</code> 总是得出型别 <code>T&amp;</code>。<br>• C++l4 支持 <code>decltype(auto)</code>，和 <code>auto</code> 一样，它会从其初始化表达式出发来推导型别，但是它的型别推导使用的是 <code>decltype</code> 的规则 。</li>
+</ul>
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C++</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/EMCPP/">#EMCPP</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                        <div class="article-prev">
+                            <a class="prev"
+                            rel="prev"
+                            href="/2023/emcpp4/"
+                            >
+                                <span class="left arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </span>
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">EMCPP条款4：掌握查看型别推导结果的方法</span>
+                                    <span class="post-nav-item">上一篇</span>
+                                </span>
+                            </a>
+                        </div>
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/emcpp2/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">EMCPP条款2：理解auto型别推导</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
         </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E7%94%A8%E6%B3%95"><span class="nav-text">一般用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%B1%E6%94%B6%E5%8F%B3%E5%80%BC"><span class="nav-text">就收右值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%E9%80%9F%E8%AE%B0%EF%BC%9A"><span class="nav-text">要点速记：</span></a></li></ol>
     </div>
-
-    <div class="tag-paginator">
-        <div class="paginator">
-    
-
-    
 </div>
-
+            </div>
+        
     </div>
 </div>
 
@@ -377,6 +469,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-bottom-side-tools">
@@ -469,6 +578,14 @@
 
 
 <div class="post-scripts pjax">
+    
+        
+<script src="/js/toc-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
     
 </div>
 

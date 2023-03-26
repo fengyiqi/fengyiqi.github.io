@@ -9,7 +9,7 @@
     
     <title>
         
-            分类: CFD |
+            EMCPP条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法 |
         
         YiQi&#39;s Blog
     </title>
@@ -118,7 +118,7 @@
                     
                         <li class="menu-item">
                             <!-- Menu -->
-                            <a class="active" 
+                            <a class="" 
                                 href="/categories" >
                                 
                                     
@@ -192,7 +192,7 @@
                 
             
                 <li class="drawer-menu-item flex-center">
-                    <a class="active" 
+                    <a class="" 
                        href="/categories" >
                          
                             
@@ -235,56 +235,151 @@
 
                 
                     <div class="fade-in-down-animation">
-    <div class="category-container">
-        <div class="category-name">
-            <i class="fa-solid fa-folder"></i>&nbsp;CFD
-        </div>
-        <div class="category-post-list">
-            
-<div class="archive-list-container">
-    
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[3]</span>
+    <div class="post-page-container">
+        <div class="article-content-container">
+            <div class="article-title">
+                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">EMCPP条款6：当auto推导的型别不符合要求时，使用带显式型别的初始化物习惯用法</h1></span>
             </div>
-            <ul class="article-list">
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/logo.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">YiQi</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="pc">2023-03-26 12:14:19</span>
+        <span class="mobile">2023-03-26 12:14</span>
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
                 
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/fvm3/"
-                        >CFD-FVM-03: Turbulence</a>
-                        <span class="article-date">03-26</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/fvm2/"
-                        >CFD-FVM-02: Classification of Physical Behaviours</a>
-                        <span class="article-date">03-26</span>
-                    </li>
-                
-                    <li class="article-item">
-                        <a class="article-title"
-                           href="/2023/fvm1/"
-                        >CFD-FVM-01: Navier-Stokes Equations</a>
-                        <span class="article-date">03-11</span>
+                    <li>
+                        <a href="/categories/EMCPP/">EMCPP</a>&nbsp;
                     </li>
                 
             </ul>
-        </section>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/EMCPP/">EMCPP</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-file-word"></i>&nbsp;<span>336 字</span>
+        </span>
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <p>有一个函数，接收一个 <code>Widget</code> 并返回一个 <code>std::vector&lt;bool&gt;</code>：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::vector&lt;<span class="type">bool</span>&gt; <span class="title">features</span><span class="params">(<span class="type">const</span> Widget&amp; w)</span></span>;</span><br><span class="line"></span><br><span class="line">Widget w;</span><br><span class="line"><span class="keyword">auto</span> highPriority = <span class="built_in">features</span>(w)[<span class="number">5</span>];</span><br></pre></td></tr></table></figure></div>
+<p>在这里，<code>highPriority</code> 不会被推导为 <code>bool</code>，而是 <code>std::vector&lt;bool&gt;::reference</code>，这是一个 <code>bool</code> 的“代理类”。如果我们想要 <code>highPriority</code> 是 <code>bool</code>，那么就要使用 <code>auto</code> 的“显式初始化”语法：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> highPriority = <span class="built_in">features</span>(w)[<span class="number">5</span>];</span><br></pre></td></tr></table></figure></div>
+<p>这里，<code>features</code> 返回了一个 <code>std::vector&lt;bool&gt;</code>，然后针对该对象执行 <code>operator[]</code>，返回了一个 <code>std::vector&lt;bool&gt;::reference</code>，然后将其转换成 <code>bool</code>。</p>
+<p>一个普遍的规律是， “隐形”代理类和 <code>auto</code> 无法和平共处。</p>
+<p>如何识别“隐形”代理类呢？</p>
+<ul>
+<li>使用它们的库往往会在文档中写明这一点</li>
+<li>查看头文件</li>
+</ul>
+<p><code>auto</code> 本身并不是问题。问题在于 <code>auto</code> 没有推导成为你想推导出来的型别。</p>
+<p>针对初始化表达式进行强制型别转换，转换成你想要 <code>auto</code> 推导出来的型别。可以提升代码可续性和意图。</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> highPriority = <span class="built_in">static_cast</span>&lt;<span class="type">bool</span>&gt;(<span class="built_in">features</span>(w)[<span class="number">5</span>]);</span><br><span class="line"><span class="keyword">auto</span> index = <span class="built_in">static_cast</span>&lt;<span class="type">int</span>&gt;(d * c.<span class="built_in">size</span>());</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="要点速记"><a href="#要点速记" class="headerlink" title="要点速记"></a>要点速记</h2><ul>
+<li>“隐形”的代理型别 可以导致 <code>auto</code> 祁据初始化表达式推导出 “错误的＂型别 </li>
+<li>带显式型别的初始化物习惯用法强制 <code>auto</code> 推导出你想要的型别。</li>
+</ul>
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C++</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/EMCPP/">#EMCPP</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/emcpp5/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">EMCPP条款5：优先选用auto而非显式型别声明</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
         </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%E9%80%9F%E8%AE%B0"><span class="nav-text">要点速记</span></a></li></ol>
     </div>
-    <div class="category-paginator">
-        <div class="paginator">
-    
-
-    
 </div>
-
+            </div>
+        
     </div>
 </div>
 
@@ -356,6 +451,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-bottom-side-tools">
@@ -448,6 +560,14 @@
 
 
 <div class="post-scripts pjax">
+    
+        
+<script src="/js/toc-toggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/toc.js"></script>
+
     
 </div>
 
