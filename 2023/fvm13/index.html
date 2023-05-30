@@ -13,21 +13,21 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://fengyiqi.github.io/2023/emcpp3/"/>
+    <link rel="canonical" href="http://fengyiqi.github.io/2023/fvm13/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
         <meta property="og:type" content="article">
-<meta property="og:title" content="EMCPP条款3：理解decltype">
-<meta property="og:url" content="http://fengyiqi.github.io/2023/emcpp3/index.html">
+<meta property="og:title" content="CFD-FVM-13: Errors and uncertainty in CFD modelling">
+<meta property="og:url" content="http://fengyiqi.github.io/2023/fvm13/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-26T10:14:13.000Z">
-<meta property="article:modified_time" content="2023-03-26T10:15:46.147Z">
+<meta property="article:published_time" content="2023-05-30T21:08:31.000Z">
+<meta property="article:modified_time" content="2023-05-30T21:09:15.580Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="C++">
-<meta property="article:tag" content="EMCPP">
+<meta property="article:tag" content="FVM">
+<meta property="article:tag" content="CFD">
 <meta name="twitter:card" content="summary">
     
     
@@ -40,7 +40,7 @@
     
     <title>
         
-            EMCPP条款3：理解decltype -
+            CFD-FVM-13: Errors and uncertainty in CFD modelling -
         
         YiQi&#39;s Blog
     </title>
@@ -83,7 +83,119 @@
     
     
     
-<meta name="generator" content="Hexo 6.3.0"></head>
+<meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 
 <body>
@@ -293,7 +405,7 @@
             
             
                 <div class="article-title">
-                    <h1 class="article-title-regular">EMCPP条款3：理解decltype</h1>
+                    <h1 class="article-title-regular">CFD-FVM-13: Errors and uncertainty in CFD modelling</h1>
                 </div>
             
                 
@@ -315,15 +427,15 @@
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-03-26 12:14:13</span>
-        <span class="mobile">2023-03-26 12:14</span>
+        <span class="desktop">2023-05-30 23:08:31</span>
+        <span class="mobile">2023-05-30 23:08</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-03-26 12:15:46</span>
-            <span class="mobile">2023-03-26 12:15</span>
+            <span class="desktop">2023-05-30 23:09:15</span>
+            <span class="mobile">2023-05-30 23:09</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -334,7 +446,7 @@
             <ul>
                 
                     <li>
-                        <a href="/categories/EMCPP/">EMCPP</a>&nbsp;
+                        <a href="/categories/CFD/">CFD</a>&nbsp;
                     </li>
                 
             </ul>
@@ -346,11 +458,11 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/C/">C++</a>&nbsp;
+                        <a href="/tags/FVM/">FVM</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/EMCPP/">EMCPP</a>&nbsp;
+                        | <a href="/tags/CFD/">CFD</a>&nbsp;
                     </li>
                 
             </ul>
@@ -360,12 +472,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>688 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>669 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>2 分钟</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>4 分钟</span>
         </span>
     
     
@@ -381,27 +493,53 @@
             
 
             <div class="article-content markdown-body">
-                <h2 id="一般用法"><a href="#一般用法" class="headerlink" title="一般用法"></a>一般用法</h2><p>最基础的用法不赘述。</p>
-<p>返回值型别尾序语法（trailing return type syntax）</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, type Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">authAndAccess</span><span class="params">(Container&amp; c, Index i)</span> -&gt; <span class="title">decltype</span><span class="params">(c[i])</span> </span>&#123;</span><br><span class="line">    <span class="built_in">authenticateUser</span>();</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p>在C++14中，上面代码中的 <code>-&gt; decltype(c[i])</code>其实可以省略，编译器会自动推导 <code>c[i]</code>作为函数返回值类型。但是，大多数含有型别 <code>T</code> 的对象的容器的 <code>operator[]</code> 会返回 <code>T&amp;</code>。条款1解释说，模板型别推导过程中，初始化表达的引用性会被忽略，所以下面代码就不会通过编译：</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::deque&lt;<span class="type">int</span>&gt; d;</span><br><span class="line">...</span><br><span class="line"><span class="built_in">authAndAccess</span>(d, <span class="number">5</span>) = <span class="number">10</span>;</span><br></pre></td></tr></table></figure></div>
-<p>返回类型会被推导为 <code>int</code>，而且是个右值。</p>
-<p>可以使用 <code>decltype(auto)</code> 克服上述问题：</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, type Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">authAndAccess</span><span class="params">(Container&amp; c, Index i)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">authenticateUser</span>();</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-<p>这里函数返回值为 <code>T&amp;</code>，推导过程采用了 <code>decltype</code> 的规则。</p>
-<p>在变量声明上，也可以使用这种形式：</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Widget w;</span><br><span class="line"><span class="type">const</span> Widget&amp; cw = w;</span><br><span class="line"><span class="keyword">auto</span> myWidget1 = cw;            <span class="comment">// myWidget1推导为Widget    </span></span><br><span class="line"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) myWidget2 = cw;  <span class="comment">// myWidget2推导为const Widget&amp;</span></span><br></pre></td></tr></table></figure></div>
-<h2 id="就收右值"><a href="#就收右值" class="headerlink" title="就收右值"></a>就收右值</h2><p><code>authAndAccess</code> 函数只能接收左值，但有时候可能需要传入一个右值，这时候可以使用万能引用：</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, type Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">authAndAccess</span><span class="params">(Container&amp;&amp; c, Index i)</span></span></span><br></pre></td></tr></table></figure></div>
-<p>对未知型别的对象采用按值传递有着诸多风险：非必要的复制操作带来的性能隐患、对象截切 (slicing) 问题带来的行为异常（参见条款41），还有同行的嘲笑等。但是在容器下标这个特定问题上，遵循标准库中给出的下标值示例（例如 <code>std::string</code>、<code>std::vector</code> 和 <code>std::deque</code> 的 <code>operator[]</code>）应该是合理的，所以这里坚持使用了按值传递。不过，我们需要更新该模板的实现，以使它与条款25所教导我们的内容相符：对万能引用要应用 <code>std::forward</code>:</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, type Index&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">authAndAccess</span><span class="params">(Container&amp; c, Index i)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">authenticateUser</span>();</span><br><span class="line">    <span class="keyword">return</span> std::forward&lt;Container&gt;(c)[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-
-<p>猎奇一下，如果 <code>decltype</code> 接收的仅有一个名字，那么行为保持不变，如果接收的是一个更复杂的表达式，它会得出左值引用。对于 <code>int x = 0;</code>，<code>decltype(x)</code> 的结果是 <code>int</code>，但 <code>decltype((x))</code> 的结果是 <code>int&amp;</code>。</p>
-<h2 id="要点速记："><a href="#要点速记：" class="headerlink" title="要点速记："></a>要点速记：</h2><ul>
-<li>绝大多数情况下，<code>decltype</code> 会得出变量或表达式的型别而不作任何修改。</li>
-<li>对于型别为 <code>T</code> 的左值表达式，除非该表达式仅有一个名字，<code>decltype</code> 总是得出型别 <code>T&amp;</code>。<br>• C++l4 支持 <code>decltype(auto)</code>，和 <code>auto</code> 一样，它会从其初始化表达式出发来推导型别，但是它的型别推导使用的是 <code>decltype</code> 的规则 。</li>
+                <h2 id="Errors-and-uncertainty-in-CFD"><a href="#Errors-and-uncertainty-in-CFD" class="headerlink" title="Errors and uncertainty in CFD"></a>Errors and uncertainty in CFD</h2><p>The formulation of a number of guidelines for best practice in CFD, the most influential of which are the AIAA (1998) and ERCOFTAC (2000) guidelines.</p>
+<h3 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h3><p>a recognisable deficiency in a CFD model that is not caused by lack of knowledge. Causes of errors, defined in this way, are:</p>
+<ul>
+<li>Numerical errors – roundoff errors, iterative convergence errors, discretisation errors</li>
+<li>Coding errors – mistakes or ‘bugs’ in the software</li>
+<li>User errors – human errors through incorrect use of the software</li>
+</ul>
+<h3 id="Uncertainty"><a href="#Uncertainty" class="headerlink" title="Uncertainty"></a>Uncertainty</h3><p>a potential deficiency in a CFD model that is caused by lack of knowledge. The main sources of uncertainty are:</p>
+<ul>
+<li>Input uncertainty – inaccuracies due to limited information or approximate representation of geometry, boundary conditions, material properties etc.</li>
+<li>Physical model uncertainty – discrepancies between real flows and CFD due to inadequate representation of physical or chemical processes (e.g. turbulence, combustion) or due to simplifying assumptions in the modelling process (e.g. incompressible flow, steady flow)</li>
+</ul>
+<h2 id="Numerical-errors"><a href="#Numerical-errors" class="headerlink" title="Numerical errors"></a>Numerical errors</h2><ul>
+<li>Roundoff error</li>
+<li>Iterative convergence error</li>
+<li>Discretisation error</li>
+</ul>
+<h3 id="Roundoff-errors"><a href="#Roundoff-errors" class="headerlink" title="Roundoff errors"></a>Roundoff errors</h3><p>Roundoff errors are the result of the computational representation of real numbers by means of a finite number of significant digits, which is termed the machine accuracy.</p>
+<h3 id="Iterative-convergence-errors"><a href="#Iterative-convergence-errors" class="headerlink" title="Iterative convergence errors"></a>Iterative convergence errors</h3><p>In practice, the available resources of computing power and time dictate that we truncate the iteration sequence when the solution is sufficiently close to the final solution. This truncation generates a contribution to the numerical error in the CFD solution.</p>
+<h3 id="Discretisation-errors"><a href="#Discretisation-errors" class="headerlink" title="Discretisation errors"></a>Discretisation errors</h3><p>Temporal and spatial derivates of the flow variable, which appear in the expressions for the rates of change, fluxes, sources and sinks in the governing equations, are approximated in the finite volume method on the chosen time and space mesh.</p>
+<h2 id="Input-uncertainty"><a href="#Input-uncertainty" class="headerlink" title="Input uncertainty"></a>Input uncertainty</h2><ul>
+<li>Domain geometry</li>
+<li>Boundary conditions</li>
+<li>Fluid properties</li>
+</ul>
+<h3 id="Domain-geometry"><a href="#Domain-geometry" class="headerlink" title="Domain geometry"></a>Domain geometry</h3><p>It is impossible to manufacture the duct perfectly to the design specifications; manufacturing tolerances will lead to discrepancies between the design intent and a manufactured part</p>
+<h3 id="Boundary-conditions"><a href="#Boundary-conditions" class="headerlink" title="Boundary conditions"></a>Boundary conditions</h3><p>Simple assumptions, e.g. given temperature, given heat flux, adiabatic wall, are often made in the computations; the accuracy of these will affect the calculation result. A contribution to the input uncertainty is associated with the inaccuracy of all assumptions involved in the process of defining the boundary conditions.</p>
+<h3 id="Fluid-properties"><a href="#Fluid-properties" class="headerlink" title="Fluid properties"></a>Fluid properties</h3><p>All fluid properties (e.g. density, viscosity, thermal conductivity) depend to a greater or lesser extent on the local value of flow parameters, such as pressure and temperature. </p>
+<h2 id="Physical-model-uncertainty"><a href="#Physical-model-uncertainty" class="headerlink" title="Physical model uncertainty"></a>Physical model uncertainty</h2><h3 id="Limited-accuracy-or-lack-of-validity-of-submodels"><a href="#Limited-accuracy-or-lack-of-validity-of-submodels" class="headerlink" title="Limited accuracy or lack of validity of submodels"></a>Limited accuracy or lack of validity of submodels</h3><p>CFD modelling of complex flow phenomena, such as turbulence, combustion, heat and mass transfer, involves semi-empirical submodels. They encapsulate the best scientific understanding of complex physical and chemical processes.</p>
+<h3 id="Limited-accuracy-or-lack-of-validity-of-simplifying-assumptions"><a href="#Limited-accuracy-or-lack-of-validity-of-simplifying-assumptions" class="headerlink" title="Limited accuracy or lack of validity of simplifying assumptions"></a>Limited accuracy or lack of validity of simplifying assumptions</h3><p>The accuracy and appropriateness of all simplifying assumptions for a given flow determine the size of their contribution to physical model uncertainty.</p>
+<h2 id="Verification-and-validation"><a href="#Verification-and-validation" class="headerlink" title="Verification and validation"></a>Verification and validation</h2><ul>
+<li><strong>Verification</strong>: the process of determining that a model implementation accurately represents the developer’s conceptual description of the model and the solution to the model. Roache (1998) coined the phrase ‘solving the equations right’. This process quantifies the errors.</li>
+<li><strong>Validation</strong>: the process of determining the degree to which a model is an accurate representation of the real world from the perspective of the intended uses of the model. Roache (1998) called this ‘solving the right equations’. This process quantifies the uncertainty.</li>
+</ul>
+<h3 id="Verification"><a href="#Verification" class="headerlink" title="Verification"></a>Verification</h3><p>The process of verification involves quantification of the errors.</p>
+<h3 id="Validation"><a href="#Validation" class="headerlink" title="Validation"></a>Validation</h3><p>The process of validation involves quantification of the input uncertainty and physical model uncertainty</p>
+<ul>
+<li><strong>Input uncertainty</strong> can be estimated by means of sensitivity analysis or uncertainty analysis. In sensitivity analysis the effects of variations in each item of input data is studied individually. Uncertainty analysis, on the other hand, considers possible interactions due to simultaneous variations of different pieces of input data and uses Monte Carlo techniques in the design of the programme of CFD test runs.</li>
+<li>quantitative assessment of the <strong>physical modelling uncertainty</strong> requires comparison of CFD results with high-quality experimental results.</li>
+</ul>
+<h2 id="Guidelines-for-best-practice-in-CFD"><a href="#Guidelines-for-best-practice-in-CFD" class="headerlink" title="Guidelines for best practice in CFD"></a>Guidelines for best practice in CFD</h2><ul>
+<li>AIAA guide (1998)</li>
+<li>ERCOFTAC guidelines (2000)</li>
+</ul>
+<h2 id="Reporting-x2F-documentation-of-CFD-simulation-inputs-and-results"><a href="#Reporting-x2F-documentation-of-CFD-simulation-inputs-and-results" class="headerlink" title="Reporting / documentation of CFD simulation inputs and results"></a>Reporting / documentation of CFD simulation inputs and results</h2><ul>
+<li>Input documentation</li>
+<li>Result interpretation and reporting</li>
 </ul>
 
             </div>
@@ -412,11 +550,11 @@
                 <ul class="post-tags-box">
                     
                         <li class="tag-item">
-                            <a href="/tags/C/">#C++</a>&nbsp;
+                            <a href="/tags/FVM/">#FVM</a>&nbsp;
                         </li>
                     
                         <li class="tag-item">
-                            <a href="/tags/EMCPP/">#EMCPP</a>&nbsp;
+                            <a href="/tags/CFD/">#CFD</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -427,29 +565,14 @@
             
                 <div class="article-nav">
                     
-                        <div class="article-prev">
-                            <a class="prev"
-                            rel="prev"
-                            href="/2023/emcpp4/"
-                            >
-                                <span class="left arrow-icon flex-center">
-                                    <i class="fa-solid fa-chevron-left"></i>
-                                </span>
-                                <span class="title flex-center">
-                                    <span class="post-nav-title-item">EMCPP条款4：掌握查看型别推导结果的方法</span>
-                                    <span class="post-nav-item">上一篇</span>
-                                </span>
-                            </a>
-                        </div>
-                    
                     
                         <div class="article-next">
                             <a class="next"
                             rel="next"
-                            href="/2023/emcpp2/"
+                            href="/2023/fvm12/"
                             >
                                 <span class="title flex-center">
-                                    <span class="post-nav-title-item">EMCPP条款2：理解auto型别推导</span>
+                                    <span class="post-nav-title-item">CFD-FVM-12: Implementation of boundary conditions</span>
                                     <span class="post-nav-item">下一篇</span>
                                 </span>
                                 <span class="right arrow-icon flex-center">
@@ -470,8 +593,8 @@
                 <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
-        <div class="page-title">EMCPP条款3：理解decltype</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E7%94%A8%E6%B3%95"><span class="nav-text">一般用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%B1%E6%94%B6%E5%8F%B3%E5%80%BC"><span class="nav-text">就收右值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%E9%80%9F%E8%AE%B0%EF%BC%9A"><span class="nav-text">要点速记：</span></a></li></ol>
+        <div class="page-title">CFD-FVM-13: Errors and uncertainty in CFD modelling</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Errors-and-uncertainty-in-CFD"><span class="nav-text">Errors and uncertainty in CFD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Error"><span class="nav-text">Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Uncertainty"><span class="nav-text">Uncertainty</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Numerical-errors"><span class="nav-text">Numerical errors</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Roundoff-errors"><span class="nav-text">Roundoff errors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Iterative-convergence-errors"><span class="nav-text">Iterative convergence errors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discretisation-errors"><span class="nav-text">Discretisation errors</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Input-uncertainty"><span class="nav-text">Input uncertainty</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Domain-geometry"><span class="nav-text">Domain geometry</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Boundary-conditions"><span class="nav-text">Boundary conditions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fluid-properties"><span class="nav-text">Fluid properties</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Physical-model-uncertainty"><span class="nav-text">Physical model uncertainty</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Limited-accuracy-or-lack-of-validity-of-submodels"><span class="nav-text">Limited accuracy or lack of validity of submodels</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Limited-accuracy-or-lack-of-validity-of-simplifying-assumptions"><span class="nav-text">Limited accuracy or lack of validity of simplifying assumptions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Verification-and-validation"><span class="nav-text">Verification and validation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Verification"><span class="nav-text">Verification</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Validation"><span class="nav-text">Validation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Guidelines-for-best-practice-in-CFD"><span class="nav-text">Guidelines for best practice in CFD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reporting-x2F-documentation-of-CFD-simulation-inputs-and-results"><span class="nav-text">Reporting &#x2F; documentation of CFD simulation inputs and results</span></a></li></ol>
 
     </div>
 </div>

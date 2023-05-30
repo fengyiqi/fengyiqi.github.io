@@ -1121,7 +1121,7 @@ button {
 }
 .markdown-body img {
   box-sizing: border-box;
-  border-radius: 14px;
+  border-radius: 8px;
   max-width: 100%;
   cursor: zoom-in;
   display: block;
