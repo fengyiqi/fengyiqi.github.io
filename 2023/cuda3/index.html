@@ -2,48 +2,94 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
-    <meta name="description" content="Hexo Theme Redefine">
+    
     <meta name="author" content="YiQi">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fengyiqi.github.io/2023/cuda3/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta property="og:type" content="article">
+<meta property="og:title" content="CUDA编程03: 全局内存、共享内存以及原子函数的合理使用">
+<meta property="og:url" content="http://fengyiqi.github.io/2023/cuda3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/bank.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/bank_test.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/atomic_type.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/graphene.jpg">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/graphene_bond.jpg">
+<meta property="article:published_time" content="2023-01-03T22:26:09.000Z">
+<meta property="article:modified_time" content="2023-03-11T21:57:54.809Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CUDA">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/bank.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <!--- Page Info-->
     
     <title>
         
-            CUDA编程03: 全局内存、共享内存以及原子函数的合理使用 |
+            CUDA编程03: 全局内存、共享内存以及原子函数的合理使用 -
         
         YiQi&#39;s Blog
     </title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <link rel="shortcut icon" href="/images/logo.svg">
     
-<link rel="stylesheet" href="/css/fontawesome.min.css">
+<link rel="stylesheet" href="/assets/fonts.css">
 
+    <!--- Font Part-->
     
-<link rel="stylesheet" href="/css/brands.min.css">
+    
+    
+    
 
+    <!--- Inject Part-->
     
-<link rel="stylesheet" href="/css/solid.min.css">
-
-    
-<link rel="stylesheet" href="/css/regular.min.css">
-
-    
-    
-    
-    
-<link rel="stylesheet" href="/css/css2.css">
-
     <script id="hexo-configurations">
-    let REDEFINE = window.REDEFINE || {};
-    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
-    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
-    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/night_sky.jpg"},"title":"早日毕业！","subtitle":{"text":["我们的征途是星辰大海"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#404040","dark":"#e0e0e0"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/fengyiqi","instagram":null,"zhihu":null,"twitter":null,"email":"yiqi.feng@hotmail.com"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.4","navbar":{"auto_hide":false,"color":{"left":"#404040","right":"#ffffff","transparency":30},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":false};
   </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
 <meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
@@ -176,12 +222,12 @@ mjx-container[display="true"] + br {
 
     
 
-    <div class="page-main-content">
+    <div class="main-content-container">
 
-        <div class="page-main-content-top">
-            <header class="header-wrapper">
+        <div class="main-content-header">
+            <header class="navbar-container">
     
-    <div class="header-content">
+    <div class="navbar-content">
         <div class="left">
             
                 <a class="logo-image" href="/">
@@ -189,74 +235,80 @@ mjx-container[display="true"] + br {
                 </a>
             
             <a class="logo-title" href="/">
+                
                 YiQi&#39;s Blog
+                
             </a>
         </div>
 
         <div class="right">
             <!-- PC -->
-            <div class="pc">
-                <ul class="menu-list">
+            <div class="desktop">
+                <ul class="navbar-list">
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
                                     
-                                        <i class="fa-regular fa-house"></i>
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
                                     
-                                    首页
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/archives" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
                                     
-                                        <i class="fa-regular fa-archive"></i>
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
                                     
-                                    归档
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/categories" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
                                     
-                                        <i class="fa-regular fa-list"></i>
+                                        
+                                            <i class="fa-regular fa-list"></i>
+                                        
+                                        分类
                                     
-                                    分类
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/about" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
                                     
-                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                            <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                        关于
                                     
-                                    关于
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
                     
                 </ul>
@@ -264,73 +316,78 @@ mjx-container[display="true"] + br {
             <!-- Mobile -->
             <div class="mobile">
                 
-                <div class="icon-item menu-bar">
-                    <div class="menu-bar-middle"></div>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile drawer -->
-    <div class="header-drawer">
-        <ul class="drawer-menu-list">
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/" >
-                         
-                            
-                                <i class="fa-regular fa-house"></i>
-                            
-                            首页
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/archives" >
-                         
-                            
-                                <i class="fa-regular fa-archive"></i>
-                            
-                            归档
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/categories" >
-                         
-                            
-                                <i class="fa-regular fa-list"></i>
-                            
-                            分类
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-list"></i>
+                                
+                                分类
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/about" >
-                         
-                            
-                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
-                            
-                            关于
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                
+                                关于
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
+
         </ul>
     </div>
 
@@ -341,7 +398,9 @@ mjx-container[display="true"] + br {
 
         </div>
 
-        <div class="page-main-content-middle">
+        <div class="main-content-body">
+
+            
 
             <div class="main-content">
 
@@ -349,9 +408,15 @@ mjx-container[display="true"] + br {
                     <div class="fade-in-down-animation">
     <div class="post-page-container">
         <div class="article-content-container">
-            <div class="article-title">
-                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">CUDA编程03: 全局内存、共享内存以及原子函数的合理使用</h1></span>
-            </div>
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">CUDA编程03: 全局内存、共享内存以及原子函数的合理使用</h1>
+                </div>
+            
+                
+            
 
             
                 <div class="article-header">
@@ -362,14 +427,26 @@ mjx-container[display="true"] + br {
                         <div class="author">
                             <span class="name">YiQi</span>
                             
+                                <span class="author-label">Lv3</span>
+                            
                         </div>
                         <div class="meta-info">
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="pc">2023-01-03 23:26:09</span>
+        <span class="desktop">2023-01-03 23:26:09</span>
         <span class="mobile">2023-01-03 23:26</span>
+        <span class="hover-info">创建</span>
     </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-03-11 22:57:54</span>
+            <span class="mobile">2023-03-11 22:57</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
     
         <span class="article-categories article-meta-item">
             <i class="fa-regular fa-folders"></i>&nbsp;
@@ -406,9 +483,13 @@ mjx-container[display="true"] + br {
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-file-word"></i>&nbsp;<span>5.4k 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>5.4k 字</span>
         </span>
     
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>21 分钟</span>
+        </span>
     
     
         <span class="article-pv article-meta-item">
@@ -443,7 +524,7 @@ mjx-container[display="true"] + br {
 <li>广播式的非合并访问 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> __global__ <span class="title">add_broadcast</span><span class="params">(<span class="type">float</span> *x, <span class="type">float</span> *y, <span class="type">float</span> *z)</span> </span>{</span><br><span class="line">    <span class="type">int</span> n = threadIdx.x + blockIdx.x * blockDim.x;</span><br><span class="line">    z[n] = x[<span class="number">0</span>] + y[n]; </span><br><span class="line">}</span><br><span class="line">add_broadcast&lt;&lt;&lt;<span class="number">128</span>, <span class="number">32</span>&gt;&gt;&gt;(x, y, z);</span><br></pre></td></tr></table></figure></div>
  第一个线程块中的线程束将一致地访问数组<code>x</code>中的第0个元素。这只需要一次数据传输（处理32字节的数据），但由于整个线程束只使用了4字节的数据，故合并度为4/32×100％=12.5％.这样的访问属于广播式的非合并访问。这样的访问（如果是读数据的话）适合采用第6章提到的常量内存。</li>
 </ol>
-<h3 id="例子：矩阵转置"><a href="#例子：矩阵转置" class="headerlink" title="例子：矩阵转置"></a>例子：矩阵转置</h3><p>完整代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/matrix.cu">matrix.cu<i class="fa-solid fa-up-right-from-square"></i></a>，这里只列出第一种转置函数：</p>
+<h3 id="例子：矩阵转置"><a href="#例子：矩阵转置" class="headerlink" title="例子：矩阵转置"></a>例子：矩阵转置</h3><p>完整代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/matrix.cu">matrix.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，这里只列出第一种转置函数：</p>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__global__ <span class="type">void</span> <span class="title">transpose1</span><span class="params">(<span class="type">const</span> real *A, real *B, <span class="type">const</span> <span class="type">int</span> N)</span> </span>{</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> nx = blockIdx.x * blockDim.x + threadIdx.x;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> ny = blockIdx.y * blockDim.y + threadIdx.y;</span><br><span class="line">    <span class="keyword">if</span> (nx &lt; N &amp;&amp; ny &lt; N) {</span><br><span class="line">        B[nx * N + ny] = A[ny * N + nx];</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
 
 <p>矩阵转置需要读写一块内存，比如<code>A</code>为原矩阵（读），<code>B</code>为转置后的矩阵（写），两者只能有一个是合并访问，另一个必是非合并访问。比如上面的函数<code>transpose1()</code>，对<code>A</code>的访问是合并的，对<code>B</code>的写入是非合并的。</p>
@@ -518,7 +599,7 @@ mjx-container[display="true"] + br {
 <p>只要同一线程束内的多个线程不同时访问同一个bank中不同层的数据,该线程束对共享内存的访问就只需要一次内存事务（memory transaction）。当同一线程束内的多个线程试图访问同一个bank中不同层的数据时，就会发生bank冲突。</p>
 <p>在核函数<code>tranpose1()</code>中定义了一个长度为32 * 32 = 1024的单精度浮点型变量的共享内存数组，其排列方式如下图所示</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/bank.png">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/bank.png">
 </p>
 
 <p>核函数<code>tranpose1()</code>的第16行代码，同一个线程束中的32个线程（连续的32个<code>threadIdx.x</code>值）将对应共享内存数组<code>S</code>中跨度为32的数据。也就是说，这32个线程将刚好访问同一个bank中的32个数据，这将导致32路bank冲突。相比之下，核函数<code>tranpose1()</code>的第9行代码就不会发生bank冲突。</p>
@@ -533,7 +614,7 @@ mjx-container[display="true"] + br {
 
 <p>作者测试的结果：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/bank_test.png">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/bank_test.png">
 </p>
 
 <h2 id="原子函数的合理使用"><a href="#原子函数的合理使用" class="headerlink" title="原子函数的合理使用"></a>原子函数的合理使用</h2><p>考虑前面数组归约的代码：</p>
@@ -542,7 +623,7 @@ mjx-container[display="true"] + br {
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (tid == <span class="number">0</span>) {</span><br><span class="line">    d_y[<span class="number">0</span>] = s_y[<span class="number">0</span>];</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
 <p>就得不到正确结果，因为线程块之间没有同步，两个线程块可能同时读取<code>d_y[0]</code>。为了克服这个问题，可以才用原子函数：</p>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (tid == <span class="number">0</span>) {</span><br><span class="line">    <span class="built_in">atomicAdd</span>(&amp;d_y[<span class="number">0</span>], s_y[<span class="number">0</span>]);</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
-<p><code>atomicAdd(adress, value)</code>第一个参数是待累加变量的地址，第二个参数是累加的值。该函数的作用是先将地址<code>address</code>中旧值<code>old</code>读出，计算<code>old + val</code>，然后将计算的值存入地址<code>address</code>。原子函数不能保证各个线程的执行具有特定的次序,但是能够保证每个线程的操作一气呵成，不被其他线程干扰，所以能够保证得到正确的结果。完整代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/reduceGPU_atomic.cu">reduceGPU_atomic.cu<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<p><code>atomicAdd(adress, value)</code>第一个参数是待累加变量的地址，第二个参数是累加的值。该函数的作用是先将地址<code>address</code>中旧值<code>old</code>读出，计算<code>old + val</code>，然后将计算的值存入地址<code>address</code>。原子函数不能保证各个线程的执行具有特定的次序,但是能够保证每个线程的操作一气呵成，不被其他线程干扰，所以能够保证得到正确的结果。完整代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/reduceGPU_atomic.cu">reduceGPU_atomic.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <h3 id="原子函数"><a href="#原子函数" class="headerlink" title="原子函数"></a>原子函数</h3><p>原子函数第一个参数可以指向全局内存，也可以指问共享内存。对所有参与的线程来说，该“读-改-写”的原子操作是一个线程一个线程轮流做的，但没有明确的次序。另外，原子函数没有同步功能。</p>
 <p>从帕斯卡架构开始，在原来的原子函数的基础上引入了两类新的原子函数。例如，对原子函数<code>atomicAdd()</code>来说，从帕斯卡架构起引入了另外两个原子函数，分别是<code>atomicAdd_system</code>和<code>atomicAdd_block()</code>，前者将原子函数的作用范围扩展到整个同节点的异构系统（包括主机和所有设备），后者将原子函数的作用范围缩小至一个线程块。<strong>原子函数的返回值是<code>old</code></strong></p>
 <ul>
@@ -559,7 +640,7 @@ mjx-container[display="true"] + br {
 <li>按位异与：<code>T atomicXor(T *adress, T val);</code><br>  功能：<code>new = old ^ val</code></li>
 </ul>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/atomic_type.png">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/atomic_type.png">
 </p>
 
 <h3 id="例子：邻居列表的建立"><a href="#例子：邻居列表的建立" class="headerlink" title="例子：邻居列表的建立"></a>例子：邻居列表的建立</h3><p>两个粒子互为邻居的判据如下：它们的距离不大于一个给定的截断距离r<sub>c</sub>。</p>
@@ -567,11 +648,11 @@ mjx-container[display="true"] + br {
 <p>这是一个计算量正比于粒子数平方N<sup>2</sup>的算法，或者<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="6.681ex" height="2.452ex" role="img" focusable="false" viewBox="0 -833.9 2952.8 1083.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="4F" d="M308 428Q289 428 289 438Q289 457 318 508T378 593Q417 638 475 671T599 705Q688 705 732 643T777 483Q777 380 733 285T620 123T464 18T293 -22Q188 -22 123 51T58 245Q58 327 87 403T159 533T249 626T333 685T388 705Q404 705 404 693Q404 674 363 649Q333 632 304 606T239 537T181 429T158 290Q158 179 214 114T364 48Q489 48 583 165T677 438Q677 473 670 505T648 568T601 617T528 636Q518 636 513 635Q486 629 460 600T419 544T392 490Q383 470 372 459Q341 430 308 428Z"></path></g></g><g data-mml-node="mo" transform="translate(796,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="msup" transform="translate(1185,0)"><g data-mml-node="mi"><path data-c="1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></g><g data-mml-node="mn" transform="translate(975.3,363) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g><g data-mml-node="mo" transform="translate(2563.8,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container>算法。对于大体系，有一个更加高效但编程实现相对复杂的<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="5.57ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2462 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="4F" d="M308 428Q289 428 289 438Q289 457 318 508T378 593Q417 638 475 671T599 705Q688 705 732 643T777 483Q777 380 733 285T620 123T464 18T293 -22Q188 -22 123 51T58 245Q58 327 87 403T159 533T249 626T333 685T388 705Q404 705 404 693Q404 674 363 649Q333 632 304 606T239 537T181 429T158 290Q158 179 214 114T364 48Q489 48 583 165T677 438Q677 473 670 505T648 568T601 617T528 636Q518 636 513 635Q486 629 460 600T419 544T392 490Q383 470 372 459Q341 430 308 428Z"></path></g></g><g data-mml-node="mo" transform="translate(796,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1185,0)"><path data-c="1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></g><g data-mml-node="mo" transform="translate(2073,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container>算法，计算量仅仅正比于粒子数N，但为简单起见，这里不讨论<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="5.57ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 2462 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="4F" d="M308 428Q289 428 289 438Q289 457 318 508T378 593Q417 638 475 671T599 705Q688 705 732 643T777 483Q777 380 733 285T620 123T464 18T293 -22Q188 -22 123 51T58 245Q58 327 87 403T159 533T249 626T333 685T388 705Q404 705 404 693Q404 674 363 649Q333 632 304 606T239 537T181 429T158 290Q158 179 214 114T364 48Q489 48 583 165T677 438Q677 473 670 505T648 568T601 617T528 636Q518 636 513 635Q486 629 460 600T419 544T392 490Q383 470 372 459Q341 430 308 428Z"></path></g></g><g data-mml-node="mo" transform="translate(796,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(1185,0)"><path data-c="1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></g><g data-mml-node="mo" transform="translate(2073,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></mjx-container>算法。</p>
 <p>原子排列如下图所示：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/graphene.jpg">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/graphene.jpg">
 </p>
 
 
-<h4 id="C-版本："><a href="#C-版本：" class="headerlink" title="C++版本："></a>C++版本：</h4><p>源代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/neighborCPU.cu">neighborCPU.cu<i class="fa-solid fa-up-right-from-square"></i></a>。寻找邻居的函数如下：</p>
+<h4 id="C-版本："><a href="#C-版本：" class="headerlink" title="C++版本："></a>C++版本：</h4><p>源代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/neighborCPU.cu">neighborCPU.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。寻找邻居的函数如下：</p>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">find_neighbor</span><span class="params">(<span class="type">int</span> *NN, <span class="type">int</span> *NL, <span class="type">const</span> real* x, <span class="type">const</span> real* y)</span> </span>{</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> n = <span class="number">0</span>; n &lt; N; n++) {</span><br><span class="line">        NN[n] = <span class="number">0</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> n1 = <span class="number">0</span>; n1 &lt; N; ++n1) {</span><br><span class="line">        real x1 = x[n1];</span><br><span class="line">        real y1 = y[n1];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> n2 = n1 + <span class="number">1</span>; n2 &lt; N; ++n2) {</span><br><span class="line">            real x12 = x[n2] - x1;</span><br><span class="line">            real y12 = y[n2] - y1;</span><br><span class="line">            real distance_square = x12 * x12 + y12 * y12;</span><br><span class="line">            <span class="keyword">if</span> (distance_square &lt; cutoff_square) {</span><br><span class="line">                NL[n1 * MN + NN[n1]++] = n2;</span><br><span class="line">                NL[n2 * MN + NN[n2]++] = n1;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
 <ul>
 <li>总原子数<code>N</code></li>
@@ -581,9 +662,9 @@ mjx-container[display="true"] + br {
 <li><code>NL</code>长度为<code>N * MN</code>，其中<code>NL[n * MN + k]</code>是第<code>n</code>个粒子的第<code>k</code>个邻居</li>
 <li><code>x</code>和<code>y</code>对应坐标</li>
 </ul>
-<p>最后用Python的matplotlib库画出了碳碳键，脚本见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/plot_graphene_bond.py">plot_graphene_bond.py<i class="fa-solid fa-up-right-from-square"></i></a>，图如下：</p>
+<p>最后用Python的matplotlib库画出了碳碳键，脚本见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/plot_graphene_bond.py">plot_graphene_bond.py <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，图如下：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/graphene_bond.jpg">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/graphene_bond.jpg">
 </p>
 
 <p>在本人机器上测试，每次运行时间大概在187ms左右（单精度）。</p>
@@ -607,7 +688,7 @@ mjx-container[display="true"] + br {
 <ul>
 <li>这里改变了邻居列表的数据排列方式，将<code>d_NL[n1 * MN + count++]</code>改成了<code>d_NL[(count++) * N + n1]</code>。这是因为<code>n1</code>的变化步调与<code>threadIdx.x</code>一致，这样修改后，对全局内存数组<code>d_NL</code>的访问是合并的。</li>
 </ul>
-<p>以上源代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/neighborGPU.cu">neighborGPU.cu<i class="fa-solid fa-up-right-from-square"></i></a>。经本人机器测试，使用原子函数大概耗时1.68ms，不使用原子函数大概耗时1.91ms（均为单精度）。</p>
+<p>以上源代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/neighborGPU.cu">neighborGPU.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。经本人机器测试，使用原子函数大概耗时1.68ms，不使用原子函数大概耗时1.91ms（均为单精度）。</p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>总的来说，使用原子函数的核函数性能较高。即使使用原子函数能够提升核函数的性能，它还是有一个缺点，即运用原子函数时会引入随机性，因为原子函数只能保证每个原子操作的完整性，并不能保证不同的原子操作之间具有特定的次序。</p>
 
             </div>
@@ -630,6 +711,8 @@ mjx-container[display="true"] + br {
                         </li>
                     
                 </ul>
+            
+
             
 
             
@@ -669,6 +752,7 @@ mjx-container[display="true"] + br {
                 </div>
             
 
+
             
         </div>
 
@@ -676,8 +760,10 @@ mjx-container[display="true"] + br {
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%86%85%E5%AD%98%E7%9A%84%E5%90%88%E7%90%86%E4%BD%BF%E7%94%A8"><span class="nav-text">全局内存的合理使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%86%85%E5%AD%98%E7%9A%84%E5%90%88%E5%B9%B6%E4%B8%8E%E9%9D%9E%E5%90%88%E5%B9%B6%E8%AE%BF%E9%97%AE"><span class="nav-text">全局内存的合并与非合并访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E7%9F%A9%E9%98%B5%E8%BD%AC%E7%BD%AE"><span class="nav-text">例子：矩阵转置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%90%88%E7%90%86%E4%BD%BF%E7%94%A8"><span class="nav-text">共享内存的合理使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E6%95%B0%E7%BB%84%E5%BD%92%E7%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-text">例子：数组归约计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%85%E4%BD%BF%E7%94%A8%E5%85%A8%E5%B1%80%E5%86%85%E5%AD%98"><span class="nav-text">仅使用全局内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-text">使用共享内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8A%A8%E6%80%81%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-text">使用动态共享内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E5%A4%84%E7%90%86%E8%BD%AC%E7%BD%AE"><span class="nav-text">使用共享内存处理转置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%89bank%E5%86%B2%E7%AA%81"><span class="nav-text">有bank冲突</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%97%A0bank%E5%86%B2%E7%AA%81"><span class="nav-text">无bank冲突</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E5%87%BD%E6%95%B0%E7%9A%84%E5%90%88%E7%90%86%E4%BD%BF%E7%94%A8"><span class="nav-text">原子函数的合理使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E5%87%BD%E6%95%B0"><span class="nav-text">原子函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E9%82%BB%E5%B1%85%E5%88%97%E8%A1%A8%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="nav-text">例子：邻居列表的建立</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#C-%E7%89%88%E6%9C%AC%EF%BC%9A"><span class="nav-text">C++版本：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E7%9A%84CUDA%E7%89%88%E6%9C%AC"><span class="nav-text">利用原子操作的CUDA版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E7%94%A8%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E7%9A%84CUDA%E7%89%88%E6%9C%AC"><span class="nav-text">不用原子操作的CUDA版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></li></ol>
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">CUDA编程03: 全局内存、共享内存以及原子函数的合理使用</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%86%85%E5%AD%98%E7%9A%84%E5%90%88%E7%90%86%E4%BD%BF%E7%94%A8"><span class="nav-text">全局内存的合理使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%86%85%E5%AD%98%E7%9A%84%E5%90%88%E5%B9%B6%E4%B8%8E%E9%9D%9E%E5%90%88%E5%B9%B6%E8%AE%BF%E9%97%AE"><span class="nav-text">全局内存的合并与非合并访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E7%9F%A9%E9%98%B5%E8%BD%AC%E7%BD%AE"><span class="nav-text">例子：矩阵转置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E7%9A%84%E5%90%88%E7%90%86%E4%BD%BF%E7%94%A8"><span class="nav-text">共享内存的合理使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E6%95%B0%E7%BB%84%E5%BD%92%E7%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-text">例子：数组归约计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E5%87%BD%E6%95%B0%E7%9A%84%E5%90%88%E7%90%86%E4%BD%BF%E7%94%A8"><span class="nav-text">原子函数的合理使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E5%87%BD%E6%95%B0"><span class="nav-text">原子函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E9%82%BB%E5%B1%85%E5%88%97%E8%A1%A8%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="nav-text">例子：邻居列表的建立</span></a></li></ol></li></ol>
+
     </div>
 </div>
             </div>
@@ -689,62 +775,69 @@ mjx-container[display="true"] + br {
                 
 
             </div>
-
-
+            
+            
 
         </div>
 
-        <div class="page-main-content-bottom">
+        <div class="main-content-footer">
             <footer class="footer">
     <div class="info-container">
-        <div class="copyright-info info-item">
+        <div class="copyright-info">
             &copy;
             
               <span>2022</span>
               -
             
-            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+            2023&nbsp;&nbsp;<i class="fa-solid fa-cog fa-spin" style="--fa-animation-duration: 15s;"></i>&nbsp;&nbsp;<a href="/">YiQi</a>
         </div>
         
             <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
             <div class="website-count info-item">
                 
-                    <span id="busuanzi_container_site_uv">
-                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
-                    <span id="busuanzi_container_site_pv">
-                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
         <div class="theme-info info-item">
-            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.4</a>
         </div>
         
         
-        <script async data-pjax defer>
-            function odometer_init(){
-                    let el = document.getElementsByClassName('odometer');
-                    for (i = 0; i < el.length; i++) {
-                        od = new Odometer({
-                            el: el[i],
-                            format: '( ddd).dd',
-                            duration: 200
-                        });
-                    }
-            }
-            odometer_init();
-        </script>
-        <div id="start_time_div" style="display:none">
-            2022/12/28 11:45:14
-        </div>
         
+            <div id="start_div" style="display:none">
+                2022/12/21 11:45:14
+            </div>
             <div>
                 博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
         
         
         
@@ -756,10 +849,10 @@ mjx-container[display="true"] + br {
     
         <div class="post-tools">
             <div class="post-tools-container">
-    <ul class="tools-list">
+    <ul class="article-tools-list">
         <!-- TOC aside toggle -->
         
-            <li class="tools-item page-aside-toggle">
+            <li class="right-bottom-tools page-aside-toggle">
                 <i class="fa-regular fa-outdent"></i>
             </li>
         
@@ -772,23 +865,23 @@ mjx-container[display="true"] + br {
         </div>
     
 
-    <div class="right-bottom-side-tools">
+    <div class="right-side-tools-container">
         <div class="side-tools-container">
-    <ul class="side-tools-list">
-        <li class="tools-item tool-font-adjust-plus flex-center">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
         </li>
 
-        <li class="tools-item tool-font-adjust-minus flex-center">
-            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
         </li>
 
-        <li class="tools-item tool-expand-width flex-center">
-            <i class="fa-solid fa-left-right"></i>
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
         </li>
 
-        <li class="tools-item tool-dark-light-toggle flex-center">
-            <i class="fa-solid fa-moon"></i>
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
         </li>
 
         <!-- rss -->
@@ -796,20 +889,21 @@ mjx-container[display="true"] + br {
 
         
 
-        <li class="tools-item tool-scroll-to-bottom flex-center">
-            <i class="fa-solid fa-arrow-down"></i>
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
         </li>
     </ul>
 
-    <ul class="exposed-tools-list">
-        <li class="tools-item tool-toggle-show flex-center">
-            <i class="fa-solid fa-cog fa-spin"></i>
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
         </li>
         
-            <li class="tools-item tool-scroll-to-top flex-center">
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
                 <i class="arrow-up fas fa-arrow-up"></i>
                 <span class="percent"></span>
             </li>
+        
         
     </ul>
 </div>
@@ -823,6 +917,7 @@ mjx-container[display="true"] + br {
 
     
 
+
 </main>
 
 
@@ -832,43 +927,62 @@ mjx-container[display="true"] + br {
 
 <script src="/js/main.js"></script>
 
-<script src="/js/header-shrink.js"></script>
+<script src="/js/layouts/navbarShrink.js"></script>
 
-<script src="/js/back2top.js"></script>
+<script src="/js/tools/scrollTopBottom.js"></script>
 
-<script src="/js/dark-light-toggle.js"></script>
-
-
-
-
-
-    
-<script src="/js/code-copy.js"></script>
-
+<script src="/js/tools/lightDarkSwitch.js"></script>
 
 
 
 
 
     
-<script src="/js/runtime.js"></script>
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
 
     
-<script src="/js/odometer.min.js"></script>
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
 
     
-<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
 
 
 
 <div class="post-scripts pjax">
     
         
-<script src="/js/toc-toggle.js"></script>
+<script src="/js/tools/tocToggle.js"></script>
 
 <script src="/js/libs/anime.min.js"></script>
 
-<script src="/js/toc.js"></script>
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
 
     
 </div>
@@ -883,7 +997,7 @@ mjx-container[display="true"] + br {
             selectors: [
                 'head title',
                 '.page-container',
-                '.pjax'
+                '.pjax',
             ],
             history: true,
             debug: false,
@@ -896,16 +1010,17 @@ mjx-container[display="true"] + br {
         });
 
         document.addEventListener('pjax:send', () => {
-            REDEFINE.utils.pjaxProgressBarStart();
+            Global.utils.pjaxProgressBarStart();
         });
 
         document.addEventListener('pjax:complete', () => {
-            REDEFINE.utils.pjaxProgressBarEnd();
+            Global.utils.pjaxProgressBarEnd();
             window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-            REDEFINE.refresh();
+            Global.refresh();
         });
     });
 </script>
+
 
 
 

@@ -2,46 +2,81 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
-    <meta name="description" content="Hexo Theme Redefine">
+    
     <meta name="author" content="YiQi">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fengyiqi.github.io/page/3/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://fengyiqi.github.io/page/3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <!--- Page Info-->
     
     <title>
         
         YiQi&#39;s Blog
     </title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <link rel="shortcut icon" href="/images/logo.svg">
     
-<link rel="stylesheet" href="/css/fontawesome.min.css">
+<link rel="stylesheet" href="/assets/fonts.css">
 
+    <!--- Font Part-->
     
-<link rel="stylesheet" href="/css/brands.min.css">
+    
+    
+    
 
+    <!--- Inject Part-->
     
-<link rel="stylesheet" href="/css/solid.min.css">
-
-    
-<link rel="stylesheet" href="/css/regular.min.css">
-
-    
-    
-    
-    
-<link rel="stylesheet" href="/css/css2.css">
-
     <script id="hexo-configurations">
-    let REDEFINE = window.REDEFINE || {};
-    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
-    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
-    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/night_sky.jpg"},"title":"早日毕业！","subtitle":{"text":["我们的征途是星辰大海"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#404040","dark":"#e0e0e0"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/fengyiqi","instagram":null,"zhihu":null,"twitter":null,"email":"yiqi.feng@hotmail.com"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.4","navbar":{"auto_hide":false,"color":{"left":"#404040","right":"#ffffff","transparency":30},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":false};
   </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
 <meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
@@ -174,12 +209,12 @@ mjx-container[display="true"] + br {
 
     
 
-    <div class="page-main-content">
+    <div class="main-content-container">
 
-        <div class="page-main-content-top">
-            <header class="header-wrapper">
+        <div class="main-content-header">
+            <header class="navbar-container">
     
-    <div class="header-content">
+    <div class="navbar-content">
         <div class="left">
             
                 <a class="logo-image" href="/">
@@ -187,74 +222,80 @@ mjx-container[display="true"] + br {
                 </a>
             
             <a class="logo-title" href="/">
+                <h1>
                 YiQi&#39;s Blog
+                </h1>
             </a>
         </div>
 
         <div class="right">
             <!-- PC -->
-            <div class="pc">
-                <ul class="menu-list">
+            <div class="desktop">
+                <ul class="navbar-list">
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="active" 
-                                href="/" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="active" 
+                                    href="/"  >
                                     
-                                        <i class="fa-regular fa-house"></i>
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
                                     
-                                    首页
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/archives" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
                                     
-                                        <i class="fa-regular fa-archive"></i>
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
                                     
-                                    归档
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/categories" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
                                     
-                                        <i class="fa-regular fa-list"></i>
+                                        
+                                            <i class="fa-regular fa-list"></i>
+                                        
+                                        分类
                                     
-                                    分类
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/about" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
                                     
-                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                            <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                        关于
                                     
-                                    关于
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
                     
                 </ul>
@@ -262,73 +303,78 @@ mjx-container[display="true"] + br {
             <!-- Mobile -->
             <div class="mobile">
                 
-                <div class="icon-item menu-bar">
-                    <div class="menu-bar-middle"></div>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile drawer -->
-    <div class="header-drawer">
-        <ul class="drawer-menu-list">
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="active" 
-                       href="/" >
-                         
-                            
-                                <i class="fa-regular fa-house"></i>
-                            
-                            首页
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="active" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/archives" >
-                         
-                            
-                                <i class="fa-regular fa-archive"></i>
-                            
-                            归档
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/categories" >
-                         
-                            
-                                <i class="fa-regular fa-list"></i>
-                            
-                            分类
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-list"></i>
+                                
+                                分类
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/about" >
-                         
-                            
-                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
-                            
-                            关于
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                
+                                关于
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
+
         </ul>
     </div>
 
@@ -339,7 +385,81 @@ mjx-container[display="true"] + br {
 
         </div>
 
-        <div class="page-main-content-middle">
+        <div class="main-content-body">
+
+            
+                <div class="home-sidebar-container fade-in-down-animation">
+    <div class="sticky-container">
+        
+            
+                <div class="sidebar-links">
+                    <div class="site-info">
+                        <div class="site-name">YiQi&#39;s Blog</div>
+                        
+                    </div>
+                    
+                        
+                            
+                                <a class="links" href="/archives" target="_blank">
+                                    
+                                        <i class="fa-regular fa-archive icon-space"></i>
+                                    
+                                    <span class="link-name">Archives</span>
+                                </a>
+                            
+                        
+                            
+                                <a class="links" href="/categories" target="_blank">
+                                    
+                                        <i class="fa-regular fa-list icon-space"></i>
+                                    
+                                    <span class="link-name">Categories</span>
+                                </a>
+                            
+                        
+                            
+                                <a class="links" href="/about" target="_blank">
+                                    
+                                        <i class="fa-regular fa-face-grin-beam-sweat icon-space"></i>
+                                    
+                                    <span class="link-name">About</span>
+                                </a>
+                            
+                        
+                    
+                </div>
+            
+            <div class="sidebar-content"  marginTop >
+                <div class="avatar">
+                    <img src="/images/logo.svg">
+                </div>
+                <div class="author">
+                    <div class="name">YiQi</div>
+                    
+                        <div class="label">Lv3</div>
+                    
+                </div>
+                <div class="statistics">
+                    <a class="item" href="/tags">
+                        <div class="number">8</div>
+                        <div class="label">标签</div>
+                    </a>
+                    <a class="item" href="/categories">
+                        <div class="number">5</div>
+                        <div class="label">分类</div>
+                    </a>
+                    <a class="item" href="/archives">
+                        <div class="number">24</div>
+                        <div class="label">文章</div>
+                    </a>
+                </div>
+            </div>
+        
+
+    </div>
+</div>
+
+            
 
             <div class="main-content">
 
@@ -348,6 +468,8 @@ mjx-container[display="true"] + br {
     <ul class="home-article-list">
         
             <li class="home-article-item">
+
+                
 
                 
 
@@ -365,7 +487,13 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;<span class="home-article-date" data-date="Tue Jan 03 2023 23:26:09 GMT+0100">2023-01-03</span></span>
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Tue Jan 03 2023 23:26:09 GMT+0100">
+                
+                    2023-01-03
+                
+            </span>
+        </span>
         
             <span class="home-article-category"><i class="fa-solid fa-folders"></i></i>&nbsp;
                 <ul>
@@ -404,12 +532,14 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2023/cuda3/">阅读全文&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2023/cuda3/">阅读全文<span class="seo-reader-text">CUDA编程03: 全局内存、共享内存以及原子函数的合理使用</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
         
             <li class="home-article-item">
+
+                
 
                 
 
@@ -427,7 +557,13 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;<span class="home-article-date" data-date="Sun Jan 01 2023 13:58:29 GMT+0100">2023-01-01</span></span>
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Sun Jan 01 2023 13:58:29 GMT+0100">
+                
+                    2023-01-01
+                
+            </span>
+        </span>
         
             <span class="home-article-category"><i class="fa-solid fa-folders"></i></i>&nbsp;
                 <ul>
@@ -466,12 +602,14 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2023/mpi1/">阅读全文&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2023/mpi1/">阅读全文<span class="seo-reader-text">MPI并行计算01: 几个最常用的函数</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
         
             <li class="home-article-item">
+
+                
 
                 
 
@@ -489,7 +627,13 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;<span class="home-article-date" data-date="Thu Dec 29 2022 13:45:27 GMT+0100">2022-12-29</span></span>
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Thu Dec 29 2022 13:45:27 GMT+0100">
+                
+                    2022-12-29
+                
+            </span>
+        </span>
         
             <span class="home-article-category"><i class="fa-solid fa-folders"></i></i>&nbsp;
                 <ul>
@@ -528,12 +672,14 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2022/cuda2/">阅读全文&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2022/cuda2/">阅读全文<span class="seo-reader-text">CUDA编程02: CUDA内存组织</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
         
             <li class="home-article-item">
+
+                
 
                 
 
@@ -551,7 +697,13 @@ mjx-container[display="true"] + br {
 
                 <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;<span class="home-article-date" data-date="Tue Dec 27 2022 11:07:19 GMT+0100">2022-12-27</span></span>
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Tue Dec 27 2022 11:07:19 GMT+0100">
+                
+                    2022-12-27
+                
+            </span>
+        </span>
         
             <span class="home-article-category"><i class="fa-solid fa-folders"></i></i>&nbsp;
                 <ul>
@@ -590,7 +742,7 @@ mjx-container[display="true"] + br {
         
     </div>
 
-    <a href="/2022/cuda1/">阅读全文&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2022/cuda1/">阅读全文<span class="seo-reader-text">CUDA编程01: 一个简单的CUDA C++程序</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -599,78 +751,78 @@ mjx-container[display="true"] + br {
 
     <div class="home-paginator">
         <div class="paginator">
-    
-        <a class="prev btn"
-           href="/page/2/"
-        >上一页</a>
-    
-
-    
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
 </div>
 
     </div>
 </div>
 
-
                 
 
             </div>
-
-
+            
+            
 
         </div>
 
-        <div class="page-main-content-bottom">
+        <div class="main-content-footer">
             <footer class="footer">
     <div class="info-container">
-        <div class="copyright-info info-item">
+        <div class="copyright-info">
             &copy;
             
               <span>2022</span>
               -
             
-            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+            2023&nbsp;&nbsp;<i class="fa-solid fa-cog fa-spin" style="--fa-animation-duration: 15s;"></i>&nbsp;&nbsp;<a href="/">YiQi</a>
         </div>
         
             <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
             <div class="website-count info-item">
                 
-                    <span id="busuanzi_container_site_uv">
-                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
-                    <span id="busuanzi_container_site_pv">
-                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
         <div class="theme-info info-item">
-            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.4</a>
         </div>
         
         
-        <script async data-pjax defer>
-            function odometer_init(){
-                    let el = document.getElementsByClassName('odometer');
-                    for (i = 0; i < el.length; i++) {
-                        od = new Odometer({
-                            el: el[i],
-                            format: '( ddd).dd',
-                            duration: 200
-                        });
-                    }
-            }
-            odometer_init();
-        </script>
-        <div id="start_time_div" style="display:none">
-            2022/12/28 11:45:14
-        </div>
         
+            <div id="start_div" style="display:none">
+                2022/12/21 11:45:14
+            </div>
             <div>
                 博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
         
         
         
@@ -681,23 +833,23 @@ mjx-container[display="true"] + br {
 
     
 
-    <div class="right-bottom-side-tools">
+    <div class="right-side-tools-container">
         <div class="side-tools-container">
-    <ul class="side-tools-list">
-        <li class="tools-item tool-font-adjust-plus flex-center">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
         </li>
 
-        <li class="tools-item tool-font-adjust-minus flex-center">
-            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
         </li>
 
-        <li class="tools-item tool-expand-width flex-center">
-            <i class="fa-solid fa-left-right"></i>
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
         </li>
 
-        <li class="tools-item tool-dark-light-toggle flex-center">
-            <i class="fa-solid fa-moon"></i>
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
         </li>
 
         <!-- rss -->
@@ -705,20 +857,21 @@ mjx-container[display="true"] + br {
 
         
 
-        <li class="tools-item tool-scroll-to-bottom flex-center">
-            <i class="fa-solid fa-arrow-down"></i>
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
         </li>
     </ul>
 
-    <ul class="exposed-tools-list">
-        <li class="tools-item tool-toggle-show flex-center">
-            <i class="fa-solid fa-cog fa-spin"></i>
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
         </li>
         
-            <li class="tools-item tool-scroll-to-top flex-center">
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
                 <i class="arrow-up fas fa-arrow-up"></i>
                 <span class="percent"></span>
             </li>
+        
         
     </ul>
 </div>
@@ -732,6 +885,7 @@ mjx-container[display="true"] + br {
 
     
 
+
 </main>
 
 
@@ -742,32 +896,49 @@ mjx-container[display="true"] + br {
 
 <script src="/js/main.js"></script>
 
-<script src="/js/header-shrink.js"></script>
+<script src="/js/layouts/navbarShrink.js"></script>
 
-<script src="/js/back2top.js"></script>
+<script src="/js/tools/scrollTopBottom.js"></script>
 
-<script src="/js/dark-light-toggle.js"></script>
-
-
-
-
-
-    
-<script src="/js/code-copy.js"></script>
-
+<script src="/js/tools/lightDarkSwitch.js"></script>
 
 
 
 
 
     
-<script src="/js/runtime.js"></script>
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
 
     
-<script src="/js/odometer.min.js"></script>
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
 
     
-<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
 
 
 
@@ -785,7 +956,7 @@ mjx-container[display="true"] + br {
             selectors: [
                 'head title',
                 '.page-container',
-                '.pjax'
+                '.pjax',
             ],
             history: true,
             debug: false,
@@ -798,16 +969,17 @@ mjx-container[display="true"] + br {
         });
 
         document.addEventListener('pjax:send', () => {
-            REDEFINE.utils.pjaxProgressBarStart();
+            Global.utils.pjaxProgressBarStart();
         });
 
         document.addEventListener('pjax:complete', () => {
-            REDEFINE.utils.pjaxProgressBarEnd();
+            Global.utils.pjaxProgressBarEnd();
             window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-            REDEFINE.refresh();
+            Global.refresh();
         });
     });
 </script>
+
 
 
 

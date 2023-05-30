@@ -1,24 +1,32 @@
 :root {
   --background-color: #fff;
-  --second-background-color: #f2f2f2;
-  --primary-color: #000;
-  --first-text-color: #1c1f20;
-  --second-text-color: #1d2021;
-  --third-text-color: #5e676a;
-  --fourth-text-color: #e7e9ea;
-  --default-text-color: #1f2223;
-  --border-color: #b3b3b3;
-  --selection-color: #1a1a1a;
+  --background-color-transparent: rgba(255,255,255,0.6);
+  --background-color-transparent-15: rgba(255,255,255,0.15);
+  --background-color-transparent-40: rgba(255,255,255,0.4);
+  --background-color-transparent-80: rgba(255,255,255,0.8);
+  --second-background-color: #fafafa;
+  --third-background-color: #f7f7f7;
+  --third-background-color-transparent: rgba(241,241,241,0.6);
+  --primary-color: #a31f34;
+  --first-text-color: #323739;
+  --second-text-color: #343a3c;
+  --third-text-color: #5c6669;
+  --fourth-text-color: #eaeced;
+  --default-text-color: #373d3f;
+  --invert-text-color: #bebec6;
+  --border-color: rgba(0,0,0,0.08);
+  --selection-color: #be243c;
   --shadow-color-1: rgba(0,0,0,0.08);
   --shadow-color-2: rgba(0,0,0,0.05);
   --shadow-hover-color: rgba(0,0,0,0.28);
   --scrollbar-color: #c1c1c1;
   --scrollbar-color-hover: #a1a1a1;
   --scroll-bar-bg-color: #fafafa;
-  --link-color: #1c1f20;
+  --link-color: #323739;
   --copyright-info-color: #c03;
-  --avatar-background-color: #fff;
+  --avatar-background-color: #06c;
   --pjax-progress-bar-color: linear-gradient(45deg, #f10006, #ef5b00, #e59c01, #19ca05, #00cab5, #0264c8, #c303c3);
+  --archive-timeline-last-child-color: linear-gradient(to bottom, #e8e8e8 60%, rgba(0,0,0,0) 100%) 1 100%;
   --note-blue-title-bg: #d6f7fb;
   --note-red-title-bg: #fde9e9;
   --note-cyan-title-bg: #e9fdf9;
@@ -28,30 +36,46 @@
   --note-type-title-bg: #fdf3e9;
   --note-black-title-bg: #e9e9e9;
   --note-purple-title-bg: #f9e9fd;
-  --first-screen-text-color: #fff;
+  --home-banner-img: url("https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg");
+  --home-banner-text-color: #404040;
+  --home-banner-icons-container-border-color: rgba(255,255,255,0.35);
+  --home-banner-icons-container-background-color: rgba(255,255,255,0.3);
+  --redefine-box-shadow: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+  --redefine-box-shadow-hover: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+  --redefine-box-shadow-flat: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+  --redefine-box-shadow-flat-hover: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+  --mermaid-theme: '';
 }
 @media (prefers-color-scheme: light) {
   :root {
     --background-color: #fff;
-    --second-background-color: #f2f2f2;
-    --primary-color: #000;
-    --first-text-color: #1c1f20;
-    --second-text-color: #1d2021;
-    --third-text-color: #5e676a;
-    --fourth-text-color: #e7e9ea;
-    --default-text-color: #1f2223;
-    --border-color: #b3b3b3;
-    --selection-color: #1a1a1a;
+    --background-color-transparent: rgba(255,255,255,0.6);
+    --background-color-transparent-15: rgba(255,255,255,0.15);
+    --background-color-transparent-40: rgba(255,255,255,0.4);
+    --background-color-transparent-80: rgba(255,255,255,0.8);
+    --second-background-color: #fafafa;
+    --third-background-color: #f7f7f7;
+    --third-background-color-transparent: rgba(241,241,241,0.6);
+    --primary-color: #a31f34;
+    --first-text-color: #323739;
+    --second-text-color: #343a3c;
+    --third-text-color: #5c6669;
+    --fourth-text-color: #eaeced;
+    --default-text-color: #373d3f;
+    --invert-text-color: #bebec6;
+    --border-color: rgba(0,0,0,0.08);
+    --selection-color: #be243c;
     --shadow-color-1: rgba(0,0,0,0.08);
     --shadow-color-2: rgba(0,0,0,0.05);
     --shadow-hover-color: rgba(0,0,0,0.28);
     --scrollbar-color: #c1c1c1;
     --scrollbar-color-hover: #a1a1a1;
     --scroll-bar-bg-color: #fafafa;
-    --link-color: #1c1f20;
+    --link-color: #323739;
     --copyright-info-color: #c03;
-    --avatar-background-color: #fff;
+    --avatar-background-color: #06c;
     --pjax-progress-bar-color: linear-gradient(45deg, #f10006, #ef5b00, #e59c01, #19ca05, #00cab5, #0264c8, #c303c3);
+    --archive-timeline-last-child-color: linear-gradient(to bottom, #e8e8e8 60%, rgba(0,0,0,0) 100%) 1 100%;
     --note-blue-title-bg: #d6f7fb;
     --note-red-title-bg: #fde9e9;
     --note-cyan-title-bg: #e9fdf9;
@@ -61,21 +85,36 @@
     --note-type-title-bg: #fdf3e9;
     --note-black-title-bg: #e9e9e9;
     --note-purple-title-bg: #f9e9fd;
-    --first-screen-text-color: #fff;
+    --home-banner-img: url("https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg");
+    --home-banner-text-color: #404040;
+    --home-banner-icons-container-border-color: rgba(255,255,255,0.35);
+    --home-banner-icons-container-background-color: rgba(255,255,255,0.3);
+    --redefine-box-shadow: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+    --redefine-box-shadow-hover: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+    --redefine-box-shadow-flat: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+    --redefine-box-shadow-flat-hover: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+    --mermaid-theme: '';
   }
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --background-color: #202124;
-    --second-background-color: #2a2c30;
-    --primary-color: #000;
+    --background-color-transparent: rgba(32,33,36,0.4);
+    --background-color-transparent-15: rgba(32,33,36,0.15);
+    --background-color-transparent-40: rgba(32,33,36,0.4);
+    --background-color-transparent-80: rgba(32,33,36,0.8);
+    --second-background-color: #242529;
+    --third-background-color: #292b2f;
+    --third-background-color-transparent: rgba(32,33,36,0.6);
+    --primary-color: #a31f34;
     --first-text-color: #d2d2d7;
     --second-text-color: #cbcbd1;
     --third-text-color: #9595a2;
     --fourth-text-color: #242429;
     --default-text-color: #bebec6;
-    --border-color: #4a4c53;
-    --selection-color: #1a1a1a;
+    --invert-text-color: #373d3f;
+    --border-color: rgba(255,255,255,0.08);
+    --selection-color: #be243c;
     --shadow-color-1: rgba(255,255,255,0.08);
     --shadow-color-2: rgba(255,255,255,0.05);
     --shadow-hover-color: rgba(69,69,69,0.28);
@@ -84,8 +123,9 @@
     --scroll-bar-bg-color: #2a2c30;
     --link-color: #c5c5cc;
     --copyright-info-color: #a30029;
-    --avatar-background-color: #b3b3b3;
+    --avatar-background-color: #005cb8;
     --pjax-progress-bar-color: linear-gradient(45deg, #ea404a, #ea722f, #e9a71f, #67e559, #18ecec, #1b85f1, #ee1dee);
+    --archive-timeline-last-child-color: linear-gradient(to bottom, #323232 60%, rgba(255,255,255,0) 100%) 1 100%;
     --note-blue-title-bg: #1e3e46;
     --note-red-title-bg: #4e1e1e;
     --note-cyan-title-bg: #1e4e4e;
@@ -95,30 +135,46 @@
     --note-type-title-bg: #4e3a1e;
     --note-black-title-bg: #1e1e1e;
     --note-purple-title-bg: #4e1e4e;
-    --first-screen-text-color: #1f2223;
+    --home-banner-img: url("https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/night_sky.jpg");
+    --home-banner-text-color: #e0e0e0;
+    --home-banner-icons-container-border-color: rgba(197,197,197,0.35);
+    --home-banner-icons-container-background-color: rgba(197,197,197,0.3);
+    --redefine-box-shadow: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+    --redefine-box-shadow-hover: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+    --redefine-box-shadow-flat: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+    --redefine-box-shadow-flat-hover: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+    --mermaid-theme: '';
   }
 }
 .light-mode {
   --background-color: #fff;
-  --second-background-color: #f2f2f2;
-  --primary-color: #000;
-  --first-text-color: #1c1f20;
-  --second-text-color: #1d2021;
-  --third-text-color: #5e676a;
-  --fourth-text-color: #e7e9ea;
-  --default-text-color: #1f2223;
-  --border-color: #b3b3b3;
-  --selection-color: #1a1a1a;
+  --background-color-transparent: rgba(255,255,255,0.6);
+  --background-color-transparent-15: rgba(255,255,255,0.15);
+  --background-color-transparent-40: rgba(255,255,255,0.4);
+  --background-color-transparent-80: rgba(255,255,255,0.8);
+  --second-background-color: #fafafa;
+  --third-background-color: #f7f7f7;
+  --third-background-color-transparent: rgba(241,241,241,0.6);
+  --primary-color: #a31f34;
+  --first-text-color: #323739;
+  --second-text-color: #343a3c;
+  --third-text-color: #5c6669;
+  --fourth-text-color: #eaeced;
+  --default-text-color: #373d3f;
+  --invert-text-color: #bebec6;
+  --border-color: rgba(0,0,0,0.08);
+  --selection-color: #be243c;
   --shadow-color-1: rgba(0,0,0,0.08);
   --shadow-color-2: rgba(0,0,0,0.05);
   --shadow-hover-color: rgba(0,0,0,0.28);
   --scrollbar-color: #c1c1c1;
   --scrollbar-color-hover: #a1a1a1;
   --scroll-bar-bg-color: #fafafa;
-  --link-color: #1c1f20;
+  --link-color: #323739;
   --copyright-info-color: #c03;
-  --avatar-background-color: #fff;
+  --avatar-background-color: #06c;
   --pjax-progress-bar-color: linear-gradient(45deg, #f10006, #ef5b00, #e59c01, #19ca05, #00cab5, #0264c8, #c303c3);
+  --archive-timeline-last-child-color: linear-gradient(to bottom, #e8e8e8 60%, rgba(0,0,0,0) 100%) 1 100%;
   --note-blue-title-bg: #d6f7fb;
   --note-red-title-bg: #fde9e9;
   --note-cyan-title-bg: #e9fdf9;
@@ -128,19 +184,34 @@
   --note-type-title-bg: #fdf3e9;
   --note-black-title-bg: #e9e9e9;
   --note-purple-title-bg: #f9e9fd;
-  --first-screen-text-color: #fff;
+  --home-banner-img: url("https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg");
+  --home-banner-text-color: #404040;
+  --home-banner-icons-container-border-color: rgba(255,255,255,0.35);
+  --home-banner-icons-container-background-color: rgba(255,255,255,0.3);
+  --redefine-box-shadow: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+  --redefine-box-shadow-hover: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+  --redefine-box-shadow-flat: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+  --redefine-box-shadow-flat-hover: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+  --mermaid-theme: '';
 }
 .dark-mode {
   --background-color: #202124;
-  --second-background-color: #2a2c30;
-  --primary-color: #000;
+  --background-color-transparent: rgba(32,33,36,0.4);
+  --background-color-transparent-15: rgba(32,33,36,0.15);
+  --background-color-transparent-40: rgba(32,33,36,0.4);
+  --background-color-transparent-80: rgba(32,33,36,0.8);
+  --second-background-color: #242529;
+  --third-background-color: #292b2f;
+  --third-background-color-transparent: rgba(32,33,36,0.6);
+  --primary-color: #a31f34;
   --first-text-color: #d2d2d7;
   --second-text-color: #cbcbd1;
   --third-text-color: #9595a2;
   --fourth-text-color: #242429;
   --default-text-color: #bebec6;
-  --border-color: #4a4c53;
-  --selection-color: #1a1a1a;
+  --invert-text-color: #373d3f;
+  --border-color: rgba(255,255,255,0.08);
+  --selection-color: #be243c;
   --shadow-color-1: rgba(255,255,255,0.08);
   --shadow-color-2: rgba(255,255,255,0.05);
   --shadow-hover-color: rgba(69,69,69,0.28);
@@ -149,8 +220,9 @@
   --scroll-bar-bg-color: #2a2c30;
   --link-color: #c5c5cc;
   --copyright-info-color: #a30029;
-  --avatar-background-color: #b3b3b3;
+  --avatar-background-color: #005cb8;
   --pjax-progress-bar-color: linear-gradient(45deg, #ea404a, #ea722f, #e9a71f, #67e559, #18ecec, #1b85f1, #ee1dee);
+  --archive-timeline-last-child-color: linear-gradient(to bottom, #323232 60%, rgba(255,255,255,0) 100%) 1 100%;
   --note-blue-title-bg: #1e3e46;
   --note-red-title-bg: #4e1e1e;
   --note-cyan-title-bg: #1e4e4e;
@@ -160,13 +232,21 @@
   --note-type-title-bg: #4e3a1e;
   --note-black-title-bg: #1e1e1e;
   --note-purple-title-bg: #4e1e4e;
-  --first-screen-text-color: #1f2223;
+  --home-banner-img: url("https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/night_sky.jpg");
+  --home-banner-text-color: #e0e0e0;
+  --home-banner-icons-container-border-color: rgba(197,197,197,0.35);
+  --home-banner-icons-container-background-color: rgba(197,197,197,0.3);
+  --redefine-box-shadow: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+  --redefine-box-shadow-hover: var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+  --redefine-box-shadow-flat: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px;
+  --redefine-box-shadow-flat-hover: var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px, var(--shadow-color-1) 0px 0px 0px 1px inset;
+  --mermaid-theme: '';
 }
 :root {
-  --code-foreground: #232728;
+  --code-foreground: #3b4143;
   --code-background: #f2f2f2;
-  --highlight-background: #f6f6f6;
-  --highlight-foreground: #232728;
+  --highlight-background: #fafafa;
+  --highlight-foreground: #3b4143;
   --highlight-keyword: #d73a49;
   --highlight-link: #d73a49;
   --highlight-built-in: #6f42c1;
@@ -186,10 +266,10 @@
 }
 @media (prefers-color-scheme: light) {
   :root {
-    --code-foreground: #232728;
+    --code-foreground: #3b4143;
     --code-background: #f2f2f2;
-    --highlight-background: #f6f6f6;
-    --highlight-foreground: #232728;
+    --highlight-background: #fafafa;
+    --highlight-foreground: #3b4143;
     --highlight-keyword: #d73a49;
     --highlight-link: #d73a49;
     --highlight-built-in: #6f42c1;
@@ -233,10 +313,10 @@
   }
 }
 .light-mode {
-  --code-foreground: #232728;
+  --code-foreground: #3b4143;
   --code-background: #f2f2f2;
-  --highlight-background: #f6f6f6;
-  --highlight-foreground: #232728;
+  --highlight-background: #fafafa;
+  --highlight-foreground: #3b4143;
   --highlight-keyword: #d73a49;
   --highlight-link: #d73a49;
   --highlight-built-in: #6f42c1;
@@ -282,25 +362,33 @@ pre,
   overflow: auto;
   margin: 20px 0;
   padding: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.5rem;
   color: var(--highlight-foreground);
   background: var(--highlight-background);
 }
 pre,
 code {
-  font-family: Consolas, Monaco, Menlo, Consolas, monospace;
+  font-family: "Ubuntu Mono", Courier, monospace;
+}
+pre.mermaid {
+  background-color: var(--background-color);
+}
+pre.mermaid svg {
+  display: block;
+  margin: auto;
 }
 code {
   padding: 4px;
   word-wrap: break-word;
   border-radius: 4px;
-  font-size: 0.8em;
+  font-size: 0.96em;
   color: var(--code-foreground);
   background: var(--code-background);
 }
 pre {
-  padding: 10px;
+  padding-top: 14px !important;
+  tab-size: 4;
 }
 pre code {
   padding: 0;
@@ -309,8 +397,28 @@ pre code {
   text-shadow: none;
 }
 .highlight {
-  border-radius: 5px 5px 5px 5px;
-  padding-bottom: 0px;
+  border-radius: 0px 0px 18px 18px;
+  padding-bottom: 5px;
+  overflow: auto;
+  margin: 0 !important;
+}
+.highlight:hover::-webkit-scrollbar-thumb {
+  border: 3px solid rgba(183,183,183,0.3);
+}
+.highlight::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  transition: all 0.2s ease;
+  display: block;
+}
+.highlight::-webkit-scrollbar-track {
+  background: transparent;
+  border: none;
+}
+.highlight::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  border: 3px solid rgba(183,183,183,0);
+  transition: all 0.2s ease;
 }
 .highlight pre {
   border: none;

@@ -2,48 +2,92 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
-    <meta name="description" content="Hexo Theme Redefine">
+    
     <meta name="author" content="YiQi">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fengyiqi.github.io/2022/cuda2/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta property="og:type" content="article">
+<meta property="og:title" content="CUDA编程02: CUDA内存组织">
+<meta property="og:url" content="http://fengyiqi.github.io/2022/cuda2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/mem_struc.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/mem_struc2.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/performance.png">
+<meta property="article:published_time" content="2022-12-29T12:45:27.000Z">
+<meta property="article:modified_time" content="2023-01-03T14:34:41.717Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CUDA">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/mem_struc.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <!--- Page Info-->
     
     <title>
         
-            CUDA编程02: CUDA内存组织 |
+            CUDA编程02: CUDA内存组织 -
         
         YiQi&#39;s Blog
     </title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <link rel="shortcut icon" href="/images/logo.svg">
     
-<link rel="stylesheet" href="/css/fontawesome.min.css">
+<link rel="stylesheet" href="/assets/fonts.css">
 
+    <!--- Font Part-->
     
-<link rel="stylesheet" href="/css/brands.min.css">
+    
+    
+    
 
+    <!--- Inject Part-->
     
-<link rel="stylesheet" href="/css/solid.min.css">
-
-    
-<link rel="stylesheet" href="/css/regular.min.css">
-
-    
-    
-    
-    
-<link rel="stylesheet" href="/css/css2.css">
-
     <script id="hexo-configurations">
-    let REDEFINE = window.REDEFINE || {};
-    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
-    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
-    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/night_sky.jpg"},"title":"早日毕业！","subtitle":{"text":["我们的征途是星辰大海"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#404040","dark":"#e0e0e0"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/fengyiqi","instagram":null,"zhihu":null,"twitter":null,"email":"yiqi.feng@hotmail.com"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.4","navbar":{"auto_hide":false,"color":{"left":"#404040","right":"#ffffff","transparency":30},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":false};
   </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
 <meta name="generator" content="Hexo 6.3.0"></head>
 
 
@@ -64,12 +108,12 @@
 
     
 
-    <div class="page-main-content">
+    <div class="main-content-container">
 
-        <div class="page-main-content-top">
-            <header class="header-wrapper">
+        <div class="main-content-header">
+            <header class="navbar-container">
     
-    <div class="header-content">
+    <div class="navbar-content">
         <div class="left">
             
                 <a class="logo-image" href="/">
@@ -77,74 +121,80 @@
                 </a>
             
             <a class="logo-title" href="/">
+                
                 YiQi&#39;s Blog
+                
             </a>
         </div>
 
         <div class="right">
             <!-- PC -->
-            <div class="pc">
-                <ul class="menu-list">
+            <div class="desktop">
+                <ul class="navbar-list">
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
                                     
-                                        <i class="fa-regular fa-house"></i>
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
                                     
-                                    首页
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/archives" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
                                     
-                                        <i class="fa-regular fa-archive"></i>
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
                                     
-                                    归档
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/categories" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
                                     
-                                        <i class="fa-regular fa-list"></i>
+                                        
+                                            <i class="fa-regular fa-list"></i>
+                                        
+                                        分类
                                     
-                                    分类
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/about" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
                                     
-                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                            <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                        关于
                                     
-                                    关于
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
                     
                 </ul>
@@ -152,73 +202,78 @@
             <!-- Mobile -->
             <div class="mobile">
                 
-                <div class="icon-item menu-bar">
-                    <div class="menu-bar-middle"></div>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile drawer -->
-    <div class="header-drawer">
-        <ul class="drawer-menu-list">
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/" >
-                         
-                            
-                                <i class="fa-regular fa-house"></i>
-                            
-                            首页
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/archives" >
-                         
-                            
-                                <i class="fa-regular fa-archive"></i>
-                            
-                            归档
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/categories" >
-                         
-                            
-                                <i class="fa-regular fa-list"></i>
-                            
-                            分类
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-list"></i>
+                                
+                                分类
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/about" >
-                         
-                            
-                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
-                            
-                            关于
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                
+                                关于
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
+
         </ul>
     </div>
 
@@ -229,7 +284,9 @@
 
         </div>
 
-        <div class="page-main-content-middle">
+        <div class="main-content-body">
+
+            
 
             <div class="main-content">
 
@@ -237,9 +294,15 @@
                     <div class="fade-in-down-animation">
     <div class="post-page-container">
         <div class="article-content-container">
-            <div class="article-title">
-                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">CUDA编程02: CUDA内存组织</h1></span>
-            </div>
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">CUDA编程02: CUDA内存组织</h1>
+                </div>
+            
+                
+            
 
             
                 <div class="article-header">
@@ -250,14 +313,26 @@
                         <div class="author">
                             <span class="name">YiQi</span>
                             
+                                <span class="author-label">Lv3</span>
+                            
                         </div>
                         <div class="meta-info">
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="pc">2022-12-29 13:45:27</span>
+        <span class="desktop">2022-12-29 13:45:27</span>
         <span class="mobile">2022-12-29 13:45</span>
+        <span class="hover-info">创建</span>
     </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-01-03 15:34:41</span>
+            <span class="mobile">2023-01-03 15:34</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
     
         <span class="article-categories article-meta-item">
             <i class="fa-regular fa-folders"></i>&nbsp;
@@ -294,9 +369,13 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-file-word"></i>&nbsp;<span>2k 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2k 字</span>
         </span>
     
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>7 分钟</span>
+        </span>
     
     
         <span class="article-pv article-meta-item">
@@ -312,11 +391,21 @@
 
             <div class="article-content markdown-body">
                 <h2 id="CUDA内存组织"><a href="#CUDA内存组织" class="headerlink" title="CUDA内存组织"></a>CUDA内存组织</h2><p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/mem_struc.png" >
+    <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/mem_struc.png"
+                      
+                >
 </p>
 
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/mem_struc2.png" >
+    <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/mem_struc2.png"
+                      
+                >
 </p>
 
 <h2 id="CUDA中不同类型的内存"><a href="#CUDA中不同类型的内存" class="headerlink" title="CUDA中不同类型的内存"></a>CUDA中不同类型的内存</h2><h3 id="全局内存"><a href="#全局内存" class="headerlink" title="全局内存"></a>全局内存</h3><p>对所有线程开放访问，生命周期从<code>cudaMalloc()</code>开始到<code>cudaFree()</code>结束。</p>
@@ -350,7 +439,12 @@
 <h3 id="局部内存"><a href="#局部内存" class="headerlink" title="局部内存"></a>局部内存</h3><p>寄存器中放不下的变量，以及索引值不能在编译时就确定的数组，都有可能放在局部内存中，这种判断是由编译器自动做的。虽然局部内存在用法上类似于寄存器，但从硬件来看，局部内存只是全局内存的一部分。所以，局部内存的延迟也很高。每个线程最多能使用高达512KB的局部内存，但使用过多会降低程序的性能。</p>
 <h3 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h3><p>共享内存和寄存器类似，存在于芯片上，具有仅次于寄存器的读写速度，数量也有限。不同于寄存器的是，共享内存对整个线程块可见，其生命周期也与整个线程块一致。</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/performance.png" >
+    <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/performance.png"
+                      
+                >
 </p>
 
 <h3 id="L1和L2缓存"><a href="#L1和L2缓存" class="headerlink" title="L1和L2缓存"></a>L1和L2缓存</h3><p>对某些架构来说，还可以针对单个核函数或者整个程序改变L1缓存和共享内存的比例。本书不涉及。</p>
@@ -392,12 +486,12 @@
 <p> 针对计算能力3.5来说，。如果线程块大小为128，那么每个SM要激活16个线程块才能有2048个线程，达到100％的占有率。此时，—个线程块最多能使用3KB的共享内存。在不改变线程块大小的情况下，要达到50％的占有率，一个线程块最多能使用6KB的共享内存。要达到25％的占有率，一个线程块最多能使用12KB的共享内存。如果—个线程块使用了超过48KB的共享内存，会直接导致核函数无法运行。</p>
 </li>
 </ol>
-<p>使用CUDA工具<a class="link"   target="_blank" rel="noopener" href="https://developer.nvidia.com/nsight-compute" >NVIDIA Nsight Compute<i class="fa-solid fa-up-right-from-square"></i></a>可对SM占用率进行分析</p>
+<p>使用CUDA工具<a class="link"   target="_blank" rel="noopener" href="https://developer.nvidia.com/nsight-compute" >NVIDIA Nsight Compute <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>可对SM占用率进行分析</p>
 <p>编译器选项<code>--ptxas-options=-v</code>可以报道每个核函数的寄存器使用数量。使用此选项对数组相加程序进行编译，得到如下结果</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ptxas info    : 0 bytes gmem</span><br><span class="line">ptxas info    : Compiling entry function &#x27;_Z3addPKfS0_Pf&#x27; for &#x27;sm_30&#x27;</span><br><span class="line">ptxas info    : Function properties for _Z3addPKfS0_Pf</span><br><span class="line">    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads</span><br><span class="line">ptxas info    : Used 8 registers, 344 bytes cmem[0]</span><br></pre></td></tr></table></figure></div>
 
 <p>CUDA还提供了核函数的<code>__launch_bounds__()</code>修饰符和<code>--maxrregcount=</code>编译选项来让用户分别对—个核函数和所有核函数中寄存器的使用数量进行控制。</p>
-<h2 id="使用CUDA运行时API获取设备信息"><a href="#使用CUDA运行时API获取设备信息" class="headerlink" title="使用CUDA运行时API获取设备信息"></a>使用CUDA运行时API获取设备信息</h2><p>程序见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/query.cu" >query.cu<i class="fa-solid fa-up-right-from-square"></i></a>结果如下：</p>
+<h2 id="使用CUDA运行时API获取设备信息"><a href="#使用CUDA运行时API获取设备信息" class="headerlink" title="使用CUDA运行时API获取设备信息"></a>使用CUDA运行时API获取设备信息</h2><p>程序见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/query.cu" >query.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>结果如下：</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Device id:                                 0</span><br><span class="line">Device name:                               GeForce RTX 2070 SUPER</span><br><span class="line">Compute capability:                        7.5</span><br><span class="line">Amount of global memory:                   7.77332 GB</span><br><span class="line">Amount of constant memory:                 64 KB</span><br><span class="line">Maximum grid size:                         2147483647 65535 65535</span><br><span class="line">Maximum block size:                        1024 1024 64</span><br><span class="line">Number of SMs:                             40</span><br><span class="line">Maximum amount of shared memory per block: 48 KB</span><br><span class="line">Maximum amount of shared memory per SM:    64 KB</span><br><span class="line">Maximum number of registers per block:     64 K</span><br><span class="line">Maximum number of registers per SM:        64 K</span><br><span class="line">Maximum number of threads per block:       1024</span><br><span class="line">Maximum number of threads per SM:          1024</span><br></pre></td></tr></table></figure></div>
 
             </div>
@@ -420,6 +514,8 @@
                         </li>
                     
                 </ul>
+            
+
             
 
             
@@ -459,6 +555,7 @@
                 </div>
             
 
+
             
         </div>
 
@@ -466,8 +563,10 @@
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">CUDA编程02: CUDA内存组织</div>
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E5%86%85%E5%AD%98%E7%BB%84%E7%BB%87"><span class="nav-text">CUDA内存组织</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E4%B8%AD%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%86%85%E5%AD%98"><span class="nav-text">CUDA中不同类型的内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%86%85%E5%AD%98"><span class="nav-text">全局内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%86%85%E5%AD%98"><span class="nav-text">常量内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%B9%E7%90%86%E5%86%85%E5%AD%98%E5%92%8C%E8%A1%A8%E9%9D%A2%E5%86%85%E5%AD%98"><span class="nav-text">纹理内存和表面内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-text">寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E5%86%85%E5%AD%98"><span class="nav-text">局部内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="nav-text">共享内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L1%E5%92%8CL2%E7%BC%93%E5%AD%98"><span class="nav-text">L1和L2缓存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SM%E5%8F%8A%E5%85%B6%E5%8D%A0%E6%9C%89%E7%8E%87"><span class="nav-text">SM及其占有率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SM%E7%9A%84%E6%9E%84%E6%88%90"><span class="nav-text">SM的构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SM%E7%9A%84%E5%8D%A0%E6%9C%89%E7%8E%87"><span class="nav-text">SM的占有率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8CUDA%E8%BF%90%E8%A1%8C%E6%97%B6API%E8%8E%B7%E5%8F%96%E8%AE%BE%E5%A4%87%E4%BF%A1%E6%81%AF"><span class="nav-text">使用CUDA运行时API获取设备信息</span></a></li></ol>
+
     </div>
 </div>
             </div>
@@ -479,62 +578,69 @@
                 
 
             </div>
-
-
+            
+            
 
         </div>
 
-        <div class="page-main-content-bottom">
+        <div class="main-content-footer">
             <footer class="footer">
     <div class="info-container">
-        <div class="copyright-info info-item">
+        <div class="copyright-info">
             &copy;
             
               <span>2022</span>
               -
             
-            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+            2023&nbsp;&nbsp;<i class="fa-solid fa-cog fa-spin" style="--fa-animation-duration: 15s;"></i>&nbsp;&nbsp;<a href="/">YiQi</a>
         </div>
         
             <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
             <div class="website-count info-item">
                 
-                    <span id="busuanzi_container_site_uv">
-                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
-                    <span id="busuanzi_container_site_pv">
-                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
         <div class="theme-info info-item">
-            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.4</a>
         </div>
         
         
-        <script async data-pjax defer>
-            function odometer_init(){
-                    let el = document.getElementsByClassName('odometer');
-                    for (i = 0; i < el.length; i++) {
-                        od = new Odometer({
-                            el: el[i],
-                            format: '( ddd).dd',
-                            duration: 200
-                        });
-                    }
-            }
-            odometer_init();
-        </script>
-        <div id="start_time_div" style="display:none">
-            2022/12/28 11:45:14
-        </div>
         
+            <div id="start_div" style="display:none">
+                2022/12/21 11:45:14
+            </div>
             <div>
                 博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
         
         
         
@@ -546,10 +652,10 @@
     
         <div class="post-tools">
             <div class="post-tools-container">
-    <ul class="tools-list">
+    <ul class="article-tools-list">
         <!-- TOC aside toggle -->
         
-            <li class="tools-item page-aside-toggle">
+            <li class="right-bottom-tools page-aside-toggle">
                 <i class="fa-regular fa-outdent"></i>
             </li>
         
@@ -562,23 +668,23 @@
         </div>
     
 
-    <div class="right-bottom-side-tools">
+    <div class="right-side-tools-container">
         <div class="side-tools-container">
-    <ul class="side-tools-list">
-        <li class="tools-item tool-font-adjust-plus flex-center">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
         </li>
 
-        <li class="tools-item tool-font-adjust-minus flex-center">
-            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
         </li>
 
-        <li class="tools-item tool-expand-width flex-center">
-            <i class="fa-solid fa-left-right"></i>
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
         </li>
 
-        <li class="tools-item tool-dark-light-toggle flex-center">
-            <i class="fa-solid fa-moon"></i>
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
         </li>
 
         <!-- rss -->
@@ -586,20 +692,21 @@
 
         
 
-        <li class="tools-item tool-scroll-to-bottom flex-center">
-            <i class="fa-solid fa-arrow-down"></i>
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
         </li>
     </ul>
 
-    <ul class="exposed-tools-list">
-        <li class="tools-item tool-toggle-show flex-center">
-            <i class="fa-solid fa-cog fa-spin"></i>
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
         </li>
         
-            <li class="tools-item tool-scroll-to-top flex-center">
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
                 <i class="arrow-up fas fa-arrow-up"></i>
                 <span class="percent"></span>
             </li>
+        
         
     </ul>
 </div>
@@ -613,6 +720,7 @@
 
     
 
+
 </main>
 
 
@@ -622,43 +730,62 @@
 
 <script src="/js/main.js"></script>
 
-<script src="/js/header-shrink.js"></script>
+<script src="/js/layouts/navbarShrink.js"></script>
 
-<script src="/js/back2top.js"></script>
+<script src="/js/tools/scrollTopBottom.js"></script>
 
-<script src="/js/dark-light-toggle.js"></script>
-
-
-
-
-
-    
-<script src="/js/code-copy.js"></script>
-
+<script src="/js/tools/lightDarkSwitch.js"></script>
 
 
 
 
 
     
-<script src="/js/runtime.js"></script>
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
 
     
-<script src="/js/odometer.min.js"></script>
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
 
     
-<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
 
 
 
 <div class="post-scripts pjax">
     
         
-<script src="/js/toc-toggle.js"></script>
+<script src="/js/tools/tocToggle.js"></script>
 
 <script src="/js/libs/anime.min.js"></script>
 
-<script src="/js/toc.js"></script>
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
 
     
 </div>
@@ -673,7 +800,7 @@
             selectors: [
                 'head title',
                 '.page-container',
-                '.pjax'
+                '.pjax',
             ],
             history: true,
             debug: false,
@@ -686,16 +813,17 @@
         });
 
         document.addEventListener('pjax:send', () => {
-            REDEFINE.utils.pjaxProgressBarStart();
+            Global.utils.pjaxProgressBarStart();
         });
 
         document.addEventListener('pjax:complete', () => {
-            REDEFINE.utils.pjaxProgressBarEnd();
+            Global.utils.pjaxProgressBarEnd();
             window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-            REDEFINE.refresh();
+            Global.refresh();
         });
     });
 </script>
+
 
 
 

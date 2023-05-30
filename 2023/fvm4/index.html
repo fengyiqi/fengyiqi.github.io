@@ -2,48 +2,89 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
-    <meta name="description" content="Hexo Theme Redefine">
+    
     <meta name="author" content="YiQi">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fengyiqi.github.io/2023/fvm4/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta property="og:type" content="article">
+<meta property="og:title" content="CFD-FVM-04: Turbulent Flow calculations - RANS">
+<meta property="og:url" content="http://fengyiqi.github.io/2023/fvm4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/fvm_versteeg/2023-04-03-12-55-34.png">
+<meta property="article:published_time" content="2023-04-13T12:14:14.000Z">
+<meta property="article:modified_time" content="2023-04-13T13:47:51.465Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="FVM">
+<meta property="article:tag" content="CFD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/fvm_versteeg/2023-04-03-12-55-34.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <!--- Page Info-->
     
     <title>
         
-            CFD-FVM-04: Turbulent Flow calculations - RANS |
+            CFD-FVM-04: Turbulent Flow calculations - RANS -
         
         YiQi&#39;s Blog
     </title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <link rel="shortcut icon" href="/images/logo.svg">
     
-<link rel="stylesheet" href="/css/fontawesome.min.css">
+<link rel="stylesheet" href="/assets/fonts.css">
 
+    <!--- Font Part-->
     
-<link rel="stylesheet" href="/css/brands.min.css">
+    
+    
+    
 
+    <!--- Inject Part-->
     
-<link rel="stylesheet" href="/css/solid.min.css">
-
-    
-<link rel="stylesheet" href="/css/regular.min.css">
-
-    
-    
-    
-    
-<link rel="stylesheet" href="/css/css2.css">
-
     <script id="hexo-configurations">
-    let REDEFINE = window.REDEFINE || {};
-    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
-    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
-    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/night_sky.jpg"},"title":"早日毕业！","subtitle":{"text":["我们的征途是星辰大海"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#404040","dark":"#e0e0e0"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/fengyiqi","instagram":null,"zhihu":null,"twitter":null,"email":"yiqi.feng@hotmail.com"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.4","navbar":{"auto_hide":false,"color":{"left":"#404040","right":"#ffffff","transparency":30},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":false};
   </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
 <meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
@@ -176,12 +217,12 @@ mjx-container[display="true"] + br {
 
     
 
-    <div class="page-main-content">
+    <div class="main-content-container">
 
-        <div class="page-main-content-top">
-            <header class="header-wrapper">
+        <div class="main-content-header">
+            <header class="navbar-container">
     
-    <div class="header-content">
+    <div class="navbar-content">
         <div class="left">
             
                 <a class="logo-image" href="/">
@@ -189,74 +230,80 @@ mjx-container[display="true"] + br {
                 </a>
             
             <a class="logo-title" href="/">
+                
                 YiQi&#39;s Blog
+                
             </a>
         </div>
 
         <div class="right">
             <!-- PC -->
-            <div class="pc">
-                <ul class="menu-list">
+            <div class="desktop">
+                <ul class="navbar-list">
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
                                     
-                                        <i class="fa-regular fa-house"></i>
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
                                     
-                                    首页
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/archives" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
                                     
-                                        <i class="fa-regular fa-archive"></i>
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
                                     
-                                    归档
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/categories" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
                                     
-                                        <i class="fa-regular fa-list"></i>
+                                        
+                                            <i class="fa-regular fa-list"></i>
+                                        
+                                        分类
                                     
-                                    分类
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/about" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
                                     
-                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                            <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                        关于
                                     
-                                    关于
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
                     
                 </ul>
@@ -264,73 +311,78 @@ mjx-container[display="true"] + br {
             <!-- Mobile -->
             <div class="mobile">
                 
-                <div class="icon-item menu-bar">
-                    <div class="menu-bar-middle"></div>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile drawer -->
-    <div class="header-drawer">
-        <ul class="drawer-menu-list">
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/" >
-                         
-                            
-                                <i class="fa-regular fa-house"></i>
-                            
-                            首页
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/archives" >
-                         
-                            
-                                <i class="fa-regular fa-archive"></i>
-                            
-                            归档
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/categories" >
-                         
-                            
-                                <i class="fa-regular fa-list"></i>
-                            
-                            分类
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-list"></i>
+                                
+                                分类
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/about" >
-                         
-                            
-                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
-                            
-                            关于
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                
+                                关于
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
+
         </ul>
     </div>
 
@@ -341,7 +393,9 @@ mjx-container[display="true"] + br {
 
         </div>
 
-        <div class="page-main-content-middle">
+        <div class="main-content-body">
+
+            
 
             <div class="main-content">
 
@@ -349,9 +403,15 @@ mjx-container[display="true"] + br {
                     <div class="fade-in-down-animation">
     <div class="post-page-container">
         <div class="article-content-container">
-            <div class="article-title">
-                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">CFD-FVM-04: Turbulent Flow calculations - RANS</h1></span>
-            </div>
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">CFD-FVM-04: Turbulent Flow calculations - RANS</h1>
+                </div>
+            
+                
+            
 
             
                 <div class="article-header">
@@ -362,14 +422,26 @@ mjx-container[display="true"] + br {
                         <div class="author">
                             <span class="name">YiQi</span>
                             
+                                <span class="author-label">Lv3</span>
+                            
                         </div>
                         <div class="meta-info">
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="pc">2023-04-13 14:14:14</span>
+        <span class="desktop">2023-04-13 14:14:14</span>
         <span class="mobile">2023-04-13 14:14</span>
+        <span class="hover-info">创建</span>
     </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-04-13 15:47:51</span>
+            <span class="mobile">2023-04-13 15:47</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
     
         <span class="article-categories article-meta-item">
             <i class="fa-regular fa-folders"></i>&nbsp;
@@ -402,9 +474,13 @@ mjx-container[display="true"] + br {
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-file-word"></i>&nbsp;<span>1.9k 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.9k 字</span>
         </span>
     
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>12 分钟</span>
+        </span>
     
     
         <span class="article-pv article-meta-item">
@@ -609,7 +685,7 @@ mjx-container[display="true"] + br {
 <li>performs just as poorly as the <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="3.364ex" height="1.62ex" role="img" focusable="false" viewBox="0 -694 1487 716"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(521,0)"><g data-mml-node="mo"><path data-c="2013" d="M0 248V285H499V248H0Z"></path></g></g><g data-mml-node="mi" transform="translate(1021,0)"><path data-c="1D700" d="M190 -22Q124 -22 76 11T27 107Q27 174 97 232L107 239L99 248Q76 273 76 304Q76 364 144 408T290 452H302Q360 452 405 421Q428 405 428 392Q428 381 417 369T391 356Q382 356 371 365T338 383T283 392Q217 392 167 368T116 308Q116 289 133 272Q142 263 145 262T157 264Q188 278 238 278H243Q308 278 308 247Q308 206 223 206Q177 206 142 219L132 212Q68 169 68 112Q68 39 201 39Q253 39 286 49T328 72T345 94T362 105Q376 103 376 88Q376 79 365 62T334 26T275 -8T190 -22Z"></path></g></g></g></svg></mjx-container> model in some flows due to identical problems with the ε-equation modelling (e.g. axisymmetric jets and unconfined recirculating flows)</li>
 </ul>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/fvm_versteeg/2023-04-03-12-55-34.png" width="80%">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/fvm_versteeg/2023-04-03-12-55-34.png" width="80%">
 </p>
 
 <h2 id="Advanced-turbulence-models"><a href="#Advanced-turbulence-models" class="headerlink" title="Advanced turbulence models"></a>Advanced turbulence models</h2><h3 id="Advanced-treatment-of-the-near-wall-region-two-layer-k–-varepsilon-model"><a href="#Advanced-treatment-of-the-near-wall-region-two-layer-k–-varepsilon-model" class="headerlink" title="Advanced treatment of the near-wall region: two-layer $k–\varepsilon$ model"></a>Advanced treatment of the near-wall region: two-layer <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="3.364ex" height="1.62ex" role="img" focusable="false" viewBox="0 -694 1487 716"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(521,0)"><g data-mml-node="mo"><path data-c="2013" d="M0 248V285H499V248H0Z"></path></g></g><g data-mml-node="mi" transform="translate(1021,0)"><path data-c="1D700" d="M190 -22Q124 -22 76 11T27 107Q27 174 97 232L107 239L99 248Q76 273 76 304Q76 364 144 408T290 452H302Q360 452 405 421Q428 405 428 392Q428 381 417 369T391 356Q382 356 371 365T338 383T283 392Q217 392 167 368T116 308Q116 289 133 272Q142 263 145 262T157 264Q188 278 238 278H243Q308 278 308 247Q308 206 223 206Q177 206 142 219L132 212Q68 169 68 112Q68 39 201 39Q253 39 286 49T328 72T345 94T362 105Q376 103 376 88Q376 79 365 62T334 26T275 -8T190 -22Z"></path></g></g></g></svg></mjx-container> model</h3><ul>
@@ -674,6 +750,8 @@ mjx-container[display="true"] + br {
             
 
             
+
+            
                 <div class="article-nav">
                     
                         <div class="article-prev">
@@ -710,6 +788,7 @@ mjx-container[display="true"] + br {
                 </div>
             
 
+
             
         </div>
 
@@ -717,8 +796,10 @@ mjx-container[display="true"] + br {
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RANS"><span class="nav-text">RANS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Eddy-viscosity-and-eddy-diffusivity"><span class="nav-text">Eddy viscosity and eddy diffusivity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Preamble"><span class="nav-text">Preamble</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mixing-length-models"><span class="nav-text">Mixing length models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Summary"><span class="nav-text">Summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-k-varepsilon-model"><span class="nav-text">The  model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Governing-equation-for-mean-flow-kinetic-energy-K"><span class="nav-text">Governing equation for mean flow kinetic energy </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Governing-equation-for-turbulent-kinetic-energy-k"><span class="nav-text">Governing equation for turbulent kinetic energy </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-k-varepsilon-model-equations"><span class="nav-text">The  model equations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Boundary-conditions"><span class="nav-text">Boundary conditions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Inlet"><span class="nav-text">Inlet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Free-stream"><span class="nav-text">Free stream</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Solid-walls"><span class="nav-text">Solid walls</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Summary-1"><span class="nav-text">Summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reynolds-stress-equation-models-RSM"><span class="nav-text">Reynolds stress equation models (RSM)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Advanced-turbulence-models"><span class="nav-text">Advanced turbulence models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Advanced-treatment-of-the-near-wall-region-two-layer-k%E2%80%93-varepsilon-model"><span class="nav-text">Advanced treatment of the near-wall region: two-layer  model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Strain-sensitivity-RNG-k%E2%80%93-varepsilon-model"><span class="nav-text">Strain sensitivity: RNG  model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spalart-Allmaras-model"><span class="nav-text">Spalart-Allmaras model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wilcox-k-omega-model"><span class="nav-text">Wilcox  model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-models"><span class="nav-text">Other models</span></a></li></ol>
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">CFD-FVM-04: Turbulent Flow calculations - RANS</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RANS"><span class="nav-text">RANS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Eddy-viscosity-and-eddy-diffusivity"><span class="nav-text">Eddy viscosity and eddy diffusivity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Preamble"><span class="nav-text">Preamble</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mixing-length-models"><span class="nav-text">Mixing length models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Summary"><span class="nav-text">Summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-k-varepsilon-model"><span class="nav-text">The  model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Governing-equation-for-mean-flow-kinetic-energy-K"><span class="nav-text">Governing equation for mean flow kinetic energy </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Governing-equation-for-turbulent-kinetic-energy-k"><span class="nav-text">Governing equation for turbulent kinetic energy </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-k-varepsilon-model-equations"><span class="nav-text">The  model equations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Boundary-conditions"><span class="nav-text">Boundary conditions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Summary-1"><span class="nav-text">Summary</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reynolds-stress-equation-models-RSM"><span class="nav-text">Reynolds stress equation models (RSM)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Advanced-turbulence-models"><span class="nav-text">Advanced turbulence models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Advanced-treatment-of-the-near-wall-region-two-layer-k%E2%80%93-varepsilon-model"><span class="nav-text">Advanced treatment of the near-wall region: two-layer  model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Strain-sensitivity-RNG-k%E2%80%93-varepsilon-model"><span class="nav-text">Strain sensitivity: RNG  model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spalart-Allmaras-model"><span class="nav-text">Spalart-Allmaras model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wilcox-k-omega-model"><span class="nav-text">Wilcox  model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Other-models"><span class="nav-text">Other models</span></a></li></ol>
+
     </div>
 </div>
             </div>
@@ -730,62 +811,69 @@ mjx-container[display="true"] + br {
                 
 
             </div>
-
-
+            
+            
 
         </div>
 
-        <div class="page-main-content-bottom">
+        <div class="main-content-footer">
             <footer class="footer">
     <div class="info-container">
-        <div class="copyright-info info-item">
+        <div class="copyright-info">
             &copy;
             
               <span>2022</span>
               -
             
-            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+            2023&nbsp;&nbsp;<i class="fa-solid fa-cog fa-spin" style="--fa-animation-duration: 15s;"></i>&nbsp;&nbsp;<a href="/">YiQi</a>
         </div>
         
             <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
             <div class="website-count info-item">
                 
-                    <span id="busuanzi_container_site_uv">
-                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
-                    <span id="busuanzi_container_site_pv">
-                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
         <div class="theme-info info-item">
-            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.4</a>
         </div>
         
         
-        <script async data-pjax defer>
-            function odometer_init(){
-                    let el = document.getElementsByClassName('odometer');
-                    for (i = 0; i < el.length; i++) {
-                        od = new Odometer({
-                            el: el[i],
-                            format: '( ddd).dd',
-                            duration: 200
-                        });
-                    }
-            }
-            odometer_init();
-        </script>
-        <div id="start_time_div" style="display:none">
-            2022/12/28 11:45:14
-        </div>
         
+            <div id="start_div" style="display:none">
+                2022/12/21 11:45:14
+            </div>
             <div>
                 博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
         
         
         
@@ -797,10 +885,10 @@ mjx-container[display="true"] + br {
     
         <div class="post-tools">
             <div class="post-tools-container">
-    <ul class="tools-list">
+    <ul class="article-tools-list">
         <!-- TOC aside toggle -->
         
-            <li class="tools-item page-aside-toggle">
+            <li class="right-bottom-tools page-aside-toggle">
                 <i class="fa-regular fa-outdent"></i>
             </li>
         
@@ -813,23 +901,23 @@ mjx-container[display="true"] + br {
         </div>
     
 
-    <div class="right-bottom-side-tools">
+    <div class="right-side-tools-container">
         <div class="side-tools-container">
-    <ul class="side-tools-list">
-        <li class="tools-item tool-font-adjust-plus flex-center">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
         </li>
 
-        <li class="tools-item tool-font-adjust-minus flex-center">
-            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
         </li>
 
-        <li class="tools-item tool-expand-width flex-center">
-            <i class="fa-solid fa-left-right"></i>
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
         </li>
 
-        <li class="tools-item tool-dark-light-toggle flex-center">
-            <i class="fa-solid fa-moon"></i>
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
         </li>
 
         <!-- rss -->
@@ -837,20 +925,21 @@ mjx-container[display="true"] + br {
 
         
 
-        <li class="tools-item tool-scroll-to-bottom flex-center">
-            <i class="fa-solid fa-arrow-down"></i>
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
         </li>
     </ul>
 
-    <ul class="exposed-tools-list">
-        <li class="tools-item tool-toggle-show flex-center">
-            <i class="fa-solid fa-cog fa-spin"></i>
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
         </li>
         
-            <li class="tools-item tool-scroll-to-top flex-center">
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
                 <i class="arrow-up fas fa-arrow-up"></i>
                 <span class="percent"></span>
             </li>
+        
         
     </ul>
 </div>
@@ -864,6 +953,7 @@ mjx-container[display="true"] + br {
 
     
 
+
 </main>
 
 
@@ -873,43 +963,62 @@ mjx-container[display="true"] + br {
 
 <script src="/js/main.js"></script>
 
-<script src="/js/header-shrink.js"></script>
+<script src="/js/layouts/navbarShrink.js"></script>
 
-<script src="/js/back2top.js"></script>
+<script src="/js/tools/scrollTopBottom.js"></script>
 
-<script src="/js/dark-light-toggle.js"></script>
-
-
-
-
-
-    
-<script src="/js/code-copy.js"></script>
-
+<script src="/js/tools/lightDarkSwitch.js"></script>
 
 
 
 
 
     
-<script src="/js/runtime.js"></script>
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
 
     
-<script src="/js/odometer.min.js"></script>
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
 
     
-<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
 
 
 
 <div class="post-scripts pjax">
     
         
-<script src="/js/toc-toggle.js"></script>
+<script src="/js/tools/tocToggle.js"></script>
 
 <script src="/js/libs/anime.min.js"></script>
 
-<script src="/js/toc.js"></script>
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
 
     
 </div>
@@ -924,7 +1033,7 @@ mjx-container[display="true"] + br {
             selectors: [
                 'head title',
                 '.page-container',
-                '.pjax'
+                '.pjax',
             ],
             history: true,
             debug: false,
@@ -937,16 +1046,17 @@ mjx-container[display="true"] + br {
         });
 
         document.addEventListener('pjax:send', () => {
-            REDEFINE.utils.pjaxProgressBarStart();
+            Global.utils.pjaxProgressBarStart();
         });
 
         document.addEventListener('pjax:complete', () => {
-            REDEFINE.utils.pjaxProgressBarEnd();
+            Global.utils.pjaxProgressBarEnd();
             window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-            REDEFINE.refresh();
+            Global.refresh();
         });
     });
 </script>
+
 
 
 

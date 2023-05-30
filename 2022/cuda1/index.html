@@ -2,48 +2,93 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
-    <meta name="description" content="Hexo Theme Redefine">
+    
     <meta name="author" content="YiQi">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fengyiqi.github.io/2022/cuda1/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta property="og:type" content="article">
+<meta property="og:title" content="CUDA编程01: 一个简单的CUDA C++程序">
+<meta property="og:url" content="http://fengyiqi.github.io/2022/cuda1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/architecture.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/multidim_grid.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/cards_time.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/cards_time.png">
+<meta property="article:published_time" content="2022-12-27T10:07:19.000Z">
+<meta property="article:modified_time" content="2023-03-11T21:57:56.649Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CUDA">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/architecture.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <!--- Page Info-->
     
     <title>
         
-            CUDA编程01: 一个简单的CUDA C++程序 |
+            CUDA编程01: 一个简单的CUDA C++程序 -
         
         YiQi&#39;s Blog
     </title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <link rel="shortcut icon" href="/images/logo.svg">
     
-<link rel="stylesheet" href="/css/fontawesome.min.css">
+<link rel="stylesheet" href="/assets/fonts.css">
 
+    <!--- Font Part-->
     
-<link rel="stylesheet" href="/css/brands.min.css">
+    
+    
+    
 
+    <!--- Inject Part-->
     
-<link rel="stylesheet" href="/css/solid.min.css">
-
-    
-<link rel="stylesheet" href="/css/regular.min.css">
-
-    
-    
-    
-    
-<link rel="stylesheet" href="/css/css2.css">
-
     <script id="hexo-configurations">
-    let REDEFINE = window.REDEFINE || {};
-    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
-    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
-    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/night_sky.jpg"},"title":"早日毕业！","subtitle":{"text":["我们的征途是星辰大海"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#404040","dark":"#e0e0e0"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/fengyiqi","instagram":null,"zhihu":null,"twitter":null,"email":"yiqi.feng@hotmail.com"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.4","navbar":{"auto_hide":false,"color":{"left":"#404040","right":"#ffffff","transparency":30},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":false};
   </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
 <meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
@@ -176,12 +221,12 @@ mjx-container[display="true"] + br {
 
     
 
-    <div class="page-main-content">
+    <div class="main-content-container">
 
-        <div class="page-main-content-top">
-            <header class="header-wrapper">
+        <div class="main-content-header">
+            <header class="navbar-container">
     
-    <div class="header-content">
+    <div class="navbar-content">
         <div class="left">
             
                 <a class="logo-image" href="/">
@@ -189,74 +234,80 @@ mjx-container[display="true"] + br {
                 </a>
             
             <a class="logo-title" href="/">
+                
                 YiQi&#39;s Blog
+                
             </a>
         </div>
 
         <div class="right">
             <!-- PC -->
-            <div class="pc">
-                <ul class="menu-list">
+            <div class="desktop">
+                <ul class="navbar-list">
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
                                     
-                                        <i class="fa-regular fa-house"></i>
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
                                     
-                                    首页
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/archives" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
                                     
-                                        <i class="fa-regular fa-archive"></i>
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
                                     
-                                    归档
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/categories" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
                                     
-                                        <i class="fa-regular fa-list"></i>
+                                        
+                                            <i class="fa-regular fa-list"></i>
+                                        
+                                        分类
                                     
-                                    分类
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/about" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
                                     
-                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                            <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                        关于
                                     
-                                    关于
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
                     
                 </ul>
@@ -264,73 +315,78 @@ mjx-container[display="true"] + br {
             <!-- Mobile -->
             <div class="mobile">
                 
-                <div class="icon-item menu-bar">
-                    <div class="menu-bar-middle"></div>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile drawer -->
-    <div class="header-drawer">
-        <ul class="drawer-menu-list">
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/" >
-                         
-                            
-                                <i class="fa-regular fa-house"></i>
-                            
-                            首页
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/archives" >
-                         
-                            
-                                <i class="fa-regular fa-archive"></i>
-                            
-                            归档
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/categories" >
-                         
-                            
-                                <i class="fa-regular fa-list"></i>
-                            
-                            分类
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-list"></i>
+                                
+                                分类
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/about" >
-                         
-                            
-                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
-                            
-                            关于
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                
+                                关于
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
+
         </ul>
     </div>
 
@@ -341,7 +397,9 @@ mjx-container[display="true"] + br {
 
         </div>
 
-        <div class="page-main-content-middle">
+        <div class="main-content-body">
+
+            
 
             <div class="main-content">
 
@@ -349,9 +407,15 @@ mjx-container[display="true"] + br {
                     <div class="fade-in-down-animation">
     <div class="post-page-container">
         <div class="article-content-container">
-            <div class="article-title">
-                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">CUDA编程01: 一个简单的CUDA C++程序</h1></span>
-            </div>
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">CUDA编程01: 一个简单的CUDA C++程序</h1>
+                </div>
+            
+                
+            
 
             
                 <div class="article-header">
@@ -362,14 +426,26 @@ mjx-container[display="true"] + br {
                         <div class="author">
                             <span class="name">YiQi</span>
                             
+                                <span class="author-label">Lv3</span>
+                            
                         </div>
                         <div class="meta-info">
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="pc">2022-12-27 11:07:19</span>
+        <span class="desktop">2022-12-27 11:07:19</span>
         <span class="mobile">2022-12-27 11:07</span>
+        <span class="hover-info">创建</span>
     </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-03-11 22:57:56</span>
+            <span class="mobile">2023-03-11 22:57</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
     
         <span class="article-categories article-meta-item">
             <i class="fa-regular fa-folders"></i>&nbsp;
@@ -406,9 +482,13 @@ mjx-container[display="true"] + br {
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-file-word"></i>&nbsp;<span>3.7k 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3.7k 字</span>
         </span>
     
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>16 分钟</span>
+        </span>
     
     
         <span class="article-pv article-meta-item">
@@ -441,7 +521,7 @@ mjx-container[display="true"] + br {
 <li>GeForce用于游戏与娱乐</li>
 </ul>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/architecture.png">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/architecture.png">
 </p>
 
 <h2 id="CUDA-Hello-world程序"><a href="#CUDA-Hello-world程序" class="headerlink" title="CUDA Hello world程序"></a>CUDA Hello world程序</h2><p>一个最简单的CUDA程序结构如：</p>
@@ -487,7 +567,7 @@ mjx-container[display="true"] + br {
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">dim3 <span class="title">grid_size</span><span class="params">(<span class="number">2</span>, <span class="number">2</span>)</span></span>;</span><br><span class="line"><span class="function">dim3 <span class="title">block_size</span><span class="params">(<span class="number">3</span>, <span class="number">2</span>)</span></span>;</span><br></pre></td></tr></table></figure></div>
 <p>定义了如下网格：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/multidim_grid.png">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/multidim_grid.png">
 </p>
 <!-- ![](./cuda1/multidim_grid.png) -->
 
@@ -584,7 +664,7 @@ mjx-container[display="true"] + br {
 <h3 id="使用CUDA事件对C-程序计时"><a href="#使用CUDA事件对C-程序计时" class="headerlink" title="使用CUDA事件对C++程序计时"></a>使用CUDA事件对C++程序计时</h3><p>在函数<code>add</code>前后使用计时：</p>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">cudaEvent_t start, stop;</span><br><span class="line"><span class="built_in">CHECK</span>(<span class="built_in">cudaEventCreate</span>(&amp;start));</span><br><span class="line"><span class="built_in">CHECK</span>(<span class="built_in">cudaEventCreate</span>(&amp;stop));</span><br><span class="line"><span class="built_in">CHECK</span>(<span class="built_in">cudaEventRecord</span>(start));</span><br><span class="line"><span class="built_in">cudaEventQuery</span>(start);</span><br><span class="line"></span><br><span class="line"><span class="built_in">add</span>(x, y, z, N);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CHECK</span>(<span class="built_in">cudaEventRecord</span>(stop));</span><br><span class="line"><span class="built_in">CHECK</span>(<span class="built_in">cudaEventSynchronize</span>(stop));</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> elapsed_time;</span><br><span class="line"><span class="built_in">CHECK</span>(<span class="built_in">cudaEventElapsedTime</span>(&amp;elapsed_time, start, stop));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"Trial %d: time = %g ms.\n"</span>, count, elapsed_time);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (i &gt; <span class="number">0</span>) {</span><br><span class="line">    t_sum += elapsed_time;</span><br><span class="line">    t2_sum += elapsed_time * elapsed_time;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="built_in">CHECK</span>(<span class="built_in">cudaEventDestroy</span>(start));</span><br><span class="line"><span class="built_in">CHECK</span>(<span class="built_in">cudaEventDestroy</span>(stop));</span><br></pre></td></tr></table></figure></div>
 
-<p>完整代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/addCPU_event.cu">addCPU_event.cu<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<p>完整代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/addCPU_event.cu">addCPU_event.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>对如上程序的几点说明：</p>
 <ul>
 <li><code>cudaEventQuery(start)</code>不能使用<code>CHECK</code>宏，因为<code>cudaEventQuery(start)</code>很有可能返回<code>cudaErrorNotReady</code>，但又不代表程序出错了</li>
@@ -595,13 +675,13 @@ mjx-container[display="true"] + br {
 <p>使用单精度时，运行结果如下</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Trial 0: time = 102.335 ms.</span><br><span class="line">Trial 1: time = 63.5494 ms.</span><br><span class="line">Trial 2: time = 62.4112 ms.</span><br><span class="line">Trial 3: time = 60.8932 ms.</span><br><span class="line">Trial 4: time = 61.8597 ms.</span><br><span class="line">Trial 5: time = 61.3274 ms.</span><br><span class="line">Trial 6: time = 60.6918 ms.</span><br><span class="line">Trial 7: time = 62.119 ms.</span><br><span class="line">Trial 8: time = 62.7013 ms.</span><br><span class="line">Trial 9: time = 60.9613 ms.</span><br><span class="line">Trial 10: time = 61.4844 ms.</span><br><span class="line">Average: time = 61.7999 +- 0.86207 ms.</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="使用CUDA事件对CUDA程序计时"><a href="#使用CUDA事件对CUDA程序计时" class="headerlink" title="使用CUDA事件对CUDA程序计时"></a>使用CUDA事件对CUDA程序计时</h3><p>主要修改的部分与C++程序几乎一样，完整代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/addGPU_event.cu">addGPU_event.cu<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<h3 id="使用CUDA事件对CUDA程序计时"><a href="#使用CUDA事件对CUDA程序计时" class="headerlink" title="使用CUDA事件对CUDA程序计时"></a>使用CUDA事件对CUDA程序计时</h3><p>主要修改的部分与C++程序几乎一样，完整代码见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/addGPU_event.cu">addGPU_event.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>使用单精度时，运行结果如下</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Trial 0: time = 2.98701 ms.</span><br><span class="line">Trial 1: time = 2.97706 ms.</span><br><span class="line">Trial 2: time = 2.98189 ms.</span><br><span class="line">Trial 3: time = 3.19242 ms.</span><br><span class="line">Trial 4: time = 3.44064 ms.</span><br><span class="line">Trial 5: time = 2.99856 ms.</span><br><span class="line">Trial 6: time = 2.9775 ms.</span><br><span class="line">Trial 7: time = 2.97779 ms.</span><br><span class="line">Trial 8: time = 2.97779 ms.</span><br><span class="line">Trial 9: time = 3.44006 ms.</span><br><span class="line">Trial 10: time = 3.60653 ms.</span><br><span class="line">Average: time = 3.15702 +- 0.2342 ms.</span><br></pre></td></tr></table></figure></div>
 
 <h3 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h3><p>原书作者用上述程序测试了一系列显卡，结果如下</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/cards_time.png">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/cards_time.png">
 </p>
 
 <blockquote>
@@ -611,7 +691,7 @@ mjx-container[display="true"] + br {
 <p>有效显存带宽定义为GPU在单位时间内访问设备内存的字节。那么上述结果计算得到的显存带宽为<br><mjx-container class="MathJax" jax="SVG" display="true"><svg style="vertical-align: -1.677ex;" xmlns="http://www.w3.org/2000/svg" width="25.778ex" height="5.093ex" role="img" focusable="false" viewBox="0 -1509.9 11394 2251.2"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mfrac"><g data-mml-node="mrow" transform="translate(220,676)"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path></g><g data-mml-node="mo" transform="translate(722.2,0)"><path data-c="D7" d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z"></path></g><g data-mml-node="mn" transform="translate(1722.4,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g><g data-mml-node="msup" transform="translate(2222.4,0)"><g data-mml-node="mi"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g><g data-mml-node="TeXAtom" transform="translate(499,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><path data-c="38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path></g></g></g><g data-mml-node="mo" transform="translate(3347.2,0)"><path data-c="D7" d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z"></path></g><g data-mml-node="mn" transform="translate(4347.4,0)"><path data-c="34" d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z"></path></g><g data-mml-node="mi" transform="translate(4847.4,0)"><path data-c="1D435" d="M231 637Q204 637 199 638T194 649Q194 676 205 682Q206 683 335 683Q594 683 608 681Q671 671 713 636T756 544Q756 480 698 429T565 360L555 357Q619 348 660 311T702 219Q702 146 630 78T453 1Q446 0 242 0Q42 0 39 2Q35 5 35 10Q35 17 37 24Q42 43 47 45Q51 46 62 46H68Q95 46 128 49Q142 52 147 61Q150 65 219 339T288 628Q288 635 231 637ZM649 544Q649 574 634 600T585 634Q578 636 493 637Q473 637 451 637T416 636H403Q388 635 384 626Q382 622 352 506Q352 503 351 500L320 374H401Q482 374 494 376Q554 386 601 434T649 544ZM595 229Q595 273 572 302T512 336Q506 337 429 337Q311 337 310 336Q310 334 293 263T258 122L240 52Q240 48 252 48T333 46Q422 46 429 47Q491 54 543 105T595 229Z"></path></g></g><g data-mml-node="mrow" transform="translate(1407.9,-719.2)"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z" transform="translate(500,0)"></path><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z" transform="translate(778,0)"></path><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z" transform="translate(1278,0)"></path></g><g data-mml-node="msup" transform="translate(1778,0)"><g data-mml-node="mi"><path data-c="1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path></g><g data-mml-node="TeXAtom" transform="translate(499,289) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mo"><path data-c="2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path></g><g data-mml-node="mn" transform="translate(778,0)"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path></g></g></g></g><rect width="5806.4" height="60" x="120" y="220"></rect></g><g data-mml-node="mo" transform="translate(6324.2,0)"><path data-c="2248" d="M55 319Q55 360 72 393T114 444T163 472T205 482Q207 482 213 482T223 483Q262 483 296 468T393 413L443 381Q502 346 553 346Q609 346 649 375T694 454Q694 465 698 474T708 483Q722 483 722 452Q722 386 675 338T555 289Q514 289 468 310T388 357T308 404T224 426Q164 426 125 393T83 318Q81 289 69 289Q55 289 55 319ZM55 85Q55 126 72 159T114 210T163 238T205 248Q207 248 213 248T223 249Q262 249 296 234T393 179L443 147Q502 112 553 112Q609 112 649 141T694 220Q694 249 708 249T722 217Q722 153 675 104T555 55Q514 55 468 76T388 123T308 170T224 192Q164 192 125 159T83 84Q80 55 69 55Q55 55 55 85Z"></path></g><g data-mml-node="mn" transform="translate(7380,0)"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path data-c="38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z" transform="translate(500,0)"></path><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" transform="translate(1000,0)"></path></g><g data-mml-node="mi" transform="translate(8880,0)"><path data-c="1D43A" d="M50 252Q50 367 117 473T286 641T490 704Q580 704 633 653Q642 643 648 636T656 626L657 623Q660 623 684 649Q691 655 699 663T715 679T725 690L740 705H746Q760 705 760 698Q760 694 728 561Q692 422 692 421Q690 416 687 415T669 413H653Q647 419 647 422Q647 423 648 429T650 449T651 481Q651 552 619 605T510 659Q492 659 471 656T418 643T357 615T294 567T236 496T189 394T158 260Q156 242 156 221Q156 173 170 136T206 79T256 45T308 28T353 24Q407 24 452 47T514 106Q517 114 529 161T541 214Q541 222 528 224T468 227H431Q425 233 425 235T427 254Q431 267 437 273H454Q494 271 594 271Q634 271 659 271T695 272T707 272Q721 272 721 263Q721 261 719 249Q714 230 709 228Q706 227 694 227Q674 227 653 224Q646 221 643 215T629 164Q620 131 614 108Q589 6 586 3Q584 1 581 1Q571 1 553 21T530 52Q530 53 528 52T522 47Q448 -22 322 -22Q201 -22 126 55T50 252Z"></path></g><g data-mml-node="mi" transform="translate(9666,0)"><path data-c="1D435" d="M231 637Q204 637 199 638T194 649Q194 676 205 682Q206 683 335 683Q594 683 608 681Q671 671 713 636T756 544Q756 480 698 429T565 360L555 357Q619 348 660 311T702 219Q702 146 630 78T453 1Q446 0 242 0Q42 0 39 2Q35 5 35 10Q35 17 37 24Q42 43 47 45Q51 46 62 46H68Q95 46 128 49Q142 52 147 61Q150 65 219 339T288 628Q288 635 231 637ZM649 544Q649 574 634 600T585 634Q578 636 493 637Q473 637 451 637T416 636H403Q388 635 384 626Q382 622 352 506Q352 503 351 500L320 374H401Q482 374 494 376Q554 386 601 434T649 544ZM595 229Q595 273 572 302T512 336Q506 337 429 337Q311 337 310 336Q310 334 293 263T258 122L240 52Q240 48 252 48T333 46Q422 46 429 47Q491 54 543 105T595 229Z"></path></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(10425,0)"><g data-mml-node="mo"><path data-c="2F" d="M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z"></path></g></g><g data-mml-node="mi" transform="translate(10925,0)"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g></g></g></svg></mjx-container><br>可以看出有效带宽未达到理论带宽，说明是访存主导的。注意，上面公式中分子的<code>3</code>表示执行了三个变量的访存操作</p>
 <p>我们仅对核函数进行了计时，并未对数据复制函数计时。如果将数据复制加入被计时的代码，可以得到如下结果</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Trial 0: time = 212.903 ms.</span><br><span class="line">Trial 1: time = 124.207 ms.</span><br><span class="line">Trial 2: time = 123.457 ms.</span><br><span class="line">Trial 3: time = 124.308 ms.</span><br><span class="line">Trial 4: time = 126.587 ms.</span><br><span class="line">Trial 5: time = 131.588 ms.</span><br><span class="line">Trial 6: time = 125.103 ms.</span><br><span class="line">Trial 7: time = 127.913 ms.</span><br><span class="line">Trial 8: time = 124.471 ms.</span><br><span class="line">Trial 9: time = 125.797 ms.</span><br><span class="line">Trial 10: time = 124.657 ms.</span><br><span class="line">Average: time = 125.809 +- 2.28916 ms.</span><br></pre></td></tr></table></figure></div>
-<p>可以看出还没有CPU省时。完整程序见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/addGPU_eventmemcpy.cu">addGPU_eventmemcpy.cu<i class="fa-solid fa-up-right-from-square"></i></a></p>
+<p>可以看出还没有CPU省时。完整程序见 <a class="link" target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/addGPU_eventmemcpy.cu">addGPU_eventmemcpy.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <h2 id="使用nvprof进行性能剖析"><a href="#使用nvprof进行性能剖析" class="headerlink" title="使用nvprof进行性能剖析"></a>使用<code>nvprof</code>进行性能剖析</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvprof ./build/addGPU_eventmemcpy_float</span><br></pre></td></tr></table></figure></div>
 <p>得到结果如下</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">           Type  Time(%)      Time     Calls       Avg       Min       Max  Name</span><br><span class="line">GPU activities:   60.97%  910.73ms        22  41.397ms  38.971ms  49.043ms  [CUDA memcpy HtoD]</span><br><span class="line">                  36.70%  548.27ms        11  49.843ms  42.136ms  120.98ms  [CUDA memcpy DtoH]</span><br><span class="line">                   2.33%  34.829ms        11  3.1663ms  2.9885ms  3.7888ms  add(float const *, float const *, float*)</span><br></pre></td></tr></table></figure></div>
@@ -620,7 +700,7 @@ mjx-container[display="true"] + br {
 <h3 id="算数强度"><a href="#算数强度" class="headerlink" title="算数强度"></a>算数强度</h3><p>—个计算问题的算术强度指的是其中算术操作的工作量与必要的内存操作的工作量之比。提高算术强度能够显著地提高GPU相对于CPU的加速比。</p>
 <h3 id="并行规模"><a href="#并行规模" class="headerlink" title="并行规模"></a>并行规模</h3><p>并行规模可用GPU中总的线程数目来衡量。从硬件的角度来看，一个GPU由多个流多处理器SM构成，而每个SM中有若干CUDA核心。每个SM是相对独立的。对于图灵架构，一个SM中最多能驻留的线程个数是1024。一块GPU中—般有几个到几十个SM。所以一块GPU一共可以驻留几万到几十万个线程。如果一个核函数中定义的线程数目远小于这个数的话，就很难得到很高的加速比。</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/cards_time.png">
+    <img lazyload="" src="/images/loading.svg" data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/cards_time.png">
 </p>
 
 <h2 id="CUDA中的数学函数库"><a href="#CUDA中的数学函数库" class="headerlink" title="CUDA中的数学函数库"></a>CUDA中的数学函数库</h2><ul>
@@ -651,6 +731,8 @@ mjx-container[display="true"] + br {
             
 
             
+
+            
                 <div class="article-nav">
                     
                         <div class="article-prev">
@@ -672,6 +754,7 @@ mjx-container[display="true"] + br {
                 </div>
             
 
+
             
         </div>
 
@@ -679,8 +762,10 @@ mjx-container[display="true"] + br {
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">CUDA编程01: 一个简单的CUDA C++程序</div>
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA-Hello-world%E7%A8%8B%E5%BA%8F"><span class="nav-text">CUDA Hello world程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E7%BD%91%E6%A0%BC"><span class="nav-text">多维网格</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC%E4%B8%8E%E7%BA%BF%E7%A8%8B%E5%9D%97%E5%A4%A7%E5%B0%8F%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-text">网格与线程块大小的限制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6"><span class="nav-text">CUDA程序基本框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AE%BE%E5%A4%87%E5%87%BD%E6%95%B0"><span class="nav-text">自定义设备函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E7%A8%8B%E5%BA%8F%E9%94%99%E8%AF%AF%E6%A3%80%E6%B5%8B"><span class="nav-text">CUDA程序错误检测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CUDA-API%E5%87%BD%E6%95%B0%E9%94%99%E8%AF%AF%E6%A3%80%E6%B5%8B"><span class="nav-text">CUDA API函数错误检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%87%BD%E6%95%B0%E9%94%99%E8%AF%AF%E6%A3%80%E6%B5%8B"><span class="nav-text">核函数错误检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E9%94%99%E8%AF%AF%E6%A3%80%E6%B5%8B"><span class="nav-text">内存错误检测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8CUDA%E4%BA%8B%E4%BB%B6%E8%AE%A1%E6%97%B6"><span class="nav-text">使用CUDA事件计时</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8CUDA%E4%BA%8B%E4%BB%B6%E5%AF%B9C-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%97%B6"><span class="nav-text">使用CUDA事件对C++程序计时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8CUDA%E4%BA%8B%E4%BB%B6%E5%AF%B9CUDA%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%97%B6"><span class="nav-text">使用CUDA事件对CUDA程序计时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="nav-text">结果分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8nvprof%E8%BF%9B%E8%A1%8C%E6%80%A7%E8%83%BD%E5%89%96%E6%9E%90"><span class="nav-text">使用nvprof进行性能剖析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%B1%E5%93%8DGPU%E5%8A%A0%E9%80%9F%E7%9A%84%E5%85%B3%E9%94%AE%E5%9B%A0%E7%B4%A0"><span class="nav-text">影响GPU加速的关键因素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E6%AF%94%E4%BE%8B"><span class="nav-text">数据传输的比例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%95%B0%E5%BC%BA%E5%BA%A6"><span class="nav-text">算数强度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E8%A1%8C%E8%A7%84%E6%A8%A1"><span class="nav-text">并行规模</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E5%87%BD%E6%95%B0%E5%BA%93"><span class="nav-text">CUDA中的数学函数库</span></a></li></ol>
+
     </div>
 </div>
             </div>
@@ -692,62 +777,69 @@ mjx-container[display="true"] + br {
                 
 
             </div>
-
-
+            
+            
 
         </div>
 
-        <div class="page-main-content-bottom">
+        <div class="main-content-footer">
             <footer class="footer">
     <div class="info-container">
-        <div class="copyright-info info-item">
+        <div class="copyright-info">
             &copy;
             
               <span>2022</span>
               -
             
-            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+            2023&nbsp;&nbsp;<i class="fa-solid fa-cog fa-spin" style="--fa-animation-duration: 15s;"></i>&nbsp;&nbsp;<a href="/">YiQi</a>
         </div>
         
             <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
             <div class="website-count info-item">
                 
-                    <span id="busuanzi_container_site_uv">
-                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
-                    <span id="busuanzi_container_site_pv">
-                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
         <div class="theme-info info-item">
-            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.4</a>
         </div>
         
         
-        <script async data-pjax defer>
-            function odometer_init(){
-                    let el = document.getElementsByClassName('odometer');
-                    for (i = 0; i < el.length; i++) {
-                        od = new Odometer({
-                            el: el[i],
-                            format: '( ddd).dd',
-                            duration: 200
-                        });
-                    }
-            }
-            odometer_init();
-        </script>
-        <div id="start_time_div" style="display:none">
-            2022/12/28 11:45:14
-        </div>
         
+            <div id="start_div" style="display:none">
+                2022/12/21 11:45:14
+            </div>
             <div>
                 博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
         
         
         
@@ -759,10 +851,10 @@ mjx-container[display="true"] + br {
     
         <div class="post-tools">
             <div class="post-tools-container">
-    <ul class="tools-list">
+    <ul class="article-tools-list">
         <!-- TOC aside toggle -->
         
-            <li class="tools-item page-aside-toggle">
+            <li class="right-bottom-tools page-aside-toggle">
                 <i class="fa-regular fa-outdent"></i>
             </li>
         
@@ -775,23 +867,23 @@ mjx-container[display="true"] + br {
         </div>
     
 
-    <div class="right-bottom-side-tools">
+    <div class="right-side-tools-container">
         <div class="side-tools-container">
-    <ul class="side-tools-list">
-        <li class="tools-item tool-font-adjust-plus flex-center">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
         </li>
 
-        <li class="tools-item tool-font-adjust-minus flex-center">
-            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
         </li>
 
-        <li class="tools-item tool-expand-width flex-center">
-            <i class="fa-solid fa-left-right"></i>
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
         </li>
 
-        <li class="tools-item tool-dark-light-toggle flex-center">
-            <i class="fa-solid fa-moon"></i>
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
         </li>
 
         <!-- rss -->
@@ -799,20 +891,21 @@ mjx-container[display="true"] + br {
 
         
 
-        <li class="tools-item tool-scroll-to-bottom flex-center">
-            <i class="fa-solid fa-arrow-down"></i>
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
         </li>
     </ul>
 
-    <ul class="exposed-tools-list">
-        <li class="tools-item tool-toggle-show flex-center">
-            <i class="fa-solid fa-cog fa-spin"></i>
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
         </li>
         
-            <li class="tools-item tool-scroll-to-top flex-center">
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
                 <i class="arrow-up fas fa-arrow-up"></i>
                 <span class="percent"></span>
             </li>
+        
         
     </ul>
 </div>
@@ -826,6 +919,7 @@ mjx-container[display="true"] + br {
 
     
 
+
 </main>
 
 
@@ -835,43 +929,62 @@ mjx-container[display="true"] + br {
 
 <script src="/js/main.js"></script>
 
-<script src="/js/header-shrink.js"></script>
+<script src="/js/layouts/navbarShrink.js"></script>
 
-<script src="/js/back2top.js"></script>
+<script src="/js/tools/scrollTopBottom.js"></script>
 
-<script src="/js/dark-light-toggle.js"></script>
-
-
-
-
-
-    
-<script src="/js/code-copy.js"></script>
-
+<script src="/js/tools/lightDarkSwitch.js"></script>
 
 
 
 
 
     
-<script src="/js/runtime.js"></script>
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
 
     
-<script src="/js/odometer.min.js"></script>
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
 
     
-<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
 
 
 
 <div class="post-scripts pjax">
     
         
-<script src="/js/toc-toggle.js"></script>
+<script src="/js/tools/tocToggle.js"></script>
 
 <script src="/js/libs/anime.min.js"></script>
 
-<script src="/js/toc.js"></script>
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
 
     
 </div>
@@ -886,7 +999,7 @@ mjx-container[display="true"] + br {
             selectors: [
                 'head title',
                 '.page-container',
-                '.pjax'
+                '.pjax',
             ],
             history: true,
             debug: false,
@@ -899,16 +1012,17 @@ mjx-container[display="true"] + br {
         });
 
         document.addEventListener('pjax:send', () => {
-            REDEFINE.utils.pjaxProgressBarStart();
+            Global.utils.pjaxProgressBarStart();
         });
 
         document.addEventListener('pjax:complete', () => {
-            REDEFINE.utils.pjaxProgressBarEnd();
+            Global.utils.pjaxProgressBarEnd();
             window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-            REDEFINE.refresh();
+            Global.refresh();
         });
     });
 </script>
+
 
 
 

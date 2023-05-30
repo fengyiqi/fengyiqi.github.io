@@ -2,48 +2,92 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
-    <meta name="description" content="Hexo Theme Redefine">
+    
     <meta name="author" content="YiQi">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fengyiqi.github.io/2023/cuda5/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta property="og:type" content="article">
+<meta property="og:title" content="CUDA编程05: CUDA流与统一内存">
+<meta property="og:url" content="http://fengyiqi.github.io/2023/cuda5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_sm.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_smlimit.png">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_transfer.png">
+<meta property="article:published_time" content="2023-01-16T12:49:31.000Z">
+<meta property="article:modified_time" content="2023-03-11T21:57:58.985Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="CUDA">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_sm.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <!--- Page Info-->
     
     <title>
         
-            CUDA编程05: CUDA流与统一内存 |
+            CUDA编程05: CUDA流与统一内存 -
         
         YiQi&#39;s Blog
     </title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <link rel="shortcut icon" href="/images/logo.svg">
     
-<link rel="stylesheet" href="/css/fontawesome.min.css">
+<link rel="stylesheet" href="/assets/fonts.css">
 
+    <!--- Font Part-->
     
-<link rel="stylesheet" href="/css/brands.min.css">
+    
+    
+    
 
+    <!--- Inject Part-->
     
-<link rel="stylesheet" href="/css/solid.min.css">
-
-    
-<link rel="stylesheet" href="/css/regular.min.css">
-
-    
-    
-    
-    
-<link rel="stylesheet" href="/css/css2.css">
-
     <script id="hexo-configurations">
-    let REDEFINE = window.REDEFINE || {};
-    REDEFINE.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
-    REDEFINE.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#000000","avatar":"/images/logo.svg","favicon":"/images/logo.svg","article_img_align":"center","right_side_width":"210px","content_max_width":"1000px","nav_color":{"left":"#fff","right":"#7a7a7a","transparency":40},"hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/astronaut1.jpg"},"title_color":{"light":"#fff","dark":"#1f2223"},"description":"我们的征途是星辰大海！"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":false,"preload":false},"code_block":{"copy":true,"style":"simple"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"0.4.4"};
-    REDEFINE.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/night_sky.jpg"},"title":"早日毕业！","subtitle":{"text":["我们的征途是星辰大海"],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#404040","dark":"#e0e0e0"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/fengyiqi","instagram":null,"zhihu":null,"twitter":null,"email":"yiqi.feng@hotmail.com"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.4","navbar":{"auto_hide":false,"color":{"left":"#404040","right":"#ffffff","transparency":30},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":false};
   </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
 <meta name="generator" content="Hexo 6.3.0"></head>
 
 
@@ -64,12 +108,12 @@
 
     
 
-    <div class="page-main-content">
+    <div class="main-content-container">
 
-        <div class="page-main-content-top">
-            <header class="header-wrapper">
+        <div class="main-content-header">
+            <header class="navbar-container">
     
-    <div class="header-content">
+    <div class="navbar-content">
         <div class="left">
             
                 <a class="logo-image" href="/">
@@ -77,74 +121,80 @@
                 </a>
             
             <a class="logo-title" href="/">
+                
                 YiQi&#39;s Blog
+                
             </a>
         </div>
 
         <div class="right">
             <!-- PC -->
-            <div class="pc">
-                <ul class="menu-list">
+            <div class="desktop">
+                <ul class="navbar-list">
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
                                     
-                                        <i class="fa-regular fa-house"></i>
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
                                     
-                                    首页
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/archives" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
                                     
-                                        <i class="fa-regular fa-archive"></i>
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
                                     
-                                    归档
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/categories" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
                                     
-                                        <i class="fa-regular fa-list"></i>
+                                        
+                                            <i class="fa-regular fa-list"></i>
+                                        
+                                        分类
                                     
-                                    分类
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
-                        <li class="menu-item">
-                            <!-- Menu -->
-                            <a class="" 
-                                href="/about" >
-                                
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
                                     
-                                        <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                            <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                        关于
                                     
-                                    关于
+                                </a>
+                                <!-- Submenu -->
                                 
-                            </a>
-                            <!-- Submenu -->
-                            
-                        </li>
+                            </li>
                     
                     
                 </ul>
@@ -152,73 +202,78 @@
             <!-- Mobile -->
             <div class="mobile">
                 
-                <div class="icon-item menu-bar">
-                    <div class="menu-bar-middle"></div>
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile drawer -->
-    <div class="header-drawer">
-        <ul class="drawer-menu-list">
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/" >
-                         
-                            
-                                <i class="fa-regular fa-house"></i>
-                            
-                            首页
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/archives" >
-                         
-                            
-                                <i class="fa-regular fa-archive"></i>
-                            
-                            归档
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/categories" >
-                         
-                            
-                                <i class="fa-regular fa-list"></i>
-                            
-                            分类
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-list"></i>
+                                
+                                分类
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
-                <li class="drawer-menu-item flex-center">
-                    <a class="" 
-                       href="/about" >
-                         
-                            
-                                <i class="fa-regular fa-face-grin-beam-sweat"></i>
-                            
-                            关于
-                        
-                    </a>
-                </li>
-                <!-- Submenu -->
                 
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                
+                                关于
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
             
+
         </ul>
     </div>
 
@@ -229,7 +284,9 @@
 
         </div>
 
-        <div class="page-main-content-middle">
+        <div class="main-content-body">
+
+            
 
             <div class="main-content">
 
@@ -237,9 +294,15 @@
                     <div class="fade-in-down-animation">
     <div class="post-page-container">
         <div class="article-content-container">
-            <div class="article-title">
-                <span class="title-hover-animation"><h1 style="font-size:2rem; font-weight: bold; margin: 10px 0;">CUDA编程05: CUDA流与统一内存</h1></span>
-            </div>
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">CUDA编程05: CUDA流与统一内存</h1>
+                </div>
+            
+                
+            
 
             
                 <div class="article-header">
@@ -250,14 +313,26 @@
                         <div class="author">
                             <span class="name">YiQi</span>
                             
+                                <span class="author-label">Lv3</span>
+                            
                         </div>
                         <div class="meta-info">
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="pc">2023-01-16 13:49:31</span>
+        <span class="desktop">2023-01-16 13:49:31</span>
         <span class="mobile">2023-01-16 13:49</span>
+        <span class="hover-info">创建</span>
     </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-03-11 22:57:58</span>
+            <span class="mobile">2023-03-11 22:57</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
     
         <span class="article-categories article-meta-item">
             <i class="fa-regular fa-folders"></i>&nbsp;
@@ -294,9 +369,13 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-file-word"></i>&nbsp;<span>3.8k 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3.8k 字</span>
         </span>
     
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>17 分钟</span>
+        </span>
     
     
         <span class="article-pv article-meta-item">
@@ -332,7 +411,7 @@
 <li>紧接着主机发出<code>cudaMemcpy(h_z, d_z, M, cudaMemcpyDeviceToHost)</code>，该命令不会被立即执行，而必须等待前一个CUDA操作（即核函数的调用）执行完毕才会开始执行。</li>
 </ul>
 <p>由此可知，<strong>主机在发出核函数调用的命令之后，会立刻发出下一个命令</strong>。在上面的例子中，下一个命令是进行数据传输，但从设备的角度来看必须等待核函数执行完毕。<strong>如果下—个命令是主机中的某个计算任务，那么主机就会在设备执行核函数的同时去进行一些计算</strong>。这样，主机和设备就可以同时进行计算。设备完全不知道在它执行核函数时，主机偷偷地做了些计算。</p>
-<p>例如下面的代码（完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/host_kernel.cu" >host_kernel.cu<i class="fa-solid fa-up-right-from-square"></i></a>）：</p>
+<p>例如下面的代码（完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/host_kernel.cu" >host_kernel.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>）：</p>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">cpu_sum</span><span class="params">(<span class="type">const</span> real *x, <span class="type">const</span> real *y, real *z, <span class="type">const</span> <span class="type">int</span> N_host)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> n = <span class="number">0</span>; n &lt; N_host; ++n) &#123;</span><br><span class="line">        z[n] = x[n] + y[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> __global__ <span class="title">gpu_sum</span><span class="params">(<span class="type">const</span> real *x, <span class="type">const</span> real *y, real *z)</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> n = blockDim.x * blockIdx.x + threadIdx.x;</span><br><span class="line">    <span class="keyword">if</span> (n &lt; N) &#123;</span><br><span class="line">        z[n] = x[n] + y[n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">timing</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> real *h_x, <span class="type">const</span> real *h_y, real *h_z,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> real *d_x, <span class="type">const</span> real *d_y, real *d_z,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">const</span> <span class="type">int</span> ratio, <span class="type">bool</span> overlap</span></span></span><br><span class="line"><span class="params"><span class="function">)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 一些与计时相关的代码</span></span><br><span class="line">        <span class="keyword">if</span> (!overlap) &#123;</span><br><span class="line">            <span class="built_in">cpu_sum</span>(h_x, h_y, h_z, N / ratio);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        gpu_sum&lt;&lt;&lt;grid_size, block_size&gt;&gt;&gt;(d_x, d_y, d_z);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (overlap) &#123;</span><br><span class="line">            <span class="built_in">cpu_sum</span>(h_x, h_y, h_z, N / ratio);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="comment">// 一些与计时相关的代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>选择<code>overlap</code>为真时，将在调用核函数之后调用一个主机端函数，从而达到并发执行的效果。</p>
@@ -342,18 +421,28 @@
 <p>前两种方式属于在默认流中不使用和使用动态共享内存的方式。第三种调用方式说明核函数在编号为<code>stream_id</code>的CUDA流中执行，并且使用了<code>N_shared</code>动态共享内存。如果不想使用动态共享内存，调用方式为</p>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">my_kernel&lt;&lt;&lt;N_grid, N_block, <span class="number">0</span>, stream_id&gt;&gt;&gt;(函数参数);</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="叠多个核函数的例子"><a href="#叠多个核函数的例子" class="headerlink" title="叠多个核函数的例子"></a>叠多个核函数的例子</h3><p>例如下面的代码（完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/kernel_kernel.cu" >kernel_kernel.cu<i class="fa-solid fa-up-right-from-square"></i></a>）</p>
+<h3 id="叠多个核函数的例子"><a href="#叠多个核函数的例子" class="headerlink" title="叠多个核函数的例子"></a>叠多个核函数的例子</h3><p>例如下面的代码（完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/kernel_kernel.cu" >kernel_kernel.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>）</p>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建CUDA流，调用核函数，销毁CUDA流</span></span><br><span class="line">cudaStream_t streams[MAX_NUM_STREAMS];</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> n = <span class="number">0</span> ; n &lt; MAX_NUM_STREAMS; ++n) &#123;</span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaStreamCreate</span>(&amp;(streams[n])));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> num = <span class="number">1</span>; num &lt;= MAX_NUM_STREAMS; ++num) &#123;</span><br><span class="line">    <span class="built_in">timing</span>(d_x, d_y, d_z, num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> n = <span class="number">0</span> ; n &lt; MAX_NUM_STREAMS; ++n) &#123;</span><br><span class="line">    <span class="built_in">CHECK</span>(<span class="built_in">cudaStreamDestroy</span>(streams[n]));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">timing</span><span class="params">(<span class="type">const</span> real *d_x, <span class="type">const</span> real *d_y, real *d_z, <span class="type">const</span> <span class="type">int</span> num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 一些与计时相关的代码</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> n = <span class="number">0</span>; n &lt; num; ++n) &#123;</span><br><span class="line">            <span class="type">int</span> offset = n * N1;</span><br><span class="line">            add&lt;&lt;&lt;grid_size, block_size, <span class="number">0</span>, streams[n]&gt;&gt;&gt;(d_x + offset, d_y + offset, d_z + offset);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="comment">// 一些与计时相关的代码       </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>这个程序比较了随着CUDA流增多（数据量也成倍增多）执行时间的变化情况。一开始执行时间并没有明显增加，说明使用同样的时间可以处理更多的数据。</p>
 <p>Tesla K40有15个SM，作者使用Tesla K40测试时，在流数量达到15时，加速就不是很明显，似乎说明一个核函数占用了一个SM，如下图所示：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_sm.png" width=100% >
+    <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_sm.png"
+                      width=100% 
+                >
 </p>
 
 <p>上面说明制约GPU加速的是计算资源，另外还有一个因素是单个GPU中能够并发执行的核函数个数上限。不同计算能力这个上限不同，比如计算能力7.5对应的是128。K40计算能力3.5，最大核函数并发数目为32，将上述程序的单个核函数线程束由1024降为128，测试结果如下：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_smlimit.png" width=100% >
+    <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_smlimit.png"
+                      width=100% 
+                >
 </p>
 
 <h2 id="用非默认CUDA流重叠核函数的执行与数据传递"><a href="#用非默认CUDA流重叠核函数的执行与数据传递" class="headerlink" title="用非默认CUDA流重叠核函数的执行与数据传递"></a>用非默认CUDA流重叠核函数的执行与数据传递</h2><h3 id="不可分页主机内存与异步的数据传输函数"><a href="#不可分页主机内存与异步的数据传输函数" class="headerlink" title="不可分页主机内存与异步的数据传输函数"></a>不可分页主机内存与异步的数据传输函数</h3><p>要实现核函数执行与数据传输的并发（重叠），必须让这两个操作处于不同的非默认流，而且数据传输必须使用<code>cudaMemcpy()</code>函数的异步版本，即<code>cudaMemcpyAsync()</code>函数。异步传输由GPU中的DMA（direct memory access）直接实现，不需要主机参与。异步传输函数原型为：</p>
@@ -371,12 +460,17 @@
 <h3 id="重叠核函数执行与数据传输的例子"><a href="#重叠核函数执行与数据传输的例子" class="headerlink" title="重叠核函数执行与数据传输的例子"></a>重叠核函数执行与数据传输的例子</h3><p>我们将主机向设备传输数据记为H2D，核函数计算记为KER，设备传输数据到主机记为D2H。一个可行的并发方案是，将数据分为多份，并发传输数据并计算。比如将数据分为两份，使用两个CUDA流：</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Stream 1: H2D -&gt; KER -&gt; D2H</span><br><span class="line">Stream 2:        H2D -&gt; KER -&gt; D2H</span><br></pre></td></tr></table></figure></div>
 <p>如果H2D、KER和D2H耗时相同，那么我们相当于把总共6步的操作变成了4步，加速比为1.5。类似的，使用4个流时，加速比为2。理论上最大加速比为3（三步耗时相同的情况下）。</p>
-<p>代码示例如下（完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/kernel_transfer.cu" >kernel_transfer.cu<i class="fa-solid fa-up-right-from-square"></i></a>）：</p>
+<p>代码示例如下（完整代码见 <a class="link"   target="_blank" rel="noopener" href="https://github.com/fengyiqi/cppCUDA/blob/master/tutorials/kernel_transfer.cu" >kernel_transfer.cu <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>）：</p>
 <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">timing</span><span class="params">(<span class="type">const</span> real *h_x, <span class="type">const</span> real *h_y, real *h_z, real *d_x, real *d_y, real *d_z, <span class="type">const</span> <span class="type">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 一些与计时相关的代码</span></span><br><span class="line">            <span class="type">int</span> offset = i * N1;</span><br><span class="line">            <span class="built_in">CHECK</span>(<span class="built_in">cudaMemcpyAsync</span>(d_x + offset, h_x + offset, M1, cudaMemcpyHostToDevice, streams[i]));</span><br><span class="line">            <span class="built_in">CHECK</span>(<span class="built_in">cudaMemcpyAsync</span>(d_y + offset, h_y + offset, M1, cudaMemcpyHostToDevice, streams[i]));</span><br><span class="line"></span><br><span class="line">            <span class="type">int</span> block_size = <span class="number">128</span>;</span><br><span class="line">            <span class="type">int</span> grid_size = (N1 - <span class="number">1</span>) / block_size + <span class="number">1</span>;</span><br><span class="line">            add&lt;&lt;&lt;grid_size, block_size, <span class="number">0</span>, streams[i]&gt;&gt;&gt;(d_x + offset, d_y + offset, d_z + offset, N1);</span><br><span class="line"></span><br><span class="line">            <span class="built_in">CHECK</span>(<span class="built_in">cudaMemcpyAsync</span>(h_z + offset, d_z + offset, M1, cudaMemcpyDeviceToHost, streams[i]));</span><br><span class="line">        <span class="comment">// 一些与计时相关的代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <p>作者的测试结果如下：</p>
 <p align="center">
-    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_transfer.png" width=100% >
+    <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/cuda/teslak40_transfer.png"
+                      width=100% 
+                >
 </p>
 
 
@@ -444,6 +538,8 @@
             
 
             
+
+            
                 <div class="article-nav">
                     
                         <div class="article-prev">
@@ -480,6 +576,7 @@
                 </div>
             
 
+
             
         </div>
 
@@ -487,8 +584,10 @@
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <div style="font-size: 1.3rem;margin-top: 0; margin-bottom: 0.8rem; transition-duration: 0.1s;"><i class="fa-solid fa-list"></i> <strong>目录</strong></div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E6%B5%81%E6%A6%82%E8%BF%B0"><span class="nav-text">CUDA流概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E9%BB%98%E8%AE%A4%E6%B5%81%E4%B8%AD%E9%87%8D%E5%8F%A0%E4%B8%BB%E6%9C%BA%E5%92%8C%E8%AE%BE%E5%A4%87%E8%AE%A1%E7%AE%97"><span class="nav-text">在默认流中重叠主机和设备计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E9%9D%9E%E9%BB%98%E8%AE%A4CUDA%E6%B5%81%E9%87%8D%E5%8F%A0%E5%A4%9A%E4%B8%AA%E6%A0%B8%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C"><span class="nav-text">用非默认CUDA流重叠多个核函数执行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E7%9A%84%E6%B5%81%E5%8F%82%E6%95%B0"><span class="nav-text">函数执行配置中的流参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%A0%E5%A4%9A%E4%B8%AA%E6%A0%B8%E5%87%BD%E6%95%B0%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-text">叠多个核函数的例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E9%9D%9E%E9%BB%98%E8%AE%A4CUDA%E6%B5%81%E9%87%8D%E5%8F%A0%E6%A0%B8%E5%87%BD%E6%95%B0%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%92"><span class="nav-text">用非默认CUDA流重叠核函数的执行与数据传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%88%86%E9%A1%B5%E4%B8%BB%E6%9C%BA%E5%86%85%E5%AD%98%E4%B8%8E%E5%BC%82%E6%AD%A5%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%87%BD%E6%95%B0"><span class="nav-text">不可分页主机内存与异步的数据传输函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%8F%A0%E6%A0%B8%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-text">重叠核函数执行与数据传输的例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98%E7%AE%80%E4%BB%8B"><span class="nav-text">统一内存简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">统一内存的使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98"><span class="nav-text">动态统一内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98"><span class="nav-text">静态统一内存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98%E7%94%B3%E8%AF%B7%E8%B6%85%E9%87%8F%E5%86%85%E5%AD%98"><span class="nav-text">使用统一内存申请超量内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%951"><span class="nav-text">测试1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%952"><span class="nav-text">测试2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%953"><span class="nav-text">测试3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E4%BD%BF%E7%94%A8%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98%E7%9A%84%E7%A8%8B%E5%BA%8F"><span class="nav-text">优化使用统一内存的程序</span></a></li></ol></li></ol>
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">CUDA编程05: CUDA流与统一内存</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E6%B5%81%E6%A6%82%E8%BF%B0"><span class="nav-text">CUDA流概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E9%BB%98%E8%AE%A4%E6%B5%81%E4%B8%AD%E9%87%8D%E5%8F%A0%E4%B8%BB%E6%9C%BA%E5%92%8C%E8%AE%BE%E5%A4%87%E8%AE%A1%E7%AE%97"><span class="nav-text">在默认流中重叠主机和设备计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E9%9D%9E%E9%BB%98%E8%AE%A4CUDA%E6%B5%81%E9%87%8D%E5%8F%A0%E5%A4%9A%E4%B8%AA%E6%A0%B8%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C"><span class="nav-text">用非默认CUDA流重叠多个核函数执行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E7%9A%84%E6%B5%81%E5%8F%82%E6%95%B0"><span class="nav-text">函数执行配置中的流参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%A0%E5%A4%9A%E4%B8%AA%E6%A0%B8%E5%87%BD%E6%95%B0%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-text">叠多个核函数的例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E9%9D%9E%E9%BB%98%E8%AE%A4CUDA%E6%B5%81%E9%87%8D%E5%8F%A0%E6%A0%B8%E5%87%BD%E6%95%B0%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%92"><span class="nav-text">用非默认CUDA流重叠核函数的执行与数据传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%88%86%E9%A1%B5%E4%B8%BB%E6%9C%BA%E5%86%85%E5%AD%98%E4%B8%8E%E5%BC%82%E6%AD%A5%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%87%BD%E6%95%B0"><span class="nav-text">不可分页主机内存与异步的数据传输函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%8F%A0%E6%A0%B8%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E4%B8%8E%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-text">重叠核函数执行与数据传输的例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98%E7%AE%80%E4%BB%8B"><span class="nav-text">统一内存简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">统一内存的使用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98%E7%94%B3%E8%AF%B7%E8%B6%85%E9%87%8F%E5%86%85%E5%AD%98"><span class="nav-text">使用统一内存申请超量内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E4%BD%BF%E7%94%A8%E7%BB%9F%E4%B8%80%E5%86%85%E5%AD%98%E7%9A%84%E7%A8%8B%E5%BA%8F"><span class="nav-text">优化使用统一内存的程序</span></a></li></ol></li></ol>
+
     </div>
 </div>
             </div>
@@ -500,62 +599,69 @@
                 
 
             </div>
-
-
+            
+            
 
         </div>
 
-        <div class="page-main-content-bottom">
+        <div class="main-content-footer">
             <footer class="footer">
     <div class="info-container">
-        <div class="copyright-info info-item">
+        <div class="copyright-info">
             &copy;
             
               <span>2022</span>
               -
             
-            2023&nbsp;<i class="fa-solid fa-heart icon-animate"></i>&nbsp;<a href="/">YiQi. 版权所有.</a>
+            2023&nbsp;&nbsp;<i class="fa-solid fa-cog fa-spin" style="--fa-animation-duration: 15s;"></i>&nbsp;&nbsp;<a href="/">YiQi</a>
         </div>
         
             <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
             <div class="website-count info-item">
                 
-                    <span id="busuanzi_container_site_uv">
-                        访问人数&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
-                    <span id="busuanzi_container_site_pv">
-                        总访问量&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
         <div class="theme-info info-item">
-            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v0.4.4</a>
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.4</a>
         </div>
         
         
-        <script async data-pjax defer>
-            function odometer_init(){
-                    let el = document.getElementsByClassName('odometer');
-                    for (i = 0; i < el.length; i++) {
-                        od = new Odometer({
-                            el: el[i],
-                            format: '( ddd).dd',
-                            duration: 200
-                        });
-                    }
-            }
-            odometer_init();
-        </script>
-        <div id="start_time_div" style="display:none">
-            2022/12/28 11:45:14
-        </div>
         
+            <div id="start_div" style="display:none">
+                2022/12/21 11:45:14
+            </div>
             <div>
                 博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
         
         
         
@@ -567,10 +673,10 @@
     
         <div class="post-tools">
             <div class="post-tools-container">
-    <ul class="tools-list">
+    <ul class="article-tools-list">
         <!-- TOC aside toggle -->
         
-            <li class="tools-item page-aside-toggle">
+            <li class="right-bottom-tools page-aside-toggle">
                 <i class="fa-regular fa-outdent"></i>
             </li>
         
@@ -583,23 +689,23 @@
         </div>
     
 
-    <div class="right-bottom-side-tools">
+    <div class="right-side-tools-container">
         <div class="side-tools-container">
-    <ul class="side-tools-list">
-        <li class="tools-item tool-font-adjust-plus flex-center">
-            <i class="fa-solid fa-magnifying-glass-plus"></i>
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
         </li>
 
-        <li class="tools-item tool-font-adjust-minus flex-center">
-            <i class="fa-solid fa-magnifying-glass-minus"></i>
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
         </li>
 
-        <li class="tools-item tool-expand-width flex-center">
-            <i class="fa-solid fa-left-right"></i>
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
         </li>
 
-        <li class="tools-item tool-dark-light-toggle flex-center">
-            <i class="fa-solid fa-moon"></i>
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
         </li>
 
         <!-- rss -->
@@ -607,20 +713,21 @@
 
         
 
-        <li class="tools-item tool-scroll-to-bottom flex-center">
-            <i class="fa-solid fa-arrow-down"></i>
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
         </li>
     </ul>
 
-    <ul class="exposed-tools-list">
-        <li class="tools-item tool-toggle-show flex-center">
-            <i class="fa-solid fa-cog fa-spin"></i>
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
         </li>
         
-            <li class="tools-item tool-scroll-to-top flex-center">
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
                 <i class="arrow-up fas fa-arrow-up"></i>
                 <span class="percent"></span>
             </li>
+        
         
     </ul>
 </div>
@@ -634,6 +741,7 @@
 
     
 
+
 </main>
 
 
@@ -643,43 +751,62 @@
 
 <script src="/js/main.js"></script>
 
-<script src="/js/header-shrink.js"></script>
+<script src="/js/layouts/navbarShrink.js"></script>
 
-<script src="/js/back2top.js"></script>
+<script src="/js/tools/scrollTopBottom.js"></script>
 
-<script src="/js/dark-light-toggle.js"></script>
-
-
-
-
-
-    
-<script src="/js/code-copy.js"></script>
-
+<script src="/js/tools/lightDarkSwitch.js"></script>
 
 
 
 
 
     
-<script src="/js/runtime.js"></script>
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
 
     
-<script src="/js/odometer.min.js"></script>
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
 
     
-<link rel="stylesheet" href="/css/odometer-theme-minimal.css">
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
 
 
 
 <div class="post-scripts pjax">
     
         
-<script src="/js/toc-toggle.js"></script>
+<script src="/js/tools/tocToggle.js"></script>
 
 <script src="/js/libs/anime.min.js"></script>
 
-<script src="/js/toc.js"></script>
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
 
     
 </div>
@@ -694,7 +821,7 @@
             selectors: [
                 'head title',
                 '.page-container',
-                '.pjax'
+                '.pjax',
             ],
             history: true,
             debug: false,
@@ -707,16 +834,17 @@
         });
 
         document.addEventListener('pjax:send', () => {
-            REDEFINE.utils.pjaxProgressBarStart();
+            Global.utils.pjaxProgressBarStart();
         });
 
         document.addEventListener('pjax:complete', () => {
-            REDEFINE.utils.pjaxProgressBarEnd();
+            Global.utils.pjaxProgressBarEnd();
             window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
-            REDEFINE.refresh();
+            Global.refresh();
         });
     });
 </script>
+
 
 
 
