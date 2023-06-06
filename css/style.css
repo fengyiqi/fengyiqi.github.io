@@ -1793,7 +1793,7 @@ pre .deletion {
 .highlight-container[data-rel] {
   background: var(--highlight-background);
   border-radius: 18px;
-  padding-top: 5px;
+  padding-top: 0px;
   padding-left: 5px;
   margin-top: 10px;
   margin-bottom: 1.2rem;
