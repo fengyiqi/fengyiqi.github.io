@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="YiQi">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://fengyiqi.github.io/2023/make-tutorial/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta property="og:type" content="article">
+<meta property="og:title" content="Makefile简易教程">
+<meta property="og:url" content="http://fengyiqi.github.io/2023/make-tutorial/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/dependency_graph.png">
+<meta property="article:published_time" content="2023-06-10T21:35:32.000Z">
+<meta property="article:modified_time" content="2023-06-10T21:41:27.938Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="C">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Makefile">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/dependency_graph.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/logo.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Makefile简易教程 -
+        
+        YiQi&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/assets/fonts.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"fengyiqi.github.io","root":"/","language":"zh-CN"};
+    Global.theme_config = {"articles":{"style":{"font_size":"18px","line_height":1.5,"image_border_radius":"8px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["管理员"]},"code_block":{"copy":true,"style":"simple","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":false,"lazyload":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/geometry.jpg","dark":"https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/home/night_sky.jpg"},"title":"早日毕业！","subtitle":{"text":["我们的征途是星辰大海"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn/?c=c&c=h&c=i&c=l"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#404040","dark":"#e0e0e0"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/fengyiqi","instagram":null,"zhihu":null,"twitter":null,"email":"yiqi.feng@hotmail.com"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.4","navbar":{"auto_hide":false,"color":{"left":"#404040","right":"#ffffff","transparency":30},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-list"},"About":{"path":"/about","icon":"fa-regular fa-face-grin-beam-sweat"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="main-content-container">
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/logo.svg">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                YiQi&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-list"></i>
+                                        
+                                        分类
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/about"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                        
+                                        关于
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/categories"  >
+                             
+                                
+                                    <i class="fa-regular fa-list"></i>
+                                
+                                分类
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/about"  >
+                             
+                                
+                                    <i class="fa-regular fa-face-grin-beam-sweat"></i>
+                                
+                                关于
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">Makefile简易教程</h1>
+                </div>
+            
+                
+            
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/logo.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">YiQi</span>
+                            
+                                <span class="author-label">管理员</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-06-10 23:35:32</span>
+        <span class="mobile">2023-06-10 23:35</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-06-10 23:41:27</span>
+            <span class="mobile">2023-06-10 23:41</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/Makefile/">Makefile</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/C/">C</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Makefile/">Makefile</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3.9k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>18 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <p>下图是一个典型的依赖关系，<code>Makefile</code> 可以用来构建这样的依赖关系</p>
+<p align="center">
+    <img src="https://yiqiblogimages.oss-cn-hangzhou.aliyuncs.com/dependency_graph.png" width=80% >
+</p>
+
+<p>最简单的一个实例，使用 <code>Makefile</code> 在终端输出 <code>Hello World!</code>：</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">hello:</span></span><br><span class="line">    echo <span class="string">&quot;Hello World!&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Makefile-语法"><a href="#Makefile-语法" class="headerlink" title="Makefile 语法"></a>Makefile 语法</h2><div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">targets: prerequisites</span></span><br><span class="line">	command</span><br><span class="line">	command</span><br><span class="line">	command</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><code>targets</code> 是目标文件，可以是 <code>object file</code>，也可以是可执行文件，还可以是一个标签</li>
+<li><code>prerequisites</code> 是生成 <code>target</code> 所需要的文件或者目标，可以有多个，中间用空格分开</li>
+<li><code>command</code> 是 <code>make</code> 执行的命令，可以有多行，每行必须以 <code>tab</code> 开头</li>
+</ul>
+<p>比如，我们可以创建下面这样一个C文件：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// blah.c</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>然后使用 <code>Makefile</code> 来编译这个文件：</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">blah: blah.c</span></span><br><span class="line">    cc blah.c -o blah</span><br></pre></td></tr></table></figure></div>
+<p>第一次运行时，将会创建 <code>blah</code> 文件。第二次运行时，您将看到 <code>make: &#39;blah&#39; is up to date</code> 的提示。这是因为 <code>blah</code> 文件已经存在。但是存在一个问题：如果我们修改了 <code>blah.c</code> 文件然后运行 <code>make</code>，没有任何内容被重新编译。通过添加一个 <code>prequisites</code>，我们可以解决这个问题：</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">blah: blah.c blah.h</span></span><br><span class="line">    cc blah.c -o blah</span><br></pre></td></tr></table></figure></div>
+<p><code>Make</code> 决定是否运行 <code>blah</code> 目标。只有在 <code>blah</code> 不存在，或者 <code>blah.c</code> 的时间戳较新时，它才会运行。在文件被修改保存后，时间戳一般会更新，即修改日期会变成最新的。</p>
+<p>更复杂的例子：</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">blah: blah.o</span></span><br><span class="line">	cc blah.o -o blah <span class="comment"># Runs third</span></span><br><span class="line"></span><br><span class="line"><span class="section">blah.o: blah.c</span></span><br><span class="line">	cc -c blah.c -o blah.o <span class="comment"># Runs second</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li><code>blah</code> 依赖于 <code>blah.o</code>，因此 <code>make</code> 搜索 <code>blah.o</code> 目标。</li>
+<li><code>blah.o</code> 依赖于 <code>blah.c</code>，因此 <code>make</code> 搜索 <code>blah.c</code> 目标。</li>
+<li>然后运行 <code>cc -c</code> 命令，因为所有 <code>blah.o</code> 的依赖项都已完成。</li>
+<li>最后运行顶层的 <code>cc</code> 命令，因为所有的 <code>blah</code> 依赖项都已完成。</li>
+<li>这就是结果：<code>blah</code> 是一个已编译的C程序。</li>
+</ul>
+<h2 id="Make-clean"><a href="#Make-clean" class="headerlink" title="Make clean"></a>Make clean</h2><p><code>clean</code> 通常被用作一个目标，用于删除其他目标的输出：</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">some_file:</span></span><br><span class="line">    touch some_file</span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm -f some_file</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>变量只能是字符串。通常你会想使用 <code>:=</code>，但 <code>=</code> 也可以使用。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">files := file1 file2</span><br><span class="line"><span class="section">some_file: <span class="variable">$(files)</span></span></span><br><span class="line">	echo <span class="string">&quot;Look at this variable: &quot;</span> <span class="variable">$(files)</span></span><br><span class="line">	touch some_file</span><br><span class="line"></span><br><span class="line"><span class="section">file1:</span></span><br><span class="line">	touch file1</span><br><span class="line"><span class="section">file2:</span></span><br><span class="line">	touch file2</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f file1 file2 some_file</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Targets"><a href="#Targets" class="headerlink" title="Targets"></a>Targets</h2><p>多个 <code>targets</code></p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: f1.o f2.o</span></span><br><span class="line"></span><br><span class="line">f1.o f2.o:</span><br><span class="line">	echo <span class="variable">$@</span></span><br><span class="line"><span class="comment"># Equivalent to:</span></span><br><span class="line"><span class="comment"># f1.o:</span></span><br><span class="line"><span class="comment">#	 echo f1.o</span></span><br><span class="line"><span class="comment"># f2.o:</span></span><br><span class="line"><span class="comment">#	 echo f2.o</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="自动变量和通配符"><a href="#自动变量和通配符" class="headerlink" title="自动变量和通配符"></a>自动变量和通配符</h2><h3 id="自动变量"><a href="#自动变量" class="headerlink" title="自动变量"></a>自动变量</h3><div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">hey: one two</span></span><br><span class="line">	<span class="comment"># Outputs &quot;hey&quot;, since this is the target name</span></span><br><span class="line">	echo <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Outputs all prerequisites newer than the target</span></span><br><span class="line">	echo <span class="variable">$?</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Outputs all prerequisites</span></span><br><span class="line">	echo <span class="variable">$^</span></span><br><span class="line"></span><br><span class="line">	touch hey</span><br><span class="line"></span><br><span class="line"><span class="section">one:</span></span><br><span class="line">	touch one</span><br><span class="line"></span><br><span class="line"><span class="section">two:</span></span><br><span class="line">	touch two</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f hey one two</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="通配符"><a href="#通配符" class="headerlink" title="* 通配符"></a><code>*</code> 通配符</h3><div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">thing_wrong := *.o <span class="comment"># Don&#x27;t do this! &#x27;*&#x27; will not get expanded</span></span><br><span class="line">thing_right := <span class="variable">$(<span class="built_in">wildcard</span> *.o)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: one two three four</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Fails, because $(thing_wrong) is the string &quot;*.o&quot;</span></span><br><span class="line"><span class="section">one: <span class="variable">$(thing_wrong)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Stays as *.o if there are no files that match this pattern :(</span></span><br><span class="line"><span class="section">two: *.o </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Works as you would expect! In this case, it does nothing.</span></span><br><span class="line"><span class="section">three: <span class="variable">$(thing_right)</span></span></span><br><span class="line">	echo <span class="variable">$?</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Same as rule three</span></span><br><span class="line"><span class="section">four: $(wildcard *.o)</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="通配符-1"><a href="#通配符-1" class="headerlink" title="% 通配符"></a><code>%</code> 通配符</h3><ul>
+<li>当以“匹配”模式使用时，它匹配字符串中的一个或多个字符。这个匹配称为“词干”。</li>
+<li>当以“替换”模式使用时，它取得匹配到的词干并替换字符串中的内容。</li>
+<li><code>%</code> 最常用于规则定义和某些特定函数中。</li>
+</ul>
+<h2 id="Fancy-Rules"><a href="#Fancy-Rules" class="headerlink" title="Fancy Rules"></a>Fancy Rules</h2><h3 id="隐性规则"><a href="#隐性规则" class="headerlink" title="隐性规则"></a>隐性规则</h3><ul>
+<li>编译 <code>C</code> 程序：<code>n.o</code> 会自动从 <code>n.c</code> 生成，使用的命令形式为 <code>$(CC) -c $(CPPFLAGS) $(CFLAGS) $^ -o $@</code></li>
+<li>编译 <code>C++</code> 程序：<code>n.o</code> 会自动从 <code>n.cc</code> 或 <code>n.cpp</code> 生成，使用的命令形式为 <code>$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $^ -o $@</code></li>
+<li>链接单个目标文件：<code>n</code> 会自动从 <code>n.o</code> 生成，使用的命令形式为 <code>$(CC) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@</code></li>
+</ul>
+<p>隐式规则使用的重要变量包括：</p>
+<ul>
+<li><code>CC</code>：用于编译 <code>C</code> 程序的程序；默认为 <code>cc</code></li>
+<li><code>CXX</code>：用于编译 <code>C++</code> 程序的程序；默认为 <code>g++</code></li>
+<li><code>CFLAGS</code>：给 <code>C</code> 编译器的额外标志</li>
+<li><code>CXXFLAGS</code>：给 <code>C++</code> 编译器的额外标志</li>
+<li><code>CPPFLAGS</code>：给 <code>C</code> 预处理器的额外标志</li>
+<li><code>LDFLAGS</code>：在需要调用链接器时给编译器的额外标志</li>
+</ul>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CC = gcc <span class="comment"># Flag for implicit rules</span></span><br><span class="line">CFLAGS = -g <span class="comment"># Flag for implicit rules. Turn on debug info</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Implicit rule #1: blah is built via the C linker implicit rule</span></span><br><span class="line"><span class="comment"># Implicit rule #2: blah.o is built via the C compilation implicit rule, because blah.c exists</span></span><br><span class="line"><span class="section">blah: blah.o</span></span><br><span class="line"></span><br><span class="line"><span class="section">blah.c:</span></span><br><span class="line">	echo <span class="string">&quot;int main() &#123; return 0; &#125;&quot;</span> &gt; blah.c</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f blah*</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Static-Pattern-Rules"><a href="#Static-Pattern-Rules" class="headerlink" title="Static Pattern Rules"></a>Static Pattern Rules</h3><div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">targets...: target-pattern: prereq-patterns ...</span></span><br><span class="line">   commands</span><br></pre></td></tr></table></figure></div>
+
+<p>对于</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">objects = foo.o bar.o all.o</span><br><span class="line"><span class="section">all: <span class="variable">$(objects)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment"># These files compile via implicit rules</span></span><br><span class="line"><span class="section">foo.o: foo.c</span></span><br><span class="line"><span class="section">bar.o: bar.c</span></span><br><span class="line"><span class="section">all.o: all.c</span></span><br><span class="line"></span><br><span class="line"><span class="section">all.c:</span></span><br><span class="line">	echo <span class="string">&quot;int main() &#123; return 0; &#125;&quot;</span> &gt; all.c</span><br><span class="line"></span><br><span class="line"><span class="section">%.c:</span></span><br><span class="line">	touch <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f *.c *.o all</span><br></pre></td></tr></table></figure></div>
+<p>可以使用静态模式规则来简化：</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">objects = foo.o bar.o all.o</span><br><span class="line"></span><br><span class="line"><span class="section">all: <span class="variable">$(objects)</span></span></span><br><span class="line"><span class="comment"># These files compile via implicit rules</span></span><br><span class="line"><span class="comment"># Syntax - targets ...: target-pattern: prereq-patterns ...</span></span><br><span class="line"><span class="comment"># In the case of the first target, foo.o, the target-pattern matches foo.o and sets the &quot;stem&quot; to be &quot;foo&quot;.</span></span><br><span class="line"><span class="comment"># It then replaces the &#x27;%&#x27; in prereq-patterns with that stem</span></span><br><span class="line"><span class="variable">$(objects)</span>: %.o: %.c</span><br><span class="line"></span><br><span class="line"><span class="section">all.c:</span></span><br><span class="line">	echo <span class="string">&quot;int main() &#123; return 0; &#125;&quot;</span> &gt; all.c</span><br><span class="line"></span><br><span class="line"><span class="section">%.c:</span></span><br><span class="line">	touch <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f *.c *.o all</span><br></pre></td></tr></table></figure></div>
+<h3 id="Static-Pattern-Rules-and-Filter"><a href="#Static-Pattern-Rules-and-Filter" class="headerlink" title="Static Pattern Rules and Filter"></a>Static Pattern Rules and Filter</h3><p><code>filter</code> 可以在静态模式规则中用于匹配正确的文件。在这个例子中，我举例使用了 .raw 和 .result 这两个扩展名。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">obj_files = foo.result bar.o lose.o</span><br><span class="line">src_files = foo.raw bar.c lose.c</span><br><span class="line"></span><br><span class="line"><span class="section">all: <span class="variable">$(obj_files)</span></span></span><br><span class="line"><span class="comment"># Note: PHONY is important here. Without it, implicit rules will try to build the executable &quot;all&quot;, since the prereqs are &quot;.o&quot; files.</span></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: all </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Ex 1: .o files depend on .c files. Though we don&#x27;t actually make the .o file.</span></span><br><span class="line"><span class="variable">$(<span class="built_in">filter</span> %.o,<span class="variable">$(obj_files)</span>)</span>: %.o: %.c</span><br><span class="line">	echo <span class="string">&quot;target: <span class="variable">$@</span> prereq: <span class="variable">$&lt;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Ex 2: .result files depend on .raw files. Though we don&#x27;t actually make the .result file.</span></span><br><span class="line"><span class="variable">$(<span class="built_in">filter</span> %.result,<span class="variable">$(obj_files)</span>)</span>: %.result: %.raw</span><br><span class="line">	echo <span class="string">&quot;target: <span class="variable">$@</span> prereq: <span class="variable">$&lt;</span>&quot;</span> </span><br><span class="line"></span><br><span class="line">%.c %.raw:</span><br><span class="line">	touch <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f <span class="variable">$(src_files)</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="Pattern-Rules"><a href="#Pattern-Rules" class="headerlink" title="Pattern Rules"></a>Pattern Rules</h3><ul>
+<li>定义自己的隐式规则的方法</li>
+<li>一种更简单的静态模式规则形式<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define a pattern rule that compiles every .c file into a .o file</span></span><br><span class="line">%.o : %.c</span><br><span class="line">		<span class="variable">$(CC)</span> -c <span class="variable">$(CFLAGS)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure></div>
+在模式规则的前提条件中，符号 <code>%</code> 代表与目标中的 <code>%</code> 匹配的相同部分。<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define a pattern rule that has no pattern in the prerequisites.</span></span><br><span class="line"><span class="comment"># This just creates empty .c files when needed.</span></span><br><span class="line"><span class="section">%.c:</span></span><br><span class="line">   touch <span class="variable">$@</span></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<h3 id="Double-Colon-Rules"><a href="#Double-Colon-Rules" class="headerlink" title="Double-Colon Rules"></a>Double-Colon Rules</h3><p>双冒号规则很少被使用，但它允许为同一目标定义多个规则。如果这些规则是单冒号，会打印一个警告，并且只有第二组命令会运行。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: blah</span></span><br><span class="line"></span><br><span class="line"><span class="section">blah::</span></span><br><span class="line">	echo <span class="string">&quot;hello&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">blah::</span></span><br><span class="line">	echo <span class="string">&quot;hello again&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Commands-and-execution"><a href="#Commands-and-execution" class="headerlink" title="Commands and execution"></a>Commands and execution</h2><p>在命令前加上 <code>@</code> 符号可以阻止其打印输出。你也可以在运行 <code>make</code> 命令时使用 <code>-s</code> 选项选择静默模式，相当于在每行前加上@符号。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: </span></span><br><span class="line">	@echo <span class="string">&quot;This make line will not be printed&quot;</span></span><br><span class="line">	echo <span class="string">&quot;But this will&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>每个命令等效于在一个新的shell中运行（或者至少效果是如此）。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: </span></span><br><span class="line">	cd ..</span><br><span class="line">	<span class="comment"># The cd above does not affect this line, because each command is effectively run in a new shell</span></span><br><span class="line">	echo `pwd`</span><br><span class="line"></span><br><span class="line">	<span class="comment"># This cd command affects the next because they are on the same line</span></span><br><span class="line">	cd ..;echo `pwd`</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Same as above</span></span><br><span class="line">	cd ..; \</span><br><span class="line">	echo `pwd`</span><br></pre></td></tr></table></figure></div>
+
+<p>如果你想让一个字符串含有美元符号，你可以使用 <code>$$</code>。这是在 <code>bash</code> 或 <code>sh</code> 中使用 <code>shell</code> 变量的方法。请注意下面的示例中 <code>Makefile</code> 变量和 <code>Shell</code>变量之间的区别。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">make_var = I am a make variable</span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	<span class="comment"># Same as running &quot;sh_var=&#x27;I am a shell variable&#x27;; echo $sh_var&quot; in the shell</span></span><br><span class="line">	sh_var=&#x27;I am a shell variable&#x27;; echo $$sh_var</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Same as running &quot;echo I am a make variable&quot; in the shell</span></span><br><span class="line">	echo <span class="variable">$(make_var)</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>在运行 <code>make</code> 时添加 <code>-k</code> 参数，即使出现错误也可以继续运行。如果您想一次查看所有 <code>make</code> 的错误信息，这将非常有帮助。</li>
+<li>在命令前添加 <code>-</code> 可以抑制错误。</li>
+<li>添加 <code>-i</code> 参数到 <code>make</code> 命令中，使得每个命令都会发生这种情况。</li>
+</ul>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">one:</span></span><br><span class="line">	<span class="comment"># This error will be printed but ignored, and make will continue to run</span></span><br><span class="line">	-false</span><br><span class="line">	touch one</span><br></pre></td></tr></table></figure></div>
+<h3 id="make-递归调用"><a href="#make-递归调用" class="headerlink" title="make 递归调用"></a><code>make</code> 递归调用</h3><p>要递归调用一个 <code>Makefile</code>，请使用 <code>$(MAKE)</code> 而不是 <code>make</code>，因为 <code>$(MAKE)</code>将为您传递 <code>make</code> 标志，并且不会受其影响。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">new_contents = <span class="string">&quot;hello:\n\ttouch inside_file&quot;</span></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	mkdir -p subdir</span><br><span class="line">	printf <span class="variable">$(new_contents)</span> | sed -e &#x27;s/^ //&#x27; &gt; subdir/makefile</span><br><span class="line">	cd subdir &amp;&amp; <span class="variable">$(MAKE)</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -rf subdir</span><br></pre></td></tr></table></figure></div>
+<blockquote>
+<p>在 <code>Makefile</code> 中，<code>&amp;&amp;</code> 用于连接多个命令，并且只有前一个命令成功执行（返回退出码为0）时，才会执行下一个命令。这种方式可以用于确保依赖关系的正确执行顺序。</p>
+</blockquote>
+<h3 id="Export-environments-and-recursive-make"><a href="#Export-environments-and-recursive-make" class="headerlink" title="Export, environments, and recursive make"></a>Export, environments, and recursive make</h3><div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Run this with &quot;export shell_env_var=&#x27;I am an environment variable&#x27;; make&quot;</span></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	<span class="comment"># Print out the Shell variable</span></span><br><span class="line">	echo $$shell_env_var</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Print out the Make variable</span></span><br><span class="line">	echo <span class="variable">$(shell_env_var)</span></span><br></pre></td></tr></table></figure></div>
+<p>当使用 <code>export</code> 命令导出一个变量时，该变量将在 <code>Makefile</code> 中的后续命令中可见，并且还可以在通过 <code>$(MAKE)</code> 调用的子进程中使用。这样可以确保变量的值在整个构建过程中始终可用。</p>
+<blockquote>
+<p><code>unexport cooly</code> 将会撤销之前通过 <code>export cooly</code> 导出的变量。</p>
+</blockquote>
+<p><code>.EXPORT_ALL_VARIABLES</code> exports all variables for you.</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">.EXPORT_ALL_VARIABLES:</span></span><br><span class="line">new_contents = <span class="string">&quot;hello:\n\techo \$<span class="variable">$(cooly)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">cooly = <span class="string">&quot;The subdirectory can see me!&quot;</span></span><br><span class="line"><span class="comment"># This would nullify the line above: unexport cooly</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	mkdir -p subdir</span><br><span class="line">	printf <span class="variable">$(new_contents)</span> | sed -e &#x27;s/^ //&#x27; &gt; subdir/makefile</span><br><span class="line">	@echo <span class="string">&quot;---MAKEFILE CONTENTS---&quot;</span></span><br><span class="line">	@cd subdir &amp;&amp; cat makefile</span><br><span class="line">	@echo <span class="string">&quot;---END MAKEFILE CONTENTS---&quot;</span></span><br><span class="line">	cd subdir &amp;&amp; <span class="variable">$(MAKE)</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -rf subdir</span><br></pre></td></tr></table></figure></div>
+
+<p>There’s a nice <a class="link"   target="_blank" rel="noopener" href="https://www.gnu.org/software/make/manual/make.html#Options-Summary" >list of options <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> that can be run from make.</p>
+<h2 id="Variables-Pt-2"><a href="#Variables-Pt-2" class="headerlink" title="Variables Pt. 2"></a>Variables Pt. 2</h2><ul>
+<li>递归（使用 <code>=</code>）- 仅在命令被使用时才查找变量，而不是在其定义时查找。</li>
+<li>简单扩展（使用 <code>:=</code>）- 类似于常规的命令式编程 - 仅展开到目前为止定义的变量。<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Recursive variable. This will print &quot;later&quot; below</span></span><br><span class="line">one = one $&#123;later_variable&#125;</span><br><span class="line"><span class="comment"># Simply expanded variable. This will not print &quot;later&quot; below</span></span><br><span class="line">two := two $&#123;later_variable&#125;</span><br><span class="line"></span><br><span class="line">later_variable = later</span><br><span class="line"></span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	echo <span class="variable">$(one)</span></span><br><span class="line">	echo <span class="variable">$(two)</span></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<p>使用 <code>:=</code> 进行简单扩展允许您向变量追加内容。递归定义会导致无限循环错误。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">one = hello</span><br><span class="line"><span class="comment"># one gets defined as a simply expanded variable (:=) and thus can handle appending</span></span><br><span class="line">one := $&#123;one&#125; there</span><br></pre></td></tr></table></figure></div>
+
+<p><code>?=</code> 仅在变量尚未设置时设置变量</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">one = hello</span><br><span class="line">one ?= will not be set</span><br><span class="line">two ?= will be set</span><br></pre></td></tr></table></figure></div>
+
+<p><code>+=</code> 用于向变量追加内容。如果变量尚未设置，则等效于 <code>:=</code>。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">one = hello</span><br><span class="line">one += there</span><br></pre></td></tr></table></figure></div>
+
+<p>行末的空格不会被去除，但是行首的空格会被去除。要创建一个只包含一个空格的变量，请使用 <code>$(nullstring)</code>。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">with_spaces = hello   <span class="comment"># with_spaces has many spaces after &quot;hello&quot;</span></span><br><span class="line">after = <span class="variable">$(with_spaces)</span>there</span><br><span class="line"></span><br><span class="line">nullstring =</span><br><span class="line">space = <span class="variable">$(nullstring)</span> <span class="comment"># Make a variable with a single space.</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	echo <span class="string">&quot;<span class="variable">$(after)</span>&quot;</span></span><br><span class="line">	echo start<span class="string">&quot;<span class="variable">$(space)</span>&quot;</span>end</span><br></pre></td></tr></table></figure></div>
+<p>您可以使用 <code>override</code> 来覆盖来自命令行的变量。在这里，我们使用了 <code>make option_one=hi</code> 命令运行了 <code>make</code>。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Overrides command line arguments</span></span><br><span class="line"><span class="keyword">override</span> option_one = did_override</span><br><span class="line"><span class="comment"># Does not override command line arguments</span></span><br><span class="line">option_two = not_override</span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	echo <span class="variable">$(option_one)</span></span><br><span class="line">	echo <span class="variable">$(option_two)</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>define/endef</code> 简单地创建一个变量，该变量被设置为一系列命令。需要注意的是，这与在命令之间使用分号有些不同，因为每个命令都在单独的 <code>shell</code> 中运行</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">one = <span class="keyword">export</span> blah=<span class="string">&quot;I was set!&quot;</span>; echo $$blah</span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> two</span><br><span class="line"><span class="keyword">export</span> blah=<span class="string">&quot;I was set!&quot;</span></span><br><span class="line">echo $$blah</span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	@echo <span class="string">&quot;This prints &#x27;I was set&#x27;&quot;</span></span><br><span class="line">	@<span class="variable">$(one)</span></span><br><span class="line">	@echo <span class="string">&quot;This does not print &#x27;I was set&#x27; because each command runs in a separate shell&quot;</span></span><br><span class="line">	@<span class="variable">$(two)</span></span><br></pre></td></tr></table></figure></div>
+
+<p>变量可以针对特定 <code>targets</code> 进行设置</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: one = cool</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	echo one is defined: <span class="variable">$(one)</span></span><br><span class="line"></span><br><span class="line"><span class="section">other:</span></span><br><span class="line">	echo one is nothing: <span class="variable">$(one)</span></span><br></pre></td></tr></table></figure></div>
+<p>你可以为特定的 <code>targets</code> 模式设置变量</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">%.c: one = cool</span></span><br><span class="line"></span><br><span class="line"><span class="section">blah.c: </span></span><br><span class="line">	echo one is defined: <span class="variable">$(one)</span></span><br><span class="line"></span><br><span class="line"><span class="section">other:</span></span><br><span class="line">	echo one is nothing: <span class="variable">$(one)</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h2><h3 id="if-else"><a href="#if-else" class="headerlink" title="if/else"></a><code>if/else</code></h3><div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">foo = ok</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(foo)</span>, ok)</span><br><span class="line">	echo <span class="string">&quot;foo equals ok&quot;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	echo <span class="string">&quot;nope&quot;</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nullstring =</span><br><span class="line">foo = <span class="variable">$(nullstring)</span> <span class="comment"># end of line; there is a space here</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(<span class="built_in">strip</span> <span class="variable">$(foo)</span>)</span>,)</span><br><span class="line">	echo <span class="string">&quot;foo is empty after being stripped&quot;</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(nullstring)</span>,)</span><br><span class="line">	echo <span class="string">&quot;nullstring doesn&#x27;t even have spaces&quot;</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="ifdef"><a href="#ifdef" class="headerlink" title="ifdef "></a><code>ifdef </code></h3><div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bar =</span><br><span class="line">foo = <span class="variable">$(bar)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line"><span class="keyword">ifdef</span> foo</span><br><span class="line">	echo <span class="string">&quot;foo is defined&quot;</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"><span class="keyword">ifndef</span> bar</span><br><span class="line">	echo <span class="string">&quot;but bar is not&quot;</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="MAKEFLAGS"><a href="#MAKEFLAGS" class="headerlink" title="$(MAKEFLAGS)"></a><code>$(MAKEFLAGS)</code></h3><p>这个示例向您展示了如何使用 <code>findstring</code> 和 <code>MAKEFLAGS</code> 来测试制作标志。使用 <code>make -i</code> 运行此示例，以查看它打印出 <code>echo</code> 语句。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all:</span></span><br><span class="line"><span class="comment"># Search for the &quot;-i&quot; flag. MAKEFLAGS is just a list of single characters, one per flag. So look for &quot;i&quot; in this case.</span></span><br><span class="line"><span class="keyword">ifneq</span> (,<span class="variable">$(<span class="built_in">findstring</span> i, <span class="variable">$(MAKEFLAGS)</span>)</span>)</span><br><span class="line">	echo <span class="string">&quot;i was passed to MAKEFLAGS&quot;</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>函数主要用于文本处理。通过 <code>$(fn, arguments)</code> 或 <code>$&#123;fn, arguments&#125;</code> 来调用函数。<code>Make</code> 具有相当数量的<a class="link"   target="_blank" rel="noopener" href="https://www.gnu.org/software/make/manual/html_node/Functions.html" >内置函数 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<h3 id="文本替换"><a href="#文本替换" class="headerlink" title="文本替换"></a>文本替换</h3><div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bar := $&#123;subst not, totally, <span class="string">&quot;I am not superman&quot;</span>&#125;</span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	@echo <span class="variable">$(bar)</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">comma := ,</span><br><span class="line">empty:=</span><br><span class="line">space := <span class="variable">$(empty)</span> <span class="variable">$(empty)</span></span><br><span class="line">foo := a b c</span><br><span class="line">bar := <span class="variable">$(<span class="built_in">subst</span> <span class="variable">$(space)</span>,<span class="variable">$(comma)</span>,<span class="variable">$(foo)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	@echo <span class="variable">$(bar)</span></span><br></pre></td></tr></table></figure></div>
+<p><code>patsubst </code></p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">foo := a.o b.o l.a c.o</span><br><span class="line">one := <span class="variable">$(<span class="built_in">patsubst</span> %.o,%.c,<span class="variable">$(foo)</span>)</span></span><br><span class="line"><span class="comment"># This is a shorthand for the above</span></span><br><span class="line">two := $(foo:%.o=%.c)</span><br><span class="line"><span class="comment"># This is the suffix-only shorthand, and is also equivalent to the above.</span></span><br><span class="line">three := $(foo:.o=.c)</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	echo <span class="variable">$(one)</span></span><br><span class="line">	echo <span class="variable">$(two)</span></span><br><span class="line">	echo <span class="variable">$(three)</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a><code>foreach</code></h3><p><code>foreach</code> 函数的使用方式如下：<code>$(foreach var,list,text)</code>。它将一个由空格分隔的单词列表转换为另一个列表。<code>var</code> 被设置为列表中的每个单词，而 <code>text</code> 在每个单词中被扩展。以下是在每个单词后追加感叹号的示例：</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">foo := who are you</span><br><span class="line"><span class="comment"># For each &quot;word&quot; in foo, output that same word with an exclamation after</span></span><br><span class="line">bar := <span class="variable">$(<span class="built_in">foreach</span> wrd,<span class="variable">$(foo)</span>,<span class="variable">$(wrd)</span>!)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	<span class="comment"># Output is &quot;who! are! you!&quot;</span></span><br><span class="line">	@echo <span class="variable">$(bar)</span></span><br></pre></td></tr></table></figure></div>
+<p><code>if</code> 检查第一个参数是否非空</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">foo := <span class="variable">$(<span class="built_in">if</span> this-is-not-empty,then!,else!)</span></span><br><span class="line">empty :=</span><br><span class="line">bar := <span class="variable">$(<span class="built_in">if</span> <span class="variable">$(empty)</span>,then!,else!)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	@echo <span class="variable">$(foo)</span></span><br><span class="line">	@echo <span class="variable">$(bar)</span></span><br></pre></td></tr></table></figure></div>
+<p><code>Make</code> 支持创建基本函数。通过创建变量来定义函数，但使用 <code>$(0)</code>，<code>$(1)</code> 等调用参数。然后，使用特殊的内建函数来调用函数。语法是 <code>$(call 变量,参数,参数)</code>。<code>$(0)</code> 是变量（函数名），而 <code>$(1)</code>，<code>$(2)</code> 等是参数</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sweet_new_fn = Variable Name: $(0) First: $(1) Second: $(2) Empty Variable: $(3)</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	<span class="comment"># Outputs &quot;Variable Name: sweet_new_fn First: go Second: tigers Empty Variable:&quot;</span></span><br><span class="line">	@echo <span class="variable">$(<span class="built_in">call</span> sweet_new_fn, go, tigers)</span></span><br></pre></td></tr></table></figure></div>
+
+<h2 id="其他特性"><a href="#其他特性" class="headerlink" title="其他特性"></a>其他特性</h2><h3 id="include"><a href="#include" class="headerlink" title="include"></a><code>include</code></h3><p><code>include</code> 用于包含其他 <code>Makefile</code>。如果 <code>Makefile</code> 不存在，<code>make</code> 将会继续执行。如果 <code>Makefile</code> 存在，<code>make</code> 将会执行它。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span> some_file</span><br></pre></td></tr></table></figure></div>
+<p><code>vpath</code></p>
+<p>使用 <code>vpath</code> 指定一组prerequisites存在的位置。格式为 <code>vpath &lt;pattern&gt; &lt;directories, space/colon separated&gt;</code>。模式可以包含 <code>%</code>，表示匹配任意零个或多个字符。您还可以在全局范围内使用变量 <code>VPATH</code> 来实现这一点。</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">vpath</span> %.h ../headers ../other-directory</span><br><span class="line"></span><br><span class="line"><span class="comment"># Note: vpath allows blah.h to be found even though blah.h is never in the current directory</span></span><br><span class="line"><span class="section">some_binary: ../headers blah.h</span></span><br><span class="line">	touch some_binary</span><br><span class="line"></span><br><span class="line"><span class="section">../headers:</span></span><br><span class="line">	mkdir ../headers</span><br><span class="line"></span><br><span class="line"><span class="comment"># We call the target blah.h instead of ../headers/blah.h, because that&#x27;s the prereq that some_binary is looking for</span></span><br><span class="line"><span class="comment"># Typically, blah.h would already exist and you wouldn&#x27;t need this.</span></span><br><span class="line"><span class="section">blah.h:</span></span><br><span class="line">	touch ../headers/blah.h</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -rf ../headers</span><br><span class="line">	rm -f some_binary</span><br></pre></td></tr></table></figure></div>
+<p><code>.PHONY</code></p>
+<p><code>.PHONY</code> 目标用于声明一些常见的操作，例如 <code>clean</code>（清理生成的文件）、<code>all</code>（构建所有目标）、<code>install</code>（安装程序）等。通过将这些操作声明为伪目标，可以确保它们在每次运行 <code>Make</code> 时都会被正确执行，而不需要检查文件的更新状态</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean all install</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: program</span></span><br><span class="line"></span><br><span class="line"><span class="section">program: main.o foo.o bar.o</span></span><br><span class="line">    gcc <span class="variable">$^</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm -f *.o program</span><br><span class="line"></span><br><span class="line"><span class="section">install:</span></span><br><span class="line">    cp program /usr/local/bin/</span><br></pre></td></tr></table></figure></div>
+<p><code>.DELETE_ON_ERROR</code></p>
+<p><code>.DELETE_ON_ERROR</code> 是一个特殊的 <code>Makefile</code> 目标，用于在出现错误时删除生成的目标文件</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">.DELETE_ON_ERROR:</span></span><br><span class="line"></span><br><span class="line"><span class="section">myapp: main.o util.o</span></span><br><span class="line">    gcc main.o util.o -o myapp</span><br><span class="line"></span><br><span class="line"><span class="section">main.o: main.c</span></span><br><span class="line">    gcc -c main.c -o main.o</span><br><span class="line"></span><br><span class="line"><span class="section">util.o: util.c</span></span><br><span class="line">    gcc -c util.c -o util.o</span><br></pre></td></tr></table></figure></div>
+<p>如果在编译 <code>main.o</code> 时发生错误，<code>Make</code> 会立即停止编译，并删除已经生成的目标文件 <code>main.o</code> 和 <code>util.o</code>。这样可以确保下次构建时从干净的状态开始，避免残留文件导致的问题。</p>
+<h2 id="Makefile-Cookbook"><a href="#Makefile-Cookbook" class="headerlink" title="Makefile Cookbook"></a>Makefile Cookbook</h2><p>让我们来看一个非常精彩的 <code>Make</code> 示例，适用于中等规模的项目。</p>
+<p>这个 <code>Makefile</code> 的好处是它可以自动为您确定依赖关系。您只需要将您的 <code>C/C++</code> 文件放在 <code>src/</code> 文件夹中即可</p>
+<div class="highlight-container" data-rel="Makefile"><figure class="iseeu highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Thanks to Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)</span></span><br><span class="line">TARGET_EXEC := final_program</span><br><span class="line"></span><br><span class="line">BUILD_DIR := ./build</span><br><span class="line">SRC_DIRS := ./src</span><br><span class="line"></span><br><span class="line"><span class="comment"># Find all the C and C++ files we want to compile</span></span><br><span class="line"><span class="comment"># Note the single quotes around the * expressions. The shell will incorrectly expand these otherwise, but we want to send the * directly to the find command.</span></span><br><span class="line">SRCS := <span class="variable">$(<span class="built_in">shell</span> find <span class="variable">$(SRC_DIRS)</span> -name &#x27;*.cpp&#x27; -<span class="built_in">or</span> -name &#x27;*.c&#x27; -<span class="built_in">or</span> -name &#x27;*.s&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Prepends BUILD_DIR and appends .o to every src file</span></span><br><span class="line"><span class="comment"># As an example, ./your_dir/hello.cpp turns into ./build/./your_dir/hello.cpp.o</span></span><br><span class="line">OBJS := $(SRCS:%=<span class="variable">$(BUILD_DIR)</span>/%.o)</span><br><span class="line"></span><br><span class="line"><span class="comment"># String substitution (suffix version without %).</span></span><br><span class="line"><span class="comment"># As an example, ./build/hello.cpp.o turns into ./build/hello.cpp.d</span></span><br><span class="line">DEPS := $(OBJS:.o=.d)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Every folder in ./src will need to be passed to GCC so that it can find header files</span></span><br><span class="line">INC_DIRS := <span class="variable">$(<span class="built_in">shell</span> find <span class="variable">$(SRC_DIRS)</span> -type d)</span></span><br><span class="line"><span class="comment"># Add a prefix to INC_DIRS. So moduleA would become -ImoduleA. GCC understands this -I flag</span></span><br><span class="line">INC_FLAGS := <span class="variable">$(<span class="built_in">addprefix</span> -I,<span class="variable">$(INC_DIRS)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The -MMD and -MP flags together generate Makefiles for us!</span></span><br><span class="line"><span class="comment"># These files will have .d instead of .o as the output.</span></span><br><span class="line">CPPFLAGS := <span class="variable">$(INC_FLAGS)</span> -MMD -MP</span><br><span class="line"></span><br><span class="line"><span class="comment"># The final build step.</span></span><br><span class="line"><span class="variable">$(BUILD_DIR)</span>/<span class="variable">$(TARGET_EXEC)</span>: <span class="variable">$(OBJS)</span></span><br><span class="line">	<span class="variable">$(CXX)</span> <span class="variable">$(OBJS)</span> -o <span class="variable">$@</span> <span class="variable">$(LDFLAGS)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Build step for C source</span></span><br><span class="line"><span class="variable">$(BUILD_DIR)</span>/%.c.o: %.c</span><br><span class="line">	mkdir -p <span class="variable">$(<span class="built_in">dir</span> <span class="variable">$@</span>)</span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(CFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Build step for C++ source</span></span><br><span class="line"><span class="variable">$(BUILD_DIR)</span>/%.cpp.o: %.cpp</span><br><span class="line">	mkdir -p <span class="variable">$(<span class="built_in">dir</span> <span class="variable">$@</span>)</span></span><br><span class="line">	<span class="variable">$(CXX)</span> <span class="variable">$(CPPFLAGS)</span> <span class="variable">$(CXXFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -r <span class="variable">$(BUILD_DIR)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include the .d makefiles. The - at the front suppresses the errors of missing</span></span><br><span class="line"><span class="comment"># Makefiles. Initially, all the .d files will be missing, and we don&#x27;t want those</span></span><br><span class="line"><span class="comment"># errors to show up.</span></span><br><span class="line"><span class="keyword">-include</span> <span class="variable">$(DEPS)</span></span><br></pre></td></tr></table></figure></div>
+
+            </div>
+
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/C/">#C++</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/Makefile/">#Makefile</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/comppyhs1/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">计算物理01 - Monte Carlo: Randomness, Walks, and Decays</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">Makefile简易教程</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Makefile-%E8%AF%AD%E6%B3%95"><span class="nav-text">Makefile 语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Make-clean"><span class="nav-text">Make clean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-text">变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Targets"><span class="nav-text">Targets</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8F%98%E9%87%8F%E5%92%8C%E9%80%9A%E9%85%8D%E7%AC%A6"><span class="nav-text">自动变量和通配符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8F%98%E9%87%8F"><span class="nav-text">自动变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E9%85%8D%E7%AC%A6"><span class="nav-text">* 通配符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E9%85%8D%E7%AC%A6-1"><span class="nav-text">% 通配符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fancy-Rules"><span class="nav-text">Fancy Rules</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E6%80%A7%E8%A7%84%E5%88%99"><span class="nav-text">隐性规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Static-Pattern-Rules"><span class="nav-text">Static Pattern Rules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Static-Pattern-Rules-and-Filter"><span class="nav-text">Static Pattern Rules and Filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pattern-Rules"><span class="nav-text">Pattern Rules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Double-Colon-Rules"><span class="nav-text">Double-Colon Rules</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Commands-and-execution"><span class="nav-text">Commands and execution</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#make-%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8"><span class="nav-text">make 递归调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Export-environments-and-recursive-make"><span class="nav-text">Export, environments, and recursive make</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Variables-Pt-2"><span class="nav-text">Variables Pt. 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD"><span class="nav-text">条件判断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#if-else"><span class="nav-text">if&#x2F;else</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ifdef"><span class="nav-text">ifdef </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAKEFLAGS"><span class="nav-text">$(MAKEFLAGS)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E6%9B%BF%E6%8D%A2"><span class="nav-text">文本替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#foreach"><span class="nav-text">foreach</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%89%B9%E6%80%A7"><span class="nav-text">其他特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#include"><span class="nav-text">include</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Makefile-Cookbook"><span class="nav-text">Makefile Cookbook</span></a></li></ol>
+
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+            
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-cog fa-spin" style="--fa-animation-duration: 15s;"></i>&nbsp;&nbsp;<a href="/">YiQi</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.4</a>
+        </div>
+        
+        
+        
+            <div id="start_div" style="display:none">
+                2022/12/21 11:45:14
+            </div>
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/layouts/navbarShrink.js"></script>
+
+<script src="/js/tools/scrollTopBottom.js"></script>
+
+<script src="/js/tools/lightDarkSwitch.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/tools/tocToggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax',
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            Global.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            Global.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            Global.refresh();
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
