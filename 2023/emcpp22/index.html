@@ -13,18 +13,18 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://fengyiqi.github.io/2023/emcpp15/"/>
+    <link rel="canonical" href="http://fengyiqi.github.io/2023/emcpp22/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
         <meta property="og:type" content="article">
-<meta property="og:title" content="EMCPP条款15：只要有可能使用constexpr，就使用它">
-<meta property="og:url" content="http://fengyiqi.github.io/2023/emcpp15/index.html">
+<meta property="og:title" content="EMCPP条款22：使用Pimple习惯用法时，将特殊成员函数的定义放到实现文件中">
+<meta property="og:url" content="http://fengyiqi.github.io/2023/emcpp22/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-12T12:52:57.000Z">
-<meta property="article:modified_time" content="2023-08-12T12:53:45.775Z">
+<meta property="article:published_time" content="2023-08-17T21:57:05.000Z">
+<meta property="article:modified_time" content="2023-08-17T21:58:13.708Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="EMCPP">
@@ -40,7 +40,7 @@
     
     <title>
         
-            EMCPP条款15：只要有可能使用constexpr，就使用它 -
+            EMCPP条款22：使用Pimple习惯用法时，将特殊成员函数的定义放到实现文件中 -
         
         YiQi&#39;s Blog
     </title>
@@ -293,7 +293,7 @@
             
             
                 <div class="article-title">
-                    <h1 class="article-title-regular">EMCPP条款15：只要有可能使用constexpr，就使用它</h1>
+                    <h1 class="article-title-regular">EMCPP条款22：使用Pimple习惯用法时，将特殊成员函数的定义放到实现文件中</h1>
                 </div>
             
                 
@@ -315,15 +315,15 @@
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-08-12 14:52:57</span>
-        <span class="mobile">2023-08-12 14:52</span>
+        <span class="desktop">2023-08-17 23:57:05</span>
+        <span class="mobile">2023-08-17 23:57</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-08-12 14:53:45</span>
-            <span class="mobile">2023-08-12 14:53</span>
+            <span class="desktop">2023-08-17 23:58:13</span>
+            <span class="mobile">2023-08-17 23:58</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -360,12 +360,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>699 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>214 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>2 分钟</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>1 分钟</span>
         </span>
     
     
@@ -381,23 +381,14 @@
             
 
             <div class="article-content markdown-body">
-                <p>表面上看，<code>constexpr</code> 表示的是这样的值：它不仅是 <code>const</code>, 而且在编译阶段就已知。关千 <code>constexpr</code> 函数的结果，你既不能断定它是 <code>const</code>, 也不能假定其值在编译阶段就已知。</p>
-<p>请注意，<code>const</code> 并未提供和 <code>constexpr</code> 同样的保证，因为 <code>const</code> 对象不一定经由编译期已知值来初始化。一言以蔽之，所有 <code>constexpr</code> 对象都是 <code>const</code> 对象，而并非所有的 <code>const</code> 对象都是 <code>constexpr</code> 对象。如果你想让编译器提供保证，让变量拥有一个值，用于要求编译期常量的语境，那么能达到这个目的的工具是 <code>constexpr</code>, 而非 <code>const</code>。</p>
-<p>而 <code>constexpr</code> 对象的使用场景中如果涉及 <code>constexpr</code> 函数，正确的理解方式是以下这样：</p>
-<ul>
-<li><code>constexpr</code> 函数可以用在要求编译期常量的语境中。在这样的语境中，若你传给一个 <code>constexpr</code> 函数的实参值是在编译期已知的，则结果也会在编译期间计算出来。如果任何一个实参值在编译期未知，则你的代码将无法通过编译。</li>
-<li>在调用 <code>constexpr</code> 函数时，若传入的值有一个或多个在编译期未知，则它的运作方式和普通函数无异，亦即它也是在运行期执行结果的计算。这意味着，如果函数执行的是同样的操作，仅仅应用的语境一个是要求编译期常量的，一个是用于所有其他值的话，那就不必写两个函数。 <code>constexpr</code> 函数就可以同时满足所有需求。</li>
-</ul>
-<p><code>constexpr</code> 函数仅限于传入和返回字面型别 ( literal type) ，意思就是这样的型别能够持有编译期可以决议的值。在 C++11 中，所有的内建型别，除了 <code>void</code>，都符合这个条件（C++14 中这个限制解除了）。但是用户自定义型别同样可能也是字面型别，因为它的构造函数和其他成员函数可能也是 <code>constexpr</code> 函数（C++14）。</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Point</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="title">Point</span><span class="params">(<span class="type">double</span> xVal = <span class="number">0</span>, <span class="type">double</span> yVal = <span class="number">0</span>)</span> <span class="keyword">noexcept</span> : x(xVal), y(yVal)</span></span><br><span class="line"><span class="function">    &#123;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">double</span> <span class="title">xValue</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">noexcept</span> </span>&#123; <span class="keyword">return</span> x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">double</span> <span class="title">yValue</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">noexcept</span> </span>&#123; <span class="keyword">return</span> y; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">void</span> <span class="title">setX</span><span class="params">(<span class="type">double</span> newX)</span> <span class="keyword">noexcept</span> </span>&#123; x = newX; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">void</span> <span class="title">setY</span><span class="params">(<span class="type">double</span> newY)</span> <span class="keyword">noexcept</span> </span>&#123; y = newY; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">double</span> x, y;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
-
+                <p>这种技巧就是把某类的数据成员用一个指涉到某实现类（或结构体）的指针替代，尔后把原来在主类中的数据成员放置到实现类中，并通过指针间接访问这些数据成员。</p>
 <blockquote>
-<p>通常来说，<code>constexpr</code> 函数里是不允许有 I&#x2F;O 语句的。</p>
+<p>目前在使用的code中暂时还没发现Pimple用法中使用 <code>std::unique_ptr</code> 的必要性，如有遇到再参见原文</p>
 </blockquote>
-<h2 id="要点速记"><a href="#要点速记" class="headerlink" title="要点速记"></a>要点速记</h2><ul>
-<li><code>constexpr</code> 对象都具各 <code>const</code> 属性，并由编译期已知的值完成初始化。</li>
-<li><code>constexpr</code> 函数在调用时若传入的实参值是编译期已知的，则会产出编译期结果。</li>
-<li>比起非 <code>constexpr</code> 对象或 <code>constexpr</code> 函数而言，<code>constexpr</code> 对象或是 <code>constexpr</code> 函数可以用在一个作用域更广的语境中。</li>
+<h1 id="要点速记"><a href="#要点速记" class="headerlink" title="要点速记"></a>要点速记</h1><ul>
+<li>Pimpl 惯用法通过降低类的客户和类实现者之间的依赖性，减少了构建遍数。</li>
+<li>对于采用 <code>std::unique_ptr</code> 来实现的 Pimpl 指针，须在类的头文件中声明特种成员函数，但在实现文件中实现它们。即使默认函数实现有着正确行为，也必须这样做。</li>
+<li>上述建议仅适用于 <code>std::unique_ptr</code>, 但并不适用 <code>std::shared_ptr</code>。</li>
 </ul>
 
             </div>
@@ -423,29 +414,14 @@
             
                 <div class="article-nav">
                     
-                        <div class="article-prev">
-                            <a class="prev"
-                            rel="prev"
-                            href="/2023/emcpp16/"
-                            >
-                                <span class="left arrow-icon flex-center">
-                                    <i class="fa-solid fa-chevron-left"></i>
-                                </span>
-                                <span class="title flex-center">
-                                    <span class="post-nav-title-item">EMCPP条款16：保证const成员函数的线程安全性</span>
-                                    <span class="post-nav-item">上一篇</span>
-                                </span>
-                            </a>
-                        </div>
-                    
                     
                         <div class="article-next">
                             <a class="next"
                             rel="next"
-                            href="/2023/emcpp14/"
+                            href="/2023/emcpp21/"
                             >
                                 <span class="title flex-center">
-                                    <span class="post-nav-title-item">EMCPP条款14：只要函数不会发射异常，就为其加上 noexcept 声明</span>
+                                    <span class="post-nav-title-item">EMCPP条款21：优先选用std::make_unique和std::make_shared，而非直接使用new</span>
                                     <span class="post-nav-item">下一篇</span>
                                 </span>
                                 <span class="right arrow-icon flex-center">
@@ -466,8 +442,8 @@
                 <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
-        <div class="page-title">EMCPP条款15：只要有可能使用constexpr，就使用它</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%E9%80%9F%E8%AE%B0"><span class="nav-text">要点速记</span></a></li></ol>
+        <div class="page-title">EMCPP条款22：使用Pimple习惯用法时，将特殊成员函数的定义放到实现文件中</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%E9%80%9F%E8%AE%B0"><span class="nav-text">要点速记</span></a></li></ol>
 
     </div>
 </div>

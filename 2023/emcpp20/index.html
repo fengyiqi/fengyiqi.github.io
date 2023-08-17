@@ -13,18 +13,18 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://fengyiqi.github.io/2023/emcpp15/"/>
+    <link rel="canonical" href="http://fengyiqi.github.io/2023/emcpp20/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
         <meta property="og:type" content="article">
-<meta property="og:title" content="EMCPP条款15：只要有可能使用constexpr，就使用它">
-<meta property="og:url" content="http://fengyiqi.github.io/2023/emcpp15/index.html">
+<meta property="og:title" content="EMCPP条款20：对于类似 std::shared_ptr 但有可能空悬的指针使用std::weak_ptr">
+<meta property="og:url" content="http://fengyiqi.github.io/2023/emcpp20/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-12T12:52:57.000Z">
-<meta property="article:modified_time" content="2023-08-12T12:53:45.775Z">
+<meta property="article:published_time" content="2023-08-17T21:55:58.000Z">
+<meta property="article:modified_time" content="2023-08-17T21:56:36.540Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="EMCPP">
@@ -40,7 +40,7 @@
     
     <title>
         
-            EMCPP条款15：只要有可能使用constexpr，就使用它 -
+            EMCPP条款20：对于类似 std::shared_ptr 但有可能空悬的指针使用std::weak_ptr -
         
         YiQi&#39;s Blog
     </title>
@@ -293,7 +293,7 @@
             
             
                 <div class="article-title">
-                    <h1 class="article-title-regular">EMCPP条款15：只要有可能使用constexpr，就使用它</h1>
+                    <h1 class="article-title-regular">EMCPP条款20：对于类似 std::shared_ptr 但有可能空悬的指针使用std::weak_ptr</h1>
                 </div>
             
                 
@@ -315,15 +315,15 @@
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-08-12 14:52:57</span>
-        <span class="mobile">2023-08-12 14:52</span>
+        <span class="desktop">2023-08-17 23:55:58</span>
+        <span class="mobile">2023-08-17 23:55</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-08-12 14:53:45</span>
-            <span class="mobile">2023-08-12 14:53</span>
+            <span class="desktop">2023-08-17 23:56:36</span>
+            <span class="mobile">2023-08-17 23:56</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -360,7 +360,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>699 字</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>635 字</span>
         </span>
     
     
@@ -381,23 +381,21 @@
             
 
             <div class="article-content markdown-body">
-                <p>表面上看，<code>constexpr</code> 表示的是这样的值：它不仅是 <code>const</code>, 而且在编译阶段就已知。关千 <code>constexpr</code> 函数的结果，你既不能断定它是 <code>const</code>, 也不能假定其值在编译阶段就已知。</p>
-<p>请注意，<code>const</code> 并未提供和 <code>constexpr</code> 同样的保证，因为 <code>const</code> 对象不一定经由编译期已知值来初始化。一言以蔽之，所有 <code>constexpr</code> 对象都是 <code>const</code> 对象，而并非所有的 <code>const</code> 对象都是 <code>constexpr</code> 对象。如果你想让编译器提供保证，让变量拥有一个值，用于要求编译期常量的语境，那么能达到这个目的的工具是 <code>constexpr</code>, 而非 <code>const</code>。</p>
-<p>而 <code>constexpr</code> 对象的使用场景中如果涉及 <code>constexpr</code> 函数，正确的理解方式是以下这样：</p>
+                <p><code>std::weak_ptr</code> 并不是一种独立的智能指针，而是 <code>std::shared_ptr</code> 的一种扩充。这种关系在指针生成的时刻就已存在。<code>std::weak_ptr</code> 一般者是通过 <code>std::shared_ptr</code> 来创建的。当使用 <code>std::shared_ptr</code> 完成初始化 <code>std::weak_ptr</code> 的时刻，两者就指涉到了相同位置，但 <code>std::weak_ptr</code> 并不影响所指涉到的对象的引用计数：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// after spw is constructed, the pointed-to Widget&#x27;s</span></span><br><span class="line"><span class="comment">// ref count (RC) is 1. (See Item 21 for info on std::make_shared.)</span></span><br><span class="line"><span class="keyword">auto</span> spw = std::<span class="built_in">make_shared</span>&lt;Widget&gt;(); </span><br><span class="line"><span class="comment">// wpw points to same Widget as spw. RC remains 1</span></span><br><span class="line"><span class="function">std::weak_ptr&lt;Widget&gt; <span class="title">wpw</span><span class="params">(spw)</span></span>; </span><br><span class="line"><span class="comment">// RC goes to 0, and the Widget is destroyed. wpw now dangles</span></span><br><span class="line">spw = <span class="literal">nullptr</span>; </span><br></pre></td></tr></table></figure></div>
+<p><code>std::weak_ptr</code> 的空悬，也被称作失效（expired）。你需要的是一个原子操作来完成 <code>std::weak_ptr</code> 是否失效的校验，以及在未失效的条件下提供对所指涉到的对象的访问。这个操作可以通过由 <code>std::weak_ptr</code> 创建 <code>std::shared_ptr</code> 来实现。该操作有两种形式，选择哪一种取决于由 <code>std::weak_ptr</code> 来创建 <code>std::shared_ptr</code> 时若该 <code>std::weak_ptr</code> 失效，期望得到什么结果。</p>
 <ul>
-<li><code>constexpr</code> 函数可以用在要求编译期常量的语境中。在这样的语境中，若你传给一个 <code>constexpr</code> 函数的实参值是在编译期已知的，则结果也会在编译期间计算出来。如果任何一个实参值在编译期未知，则你的代码将无法通过编译。</li>
-<li>在调用 <code>constexpr</code> 函数时，若传入的值有一个或多个在编译期未知，则它的运作方式和普通函数无异，亦即它也是在运行期执行结果的计算。这意味着，如果函数执行的是同样的操作，仅仅应用的语境一个是要求编译期常量的，一个是用于所有其他值的话，那就不必写两个函数。 <code>constexpr</code> 函数就可以同时满足所有需求。</li>
+<li>一种形式是 <code>std::weak_ptr::lock</code>, 它返回一个 <code>std::shared_ptr</code>。如果 <code>std::weak_ptr</code> 已经失效，则 <code>std::shared_ptr</code> 为空：  <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;Widget&gt; spw1 = wpw.<span class="built_in">lock</span>(); </span><br><span class="line"><span class="comment">// if wpw&#x27;s expired, spw1 is null</span></span><br><span class="line"><span class="keyword">auto</span> spw2 = wpw.<span class="built_in">lock</span>(); </span><br><span class="line"><span class="comment">// same as above, but uses auto</span></span><br></pre></td></tr></table></figure></div></li>
+<li>另一种形式是用 <code>std::weak_ptr</code> 作为实参来构造 <code>std::shared_ptr</code>。这样，如果 <code>std::weak_ptr</code> 失效的话，抛出异常：  <div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::shared_ptr&lt;Widget&gt; <span class="title">spw3</span><span class="params">(wpw)</span></span>; </span><br><span class="line"><span class="comment">// if wpw&#x27;s expired, throw std::bad_weak_ptr</span></span><br></pre></td></tr></table></figure></div></li>
 </ul>
-<p><code>constexpr</code> 函数仅限于传入和返回字面型别 ( literal type) ，意思就是这样的型别能够持有编译期可以决议的值。在 C++11 中，所有的内建型别，除了 <code>void</code>，都符合这个条件（C++14 中这个限制解除了）。但是用户自定义型别同样可能也是字面型别，因为它的构造函数和其他成员函数可能也是 <code>constexpr</code> 函数（C++14）。</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Point</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="title">Point</span><span class="params">(<span class="type">double</span> xVal = <span class="number">0</span>, <span class="type">double</span> yVal = <span class="number">0</span>)</span> <span class="keyword">noexcept</span> : x(xVal), y(yVal)</span></span><br><span class="line"><span class="function">    &#123;</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">double</span> <span class="title">xValue</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">noexcept</span> </span>&#123; <span class="keyword">return</span> x; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">double</span> <span class="title">yValue</span><span class="params">()</span> <span class="type">const</span> <span class="keyword">noexcept</span> </span>&#123; <span class="keyword">return</span> y; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">void</span> <span class="title">setX</span><span class="params">(<span class="type">double</span> newX)</span> <span class="keyword">noexcept</span> </span>&#123; x = newX; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">constexpr</span> <span class="type">void</span> <span class="title">setY</span><span class="params">(<span class="type">double</span> newY)</span> <span class="keyword">noexcept</span> </span>&#123; y = newY; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">double</span> x, y;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></div>
-
+<p>考虑一个工厂函数，该函数基于唯一ID来创建一些指涉到只读对象的智能指针。构造函数成本高昂，需要缓存。缓存管理器的指针需要能够校验它们何时会空悬，因为工厂函数的用户用完由该工厂函数返回的对象后，该对象就将被析构，此时相应的缓存条目将会空悬。这里是带缓存的 <code>loadWidget</code> 的一个快速而粗糙的实现版本：</p>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::shared_ptr&lt;<span class="type">const</span> Widget&gt; <span class="title">fastLoadWidget</span><span class="params">(WidgetID id)</span> </span>&#123;</span><br><span class="line">    <span class="type">static</span> std::unordered_map&lt;WidgetID, std::weak_ptr&lt;<span class="type">const</span> Widget&gt;&gt; cache;</span><br><span class="line">    <span class="keyword">auto</span> objPtr = cache[id].<span class="built_in">lock</span>(); </span><br><span class="line">    <span class="comment">// objPtr is std::shared_ptr to cached object </span></span><br><span class="line">    <span class="comment">// (or null if object&#x27;s not in cache)</span></span><br><span class="line">    <span class="keyword">if</span> (!objPtr) &#123; <span class="comment">// if not in cache,</span></span><br><span class="line">        objPtr = <span class="built_in">loadWidget</span>(id); <span class="comment">// load it</span></span><br><span class="line">        cache[id] = objPtr; <span class="comment">// cache it</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> objPtr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 <blockquote>
-<p>通常来说，<code>constexpr</code> 函数里是不允许有 I&#x2F;O 语句的。</p>
+<p>观察者设计模式 (Observer design pattern) 也会用到 <code>std::weak_ptr</code>，参见原文</p>
 </blockquote>
 <h2 id="要点速记"><a href="#要点速记" class="headerlink" title="要点速记"></a>要点速记</h2><ul>
-<li><code>constexpr</code> 对象都具各 <code>const</code> 属性，并由编译期已知的值完成初始化。</li>
-<li><code>constexpr</code> 函数在调用时若传入的实参值是编译期已知的，则会产出编译期结果。</li>
-<li>比起非 <code>constexpr</code> 对象或 <code>constexpr</code> 函数而言，<code>constexpr</code> 对象或是 <code>constexpr</code> 函数可以用在一个作用域更广的语境中。</li>
+<li>使用 <code>std::weak_ptr</code> 来代替可能空悬的 <code>std::shared_ptr</code>。</li>
+<li><code>std::weak_ptr</code> 可能的用武之地包括缓存，观察者列表，以及避免 <code>std::shared_ptr</code> 指针环路。</li>
 </ul>
 
             </div>
@@ -426,13 +424,13 @@
                         <div class="article-prev">
                             <a class="prev"
                             rel="prev"
-                            href="/2023/emcpp16/"
+                            href="/2023/emcpp21/"
                             >
                                 <span class="left arrow-icon flex-center">
                                     <i class="fa-solid fa-chevron-left"></i>
                                 </span>
                                 <span class="title flex-center">
-                                    <span class="post-nav-title-item">EMCPP条款16：保证const成员函数的线程安全性</span>
+                                    <span class="post-nav-title-item">EMCPP条款21：优先选用std::make_unique和std::make_shared，而非直接使用new</span>
                                     <span class="post-nav-item">上一篇</span>
                                 </span>
                             </a>
@@ -442,10 +440,10 @@
                         <div class="article-next">
                             <a class="next"
                             rel="next"
-                            href="/2023/emcpp14/"
+                            href="/2023/emcpp19/"
                             >
                                 <span class="title flex-center">
-                                    <span class="post-nav-title-item">EMCPP条款14：只要函数不会发射异常，就为其加上 noexcept 声明</span>
+                                    <span class="post-nav-title-item">EMCPP条款19：使用std::shared_ptr管理具备共享所有权的资源</span>
                                     <span class="post-nav-item">下一篇</span>
                                 </span>
                                 <span class="right arrow-icon flex-center">
@@ -466,7 +464,7 @@
                 <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
-        <div class="page-title">EMCPP条款15：只要有可能使用constexpr，就使用它</div>
+        <div class="page-title">EMCPP条款20：对于类似 std::shared_ptr 但有可能空悬的指针使用std::weak_ptr</div>
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%82%B9%E9%80%9F%E8%AE%B0"><span class="nav-text">要点速记</span></a></li></ol>
 
     </div>
